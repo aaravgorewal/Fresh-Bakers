@@ -151,6 +151,7 @@ export default function App() {
             onOpenQuickView={(product) => setQuickViewProduct(product)}
             onAddToCart={handleAddToCart}
             onOpenOrderModal={() => setIsOrderModalOpen(true)}
+            whatsappNumber={bakerySettings.whatsappNumber}
           />
         )}
 
