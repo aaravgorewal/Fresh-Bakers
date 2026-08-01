@@ -4,6 +4,7 @@ import { PRODUCTS, CATEGORIES } from '../data/products';
 import { Search, Filter, Clock, Sparkles, CheckCircle2 } from 'lucide-react';
 
 interface ProductsViewProps {
+  products?: ProductItem[];
   selectedCategory: Category | 'All';
   setSelectedCategory: (cat: Category | 'All') => void;
   onOpenQuickView: (product: ProductItem) => void;
@@ -12,6 +13,7 @@ interface ProductsViewProps {
 }
 
 export const ProductsView: React.FC<ProductsViewProps> = ({
+  products = PRODUCTS,
   selectedCategory,
   setSelectedCategory,
   onOpenQuickView,
@@ -24,7 +26,9 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 
   const categoriesList: (Category | 'All')[] = ['All', ...CATEGORIES.map((c) => c.name)];
 
-  const filteredProducts = PRODUCTS.filter((item) => {
+  const availableProducts = products.length > 0 ? products : PRODUCTS;
+
+  const filteredProducts = availableProducts.filter((item) => {
     const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;
     const matchesSearch =
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

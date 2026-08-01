@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { ArrowRight, Clock, Award, Sparkles, MessageSquare, Heart } from 'lucide-react';
 
 interface HomeViewProps {
+  products?: ProductItem[];
   setActiveTab: (tab: NavTab) => void;
   onSelectCategory: (cat: Category) => void;
   onOpenQuickView: (product: ProductItem) => void;
@@ -13,13 +14,14 @@ interface HomeViewProps {
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
+  products = PRODUCTS,
   setActiveTab,
   onSelectCategory,
   onOpenQuickView,
   onAddToCart,
   onOpenOrderModal,
 }) => {
-  const signatureProducts = PRODUCTS.filter((p) => p.isSignature);
+  const signatureProducts = (products.length > 0 ? products : PRODUCTS).filter((p) => p.isSignature);
 
   return (
     <div className="w-full">

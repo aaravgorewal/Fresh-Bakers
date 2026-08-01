@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { NavTab, Category, ProductItem, OrderCartItem } from './types';
+import React, { useState, useEffect } from 'react';
+import { NavTab, Category, ProductItem, OrderCartItem, BakerySettings } from './types';
 import { PRODUCTS } from './data/products';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { WhatsAppModal } from './components/WhatsAppModal';
 import { QuickViewModal } from './components/QuickViewModal';
+import { AdminModal } from './components/AdminModal';
 import { HomeView } from './views/HomeView';
 import { ProductsView } from './views/ProductsView';
 import { AboutView } from './views/AboutView';
 import { ContactView } from './views/ContactView';
+import { subscribeToProducts, subscribeToSettings, seedInitialProductsIfEmpty, seedInitialSettingsIfEmpty, DEFAULT_SETTINGS } from './lib/firebase';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTab>('home');
@@ -16,6 +18,32 @@ export default function App() {
   const [cart, setCart] = useState<OrderCartItem[]>([]);
   const [quickViewProduct, setQuickViewProduct] = useState<ProductItem | null>(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
+  const [products, setProducts] = useState<ProductItem[]>(PRODUCTS);
+  const [bakerySettings, setBakerySettings] = useState<BakerySettings>(DEFAULT_SETTINGS);
+
+  // Initialize Firebase Firestore listeners & seed defaults if empty
+  useEffect(() => {
+    seedInitialProductsIfEmpty();
+    seedInitialSettingsIfEmpty();
+
+    const unsubscribeProducts = subscribeToProducts((firestoreProducts) => {
+      if (firestoreProducts && firestoreProducts.length > 0) {
+        setProducts(firestoreProducts);
+      }
+    });
+
+    const unsubscribeSettings = subscribeToSettings((firestoreSettings) => {
+      if (firestoreSettings) {
+        setBakerySettings(firestoreSettings);
+      }
+    });
+
+    return () => {
+      unsubscribeProducts();
+      unsubscribeSettings();
+    };
+  }, []);
 
   // Cart operations
   const handleAddToCart = (product: ProductItem) => {
@@ -58,6 +86,7 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
+        onOpenAdminModal={() => setIsAdminModalOpen(true)}
         cartCount={totalCartCount}
       />
 
@@ -65,6 +94,7 @@ export default function App() {
       <main className="flex-1">
         {activeTab === 'home' && (
           <HomeView
+            products={products}
             setActiveTab={setActiveTab}
             onSelectCategory={(cat) => setSelectedCategory(cat)}
             onOpenQuickView={(product) => setQuickViewProduct(product)}
@@ -75,6 +105,7 @@ export default function App() {
 
         {activeTab === 'products' && (
           <ProductsView
+            products={products}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
             onOpenQuickView={(product) => setQuickViewProduct(product)}
@@ -101,6 +132,7 @@ export default function App() {
       <Footer
         setActiveTab={setActiveTab}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
+        onOpenAdminModal={() => setIsAdminModalOpen(true)}
       />
 
       {/* WhatsApp Pre-Order Drawer/Modal */}
@@ -110,8 +142,9 @@ export default function App() {
         cart={cart}
         onUpdateQuantity={handleUpdateQuantity}
         onClearCart={handleClearCart}
-        allProducts={PRODUCTS}
+        allProducts={products}
         onAddToCart={handleAddToCart}
+        whatsappNumber={bakerySettings.whatsappNumber}
       />
 
       {/* Product Quick View Detail Modal */}
@@ -120,6 +153,14 @@ export default function App() {
         onClose={() => setQuickViewProduct(null)}
         onAddToCart={handleAddToCart}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
+      />
+
+      {/* Admin Login & Firestore CRUD Modal */}
+      <AdminModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+        products={products}
+        settings={bakerySettings}
       />
     </div>
   );

@@ -10,6 +10,7 @@ interface WhatsAppModalProps {
   onClearCart: () => void;
   allProducts: ProductItem[];
   onAddToCart: (product: ProductItem) => void;
+  whatsappNumber?: string;
 }
 
 export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
@@ -20,6 +21,7 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
   onClearCart,
   allProducts,
   onAddToCart,
+  whatsappNumber = '15550192824',
 }) => {
   const [customerName, setCustomerName] = useState('');
   const [pickupDate, setPickupDate] = useState('Tomorrow 9:00 AM');
@@ -60,8 +62,8 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
   const handleSendWhatsApp = () => {
     const rawMsg = generateWhatsAppMessage();
     const encoded = encodeURIComponent(rawMsg);
-    // Bakery phone number
-    const whatsappUrl = `https://wa.me/15550192824?text=${encoded}`;
+    const cleanNum = (whatsappNumber || '15550192824').replace(/[\+\s]/g, '');
+    const whatsappUrl = `https://wa.me/${cleanNum}?text=${encoded}`;
     window.open(whatsappUrl, '_blank');
   };
 

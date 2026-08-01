@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { NavTab } from '../types';
-import { ShoppingBag, Menu, X, MessageSquare } from 'lucide-react';
+import { ShoppingBag, Menu, X, Lock } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: NavTab;
   setActiveTab: (tab: NavTab) => void;
   onOpenOrderModal: () => void;
+  onOpenAdminModal: () => void;
   cartCount: number;
 }
 
@@ -13,6 +14,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   setActiveTab,
   onOpenOrderModal,
+  onOpenAdminModal,
   cartCount
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -61,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
         </div>
 
-        {/* Actions (WhatsApp Order button & Cart Counter) */}
+        {/* Actions (WhatsApp Order button, Cart Counter, & Admin Login) */}
         <div className="flex items-center gap-3">
           {cartCount > 0 && (
             <button
@@ -83,6 +85,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="material-symbols-outlined text-[18px]">chat</span>
             <span className="hidden sm:inline">Order via WhatsApp</span>
             <span className="sm:hidden">WhatsApp</span>
+          </button>
+
+          <button
+            onClick={onOpenAdminModal}
+            className="p-2 text-[#51443a] hover:text-[#825425] transition-colors"
+            title="Admin Login & Firestore Manager"
+          >
+            <Lock className="w-5 h-5" />
           </button>
 
           {/* Mobile Menu Toggle Button */}
@@ -115,9 +125,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             );
           })}
+          <button
+            onClick={() => {
+              onOpenAdminModal();
+              setMobileMenuOpen(false);
+            }}
+            className="text-left text-sm py-2 text-[#825425] font-semibold flex items-center gap-2 border-t border-[#e4e2de] pt-3"
+          >
+            <Lock className="w-4 h-4" /> Admin Login (Firestore Manager)
+          </button>
           <div className="pt-2 border-t border-[#e4e2de] flex justify-between items-center text-xs text-[#51443a]">
-            <span>123 Artisan Way, Breadville</span>
-            <span>Mon-Sat: 7am - 6pm</span>
+            <span>142 Artisan Boulevard</span>
+            <span>Tue-Sun: 7am - 4pm</span>
           </div>
         </div>
       )}

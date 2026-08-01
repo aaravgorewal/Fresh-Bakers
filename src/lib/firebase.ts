@@ -1,0 +1,247 @@
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User, signInAnonymously } from 'firebase/auth';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import firebaseConfig from '../../firebase-applet-config.json';
+import { ProductItem, BakerySettings } from '../types';
+import { PRODUCTS } from '../data/products';
+
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+export const db = firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)'
+  ? getFirestore(app, firebaseConfig.firestoreDatabaseId)
+  : getFirestore(app);
+
+export const auth = getAuth(app);
+export const storage = getStorage(app);
+
+// Error handling helper per Firebase Integration guidelines
+export enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+export interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId?: string | null;
+    email?: string | null;
+    emailVerified?: boolean | null;
+    isAnonymous?: boolean | null;
+  };
+}
+
+export function handleFirestoreError(error: unknown, operationType: OperationType, path: string | null) {
+  const errInfo: FirestoreErrorInfo = {
+    error: error instanceof Error ? error.message : String(error),
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+    },
+    operationType,
+    path
+  };
+  console.error('Firestore Error:', JSON.stringify(errInfo));
+  return errInfo;
+}
+
+const PRODUCTS_COLLECTION = 'products';
+const SETTINGS_COLLECTION = 'settings';
+const MAIN_SETTINGS_DOC = 'main';
+
+export const DEFAULT_SETTINGS: BakerySettings = {
+  bakeryName: 'Fresh Bakers Co.',
+  tagline: 'Artisan sourdoughs & handcrafted pastries baked fresh daily.',
+  whatsappNumber: '15550192824',
+  address: '142 Artisan Boulevard, Breadville',
+  instagram: '@freshbakers',
+  openHours: 'Tue-Sun: 7am - 4pm'
+};
+
+// Seed initial products into Firestore if database collection is empty AND user is authenticated
+export const seedInitialProductsIfEmpty = async (): Promise<void> => {
+  try {
+    const querySnapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
+    if (querySnapshot.empty) {
+      if (!auth.currentUser) {
+        console.log('Firestore products collection is empty. Sign in as admin to seed initial products.');
+        return;
+      }
+      console.log('Seeding initial products to Firestore...');
+      for (const product of PRODUCTS) {
+        await setDoc(doc(db, PRODUCTS_COLLECTION, product.id), {
+          name: product.name,
+          category: product.category,
+          price: product.priceNum ?? 8.5,
+          description: product.description,
+          imageUrl: product.image,
+          available: true,
+          fermentationHours: product.fermentationHours || null,
+          ingredients: product.ingredients || [],
+          isSignature: !!product.isSignature,
+          createdAt: new Date().toISOString()
+        });
+      }
+      console.log('Seeding products complete.');
+    }
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, PRODUCTS_COLLECTION);
+  }
+};
+
+// Seed initial bakery settings into Firestore if empty AND user is authenticated
+export const seedInitialSettingsIfEmpty = async (): Promise<void> => {
+  try {
+    const docRef = doc(db, SETTINGS_COLLECTION, MAIN_SETTINGS_DOC);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists() && auth.currentUser) {
+      await setDoc(docRef, {
+        ...DEFAULT_SETTINGS,
+        updatedAt: new Date().toISOString()
+      });
+      console.log('Seeded default bakery settings to Firestore.');
+    }
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, `${SETTINGS_COLLECTION}/${MAIN_SETTINGS_DOC}`);
+  }
+};
+
+// Listen to products real-time
+export const subscribeToProducts = (callback: (products: ProductItem[]) => void) => {
+  const colRef = collection(db, PRODUCTS_COLLECTION);
+  return onSnapshot(colRef, (snapshot) => {
+    if (snapshot.empty) {
+      callback(PRODUCTS);
+      return;
+    }
+    const list: ProductItem[] = snapshot.docs.map((docSnap) => {
+      const data = docSnap.data();
+      const priceVal = typeof data.price === 'number' ? data.price : (Number(data.priceNum) || 0);
+      const imgVal = data.imageUrl || data.image || '';
+      return {
+        id: docSnap.id,
+        name: data.name || '',
+        category: data.category || 'Breads',
+        price: priceVal,
+        description: data.description || '',
+        imageUrl: imgVal,
+        available: data.available !== false,
+        // UI compatibility properties
+        image: imgVal,
+        priceNum: priceVal,
+        imageAlt: data.imageAlt || data.name || 'Bakery product photo',
+        fermentationHours: data.fermentationHours || undefined,
+        ingredients: data.ingredients || [],
+        isSignature: !!data.isSignature,
+      };
+    });
+    callback(list);
+  }, (err) => {
+    handleFirestoreError(err, OperationType.LIST, PRODUCTS_COLLECTION);
+    callback(PRODUCTS);
+  });
+};
+
+// Listen to settings real-time
+export const subscribeToSettings = (callback: (settings: BakerySettings) => void) => {
+  const docRef = doc(db, SETTINGS_COLLECTION, MAIN_SETTINGS_DOC);
+  return onSnapshot(docRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      callback({
+        id: docSnap.id,
+        bakeryName: data.bakeryName || DEFAULT_SETTINGS.bakeryName,
+        tagline: data.tagline || DEFAULT_SETTINGS.tagline,
+        whatsappNumber: data.whatsappNumber || DEFAULT_SETTINGS.whatsappNumber,
+        address: data.address || DEFAULT_SETTINGS.address,
+        instagram: data.instagram || DEFAULT_SETTINGS.instagram,
+        openHours: data.openHours || DEFAULT_SETTINGS.openHours,
+      });
+    } else {
+      callback(DEFAULT_SETTINGS);
+    }
+  }, (err) => {
+    handleFirestoreError(err, OperationType.GET, `${SETTINGS_COLLECTION}/${MAIN_SETTINGS_DOC}`);
+    callback(DEFAULT_SETTINGS);
+  });
+};
+
+// Admin settings update
+export const updateBakerySettings = async (settingsData: Partial<BakerySettings>) => {
+  try {
+    const docRef = doc(db, SETTINGS_COLLECTION, MAIN_SETTINGS_DOC);
+    await setDoc(docRef, {
+      ...settingsData,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, `${SETTINGS_COLLECTION}/${MAIN_SETTINGS_DOC}`);
+    throw error;
+  }
+};
+
+// Admin product CRUD
+export const addProductToFirestore = async (productData: Omit<ProductItem, 'id'>) => {
+  try {
+    const colRef = collection(db, PRODUCTS_COLLECTION);
+    const docRef = await addDoc(colRef, {
+      name: productData.name,
+      price: Number(productData.price),
+      category: productData.category,
+      description: productData.description,
+      imageUrl: productData.imageUrl || productData.image || '',
+      available: productData.available !== false,
+      fermentationHours: productData.fermentationHours || null,
+      ingredients: productData.ingredients || [],
+      isSignature: !!productData.isSignature,
+      createdAt: new Date().toISOString()
+    });
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, PRODUCTS_COLLECTION);
+    throw error;
+  }
+};
+
+export const updateProductInFirestore = async (id: string, productData: Partial<ProductItem>) => {
+  try {
+    const docRef = doc(db, PRODUCTS_COLLECTION, id);
+    const updatePayload: Record<string, any> = { ...productData };
+    if (productData.price !== undefined) {
+      updatePayload.price = Number(productData.price);
+    }
+    if (productData.imageUrl !== undefined) {
+      updatePayload.imageUrl = productData.imageUrl;
+    }
+    await updateDoc(docRef, updatePayload);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, `${PRODUCTS_COLLECTION}/${id}`);
+    throw error;
+  }
+};
+
+export const deleteProductFromFirestore = async (id: string) => {
+  try {
+    const docRef = doc(db, PRODUCTS_COLLECTION, id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, `${PRODUCTS_COLLECTION}/${id}`);
+    throw error;
+  }
+};
+
+// Image Upload to Firebase Storage
+export const uploadProductImage = async (file: File): Promise<string> => {
+  const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+  const snapshot = await uploadBytes(storageRef, file);
+  const downloadUrl = await getDownloadURL(snapshot.ref);
+  return downloadUrl;
+};

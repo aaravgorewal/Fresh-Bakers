@@ -1,19 +1,39 @@
 export type NavTab = 'home' | 'products' | 'about' | 'contact';
 
-export type Category = 'Cakes' | 'Pastries' | 'Breads' | 'Cookies & Biscuits' | 'Snacks & Puffs' | 'Custom Orders' | 'Seasonal Specials';
+export type Category =
+  | 'Cakes'
+  | 'Pastries'
+  | 'Breads'
+  | 'Cookies & Biscuits'
+  | 'Snacks & Puffs'
+  | 'Custom Orders'
+  | 'Seasonal Specials';
 
 export interface ProductItem {
   id: string;
   name: string;
   category: Category;
-  price: string;
-  priceNum: number;
+  price: number;
   description: string;
-  image: string;
-  imageAlt: string;
+  imageUrl: string;
+  available: boolean;
+  // UI helper fields
+  image?: string;
+  priceNum?: number;
+  imageAlt?: string;
   fermentationHours?: number;
   ingredients?: string[];
   isSignature?: boolean;
+}
+
+export interface BakerySettings {
+  id?: string;
+  bakeryName: string;
+  tagline: string;
+  whatsappNumber: string; // e.g. "15550192824" (with country code, no + or spaces)
+  address: string;
+  instagram: string;
+  openHours: string;
 }
 
 export interface OrderCartItem {

@@ -4,9 +4,10 @@ import { NavTab } from '../types';
 interface FooterProps {
   setActiveTab: (tab: NavTab) => void;
   onOpenOrderModal: () => void;
+  onOpenAdminModal?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal }) => {
+export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal, onOpenAdminModal }) => {
   return (
     <footer className="bg-[#1b1c1a] text-[#fbf9f5] pt-16 pb-12 px-6 md:px-16 border-t border-[#825425]/30">
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
@@ -77,7 +78,12 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal }
 
       <div className="max-w-[1200px] mx-auto pt-8 border-t border-[#837469]/30 flex flex-col md:flex-row justify-between items-center text-xs text-[#837469] gap-4">
         <p>© 2026 Fresh Bakers Co. Handcrafted artisan sourdoughs & baked goods.</p>
-        <div className="flex gap-6">
+        <div className="flex gap-6 items-center">
+          {onOpenAdminModal && (
+            <button onClick={onOpenAdminModal} className="hover:text-[#c68e5a] transition-colors font-semibold">
+              Admin Portal (Firebase)
+            </button>
+          )}
           <span className="hover:text-[#d5c3b6] cursor-pointer">Privacy Policy</span>
           <span className="hover:text-[#d5c3b6] cursor-pointer">Terms of Service</span>
           <span className="hover:text-[#d5c3b6] cursor-pointer">Instagram @freshbakers</span>
