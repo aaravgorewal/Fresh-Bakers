@@ -1,13 +1,16 @@
 import React from 'react';
-import { NavTab } from '../types';
-import { Heart, Wheat, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
+import { NavTab, BakerySettings } from '../types';
+import { Wheat, Sparkles, ShieldCheck } from 'lucide-react';
 
 interface AboutViewProps {
   setActiveTab: (tab: NavTab) => void;
   onOpenOrderModal: () => void;
+  settings?: BakerySettings;
 }
 
-export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderModal }) => {
+export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderModal, settings }) => {
+  const bakeryName = settings?.bakeryName || 'Fresh Bakers';
+
   return (
     <div className="w-full">
       {/* Hero Section matching Page 2 screenshot */}
@@ -16,7 +19,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
           Our Heritage & Ethos
         </span>
         <h1 className="font-display-lg md:text-5xl text-[#1b1c1a] font-bold mb-4">
-          From Grain to Crumb
+          About {bakeryName}
         </h1>
         <p className="font-body-lg text-[#51443a] max-w-2xl mx-auto text-base md:text-lg leading-relaxed mb-10">
           A quiet devotion to traditional breadmaking, wild sourdough fermentation, and regional heritage grains.
@@ -26,7 +29,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
         <div className="relative border border-[#d5c3b6] p-3 bg-white shadow-lg mb-16">
           <img
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvG0YpfGuIDIhlPMlQPxF1BMlL4AgniDbBJELDrOcddXmplAIPoavB5D3DqaDw3a8SB4c3SjutGdBIhkiDGEGG8OpfqbMEto9oOW3TfF4cuLZkfdlladXcNpraVDlrVkHAuvD5jruC0LiSmb9TZi4eKSOwnOuBbduIQxTdhf4cQRuVOQLNkZY_QRHWIV_K3RBmcT8CmSZPJ6SSAfzckK1poY7rksWSda2eofOlaDHsVMMyKZHVI1mcWg"
-            alt="Baker working with sourdough dough at the wooden bench"
+            alt={`Baker working at ${bakeryName}`}
             className="w-full h-[450px] object-cover"
           />
         </div>
@@ -40,12 +43,12 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
               The Philosophy of Slow Bread
             </h2>
             <p className="text-[#51443a] text-sm md:text-base">
-              Fresh Bakers was founded in 2018 with a singular mission: to resurrect the lost art of slow-fermented, stone-ground hearth bread.
+              {bakeryName} was founded with a singular mission: to resurrect the lost art of slow-fermented, stone-ground hearth bread.
             </p>
           </div>
 
           <p className="text-[#51443a]">
-            In an era of rapid commercial yeast and chemical dough conditioners, we choose the path of patience. Every piece of bread that leaves our hearth undergoes a rigorous 36-hour cold proof. This extended timeline allows native wild yeasts and lactic bacteria to naturally break down complex starches into deeply aromatic, gut-friendly nutrition.
+            In an era of rapid commercial yeast and chemical dough conditioners, we choose the path of patience. Every piece of bread that leaves our hearth at {bakeryName} undergoes a rigorous 36-hour cold proof. This extended timeline allows native wild yeasts and lactic bacteria to naturally break down complex starches into deeply aromatic, gut-friendly nutrition.
           </p>
 
           <p className="text-[#51443a]">

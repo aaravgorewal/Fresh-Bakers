@@ -1,231 +1,195 @@
-import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, Navigation, MessageSquare } from 'lucide-react';
+import React from 'react';
+import { MapPin, Clock, Navigation, ExternalLink } from 'lucide-react';
+import { BakerySettings } from '../types';
 
 interface ContactViewProps {
   onOpenOrderModal: () => void;
+  settings?: BakerySettings;
 }
 
-export const ContactView: React.FC<ContactViewProps> = ({ onOpenOrderModal }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: 'Pre-Order Inquiry',
-    message: ''
-  });
-  const [submitted, setSubmitted] = useState(false);
+export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
+  const bakeryName = settings?.bakeryName || 'Fresh Bakers';
+  const whatsappNumber = settings?.whatsappNumber || '15550192824';
+  const address = settings?.address || '142 Artisan Boulevard, Mill District';
+  const openingHours = settings?.openingHours || 'Tue – Sun: 7am – 4pm';
+  const instagramUrl = settings?.instagramUrl || 'https://instagram.com/freshbakers';
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', subject: 'Pre-Order Inquiry', message: '' });
-    }, 6000);
+  const cleanNum = whatsappNumber.replace(/[\+\s]/g, '');
+
+  const handleWhatsAppClick = () => {
+    const message = `Hi ${bakeryName}! I'd like to make an inquiry / order.`;
+    const encoded = encodeURIComponent(message);
+    window.open(`https://wa.me/${cleanNum}?text=${encoded}`, '_blank');
+  };
+
+  const handleOpenGoogleMaps = () => {
+    const encodedAddress = encodeURIComponent(address);
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
   };
 
   return (
     <div className="w-full px-5 md:px-16 py-12 max-w-[1200px] mx-auto">
-      {/* Page Header matching Page 3 screenshot */}
+      {/* Page Header */}
       <div className="text-center max-w-2xl mx-auto mb-12">
-        <span className="font-label-caps text-[#825425] tracking-widest uppercase block mb-1">
+        <span className="font-label-caps text-[#825425] tracking-widest uppercase block mb-1 font-semibold text-xs">
           Visit Our Bakery Hearth
         </span>
-        <h1 className="font-display-lg md:text-5xl text-[#1b1c1a] font-bold mb-4">
-          Find Us in the Flour
+        <h1 className="font-display-lg text-3xl md:text-5xl text-[#1b1c1a] font-bold mb-4">
+          Get in Touch
         </h1>
         <p className="font-body-md text-[#51443a] text-sm md:text-base leading-relaxed">
-          Stop by our bakery counter for warm sourdough and coffee, or get in touch for pre-orders, custom wedding tier cakes, and catering inquiries.
+          Stop by our bakery counter for warm sourdough and coffee, or connect directly with us for pre-orders, custom celebratory cakes, and catering inquiries.
         </p>
       </div>
 
-      {/* Info Cards Grid matching Page 3 screenshot */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-        <div className="bg-[#f5f3ef] p-6 border border-[#d5c3b6] text-center">
-          <div className="w-10 h-10 rounded-full bg-[#825425] text-white flex items-center justify-center mx-auto mb-3">
-            <MapPin className="w-5 h-5" />
+      {/* Info Cards Grid (Address, Hours, Instagram, WhatsApp) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {/* Address Card */}
+        <div className="bg-[#f5f3ef] p-6 border border-[#d5c3b6] text-center flex flex-col justify-between">
+          <div>
+            <div className="w-10 h-10 rounded-full bg-[#825425] text-white flex items-center justify-center mx-auto mb-3">
+              <MapPin className="w-5 h-5" />
+            </div>
+            <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-2 font-semibold">
+              Location & Address
+            </h3>
+            <p className="font-headline-sm text-base font-bold text-[#1b1c1a] mb-1">
+              {address}
+            </p>
           </div>
-          <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-2">Location</h3>
-          <p className="font-headline-sm text-base font-bold text-[#1b1c1a]">142 Artisan Boulevard</p>
-          <p className="font-body-md text-xs text-[#51443a]">Mill District, Flour Town</p>
+          <button
+            onClick={handleOpenGoogleMaps}
+            className="mt-4 text-[11px] text-[#825425] font-semibold uppercase tracking-wider underline flex items-center justify-center gap-1 hover:text-[#51443a]"
+          >
+            Get Directions <Navigation className="w-3 h-3" />
+          </button>
         </div>
 
-        <div className="bg-[#f5f3ef] p-6 border border-[#d5c3b6] text-center">
-          <div className="w-10 h-10 rounded-full bg-[#825425] text-white flex items-center justify-center mx-auto mb-3">
-            <Clock className="w-5 h-5" />
+        {/* Opening Hours Card */}
+        <div className="bg-[#f5f3ef] p-6 border border-[#d5c3b6] text-center flex flex-col justify-between">
+          <div>
+            <div className="w-10 h-10 rounded-full bg-[#825425] text-white flex items-center justify-center mx-auto mb-3">
+              <Clock className="w-5 h-5" />
+            </div>
+            <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-2 font-semibold">
+              Opening Hours
+            </h3>
+            <p className="font-headline-sm text-base font-bold text-[#1b1c1a]">
+              {openingHours}
+            </p>
           </div>
-          <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-2">Hearth Hours</h3>
-          <p className="font-headline-sm text-base font-bold text-[#1b1c1a]">Tue – Sun: 7am – 4pm</p>
-          <p className="font-body-md text-xs text-[#51443a]">Closed Mondays for starter refresh</p>
+          <p className="mt-4 font-body-md text-[11px] text-[#837469]">
+            Fresh bakes ready from opening
+          </p>
         </div>
 
-        <div className="bg-[#f5f3ef] p-6 border border-[#d5c3b6] text-center">
-          <div className="w-10 h-10 rounded-full bg-[#825425] text-white flex items-center justify-center mx-auto mb-3">
-            <Phone className="w-5 h-5" />
+        {/* Instagram Card */}
+        <div className="bg-[#f5f3ef] p-6 border border-[#d5c3b6] text-center flex flex-col justify-between">
+          <div>
+            <div className="w-10 h-10 rounded-full bg-[#825425] text-white flex items-center justify-center mx-auto mb-3">
+              <span className="material-symbols-outlined text-[20px]">photo_camera</span>
+            </div>
+            <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-2 font-semibold">
+              Instagram Page
+            </h3>
+            <p className="font-headline-sm text-base font-bold text-[#1b1c1a] truncate px-2">
+              @{instagramUrl.replace(/https?:\/\/(www\.)?instagram\.com\/?/, '').replace(/\/$/, '') || 'freshbakers'}
+            </p>
           </div>
-          <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-2">WhatsApp Line</h3>
-          <p className="font-headline-sm text-base font-bold text-[#1b1c1a]">+1 (555) 019-2824</p>
-          <p className="font-body-md text-xs text-[#51443a]">Fastest response for pre-orders</p>
+          <a
+            href={instagramUrl.startsWith('http') ? instagramUrl : `https://${instagramUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 text-[11px] text-[#825425] font-semibold uppercase tracking-wider underline flex items-center justify-center gap-1 hover:text-[#51443a]"
+          >
+            Visit Instagram <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
 
-        <div className="bg-[#f5f3ef] p-6 border border-[#d5c3b6] text-center">
-          <div className="w-10 h-10 rounded-full bg-[#825425] text-white flex items-center justify-center mx-auto mb-3">
-            <Mail className="w-5 h-5" />
+        {/* WhatsApp Line Card */}
+        <div className="bg-[#f5f3ef] p-6 border border-[#d5c3b6] text-center flex flex-col justify-between">
+          <div>
+            <div className="w-10 h-10 rounded-full bg-[#825425] text-white flex items-center justify-center mx-auto mb-3">
+              <span className="material-symbols-outlined text-[20px]">chat</span>
+            </div>
+            <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-2 font-semibold">
+              WhatsApp Line
+            </h3>
+            <p className="font-headline-sm text-base font-bold text-[#1b1c1a]">
+              +{cleanNum}
+            </p>
           </div>
-          <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-2">Direct Email</h3>
-          <p className="font-headline-sm text-base font-bold text-[#1b1c1a]">hello@freshbakers.com</p>
-          <p className="font-body-md text-xs text-[#51443a]">Wholesale & events</p>
+          <p className="mt-4 font-body-md text-[11px] text-[#837469]">
+            Instant orders & inquiries
+          </p>
         </div>
       </div>
 
-      {/* Main Content: Map & Form Grid matching Page 3 screenshot */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-16 items-start">
-        {/* Left Column: Interactive Map Widget */}
-        <div className="lg:col-span-7 space-y-4">
-          <div className="border border-[#d5c3b6] bg-[#f5f3ef] p-4 relative">
-            <div className="flex justify-between items-center mb-3">
-              <span className="font-label-caps text-xs text-[#825425] uppercase tracking-widest font-bold">
-                Mill District Map
-              </span>
-              <span className="text-xs text-[#51443a] flex items-center gap-1">
-                <Navigation className="w-3.5 h-3.5 text-[#825425]" /> Directions available
-              </span>
+      {/* Main Feature Section: Large WhatsApp Hero Action Button (No contact form) */}
+      <div className="bg-white border border-[#d5c3b6] p-8 md:p-12 shadow-sm mb-16 text-center max-w-3xl mx-auto space-y-6">
+        <span className="font-label-caps text-xs text-[#825425] uppercase tracking-widest block font-semibold">
+          Primary Communication Channel
+        </span>
+        <h2 className="font-headline-md text-2xl md:text-3xl font-bold text-[#1b1c1a]">
+          Connect Direct with {bakeryName}
+        </h2>
+        <p className="font-body-md text-[#51443a] text-sm leading-relaxed max-w-xl mx-auto">
+          We process all customer inquiries, daily pre-orders, and custom cake bookings directly on WhatsApp for immediate and personalized assistance.
+        </p>
+
+        {/* Large WhatsApp Action Button */}
+        <div className="pt-2">
+          <button
+            onClick={handleWhatsAppClick}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-[#825425] hover:bg-[#6a421c] text-white font-bold text-base uppercase tracking-wider px-8 py-4 shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+          >
+            <span className="material-symbols-outlined text-[24px]">chat</span>
+            Order & Inquire via WhatsApp (+{cleanNum})
+          </button>
+        </div>
+        <p className="text-[11px] text-[#837469] uppercase font-semibold tracking-wider">
+          Opens directly in WhatsApp web or mobile app
+        </p>
+      </div>
+
+      {/* Interactive Map Block */}
+      <div className="border border-[#d5c3b6] bg-[#f5f3ef] p-5 relative max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-3">
+          <span className="font-label-caps text-xs text-[#825425] uppercase tracking-widest font-bold">
+            Hearth Location Map
+          </span>
+          <span className="text-xs text-[#51443a] flex items-center gap-1">
+            <Navigation className="w-3.5 h-3.5 text-[#825425]" /> {address}
+          </span>
+        </div>
+
+        {/* Custom Map Graphic */}
+        <div className="relative w-full h-80 bg-[#eae8e4] border border-[#d5c3b6] overflow-hidden flex items-center justify-center rounded-xs">
+          <div className="absolute inset-0 bg-[radial-gradient(#d5c3b6_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
+          <div className="absolute top-0 bottom-0 left-1/3 w-12 bg-[#dbdad6] rotate-12"></div>
+          <div className="absolute left-0 right-0 top-1/2 h-10 bg-[#c68e5a]/20 border-y border-[#c68e5a]/40"></div>
+
+          {/* Bakery Location Marker */}
+          <div className="relative z-10 flex flex-col items-center animate-bounce">
+            <div className="bg-[#825425] text-white p-3 shadow-xl rounded-full border-2 border-white">
+              <MapPin className="w-6 h-6" />
             </div>
-
-            {/* Custom Interactive Map Graphic */}
-            <div className="relative w-full h-80 bg-[#eae8e4] border border-[#d5c3b6] overflow-hidden flex items-center justify-center rounded-xs">
-              {/* Map background styling lines */}
-              <div className="absolute inset-0 bg-[radial-gradient(#d5c3b6_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
-              
-              {/* Roads / River simulation */}
-              <div className="absolute top-0 bottom-0 left-1/3 w-12 bg-[#dbdad6] rotate-12"></div>
-              <div className="absolute left-0 right-0 top-1/2 h-10 bg-[#c68e5a]/20 border-y border-[#c68e5a]/40"></div>
-
-              {/* Bakery Location Marker */}
-              <div className="relative z-10 flex flex-col items-center animate-bounce">
-                <div className="bg-[#825425] text-white p-2.5 shadow-xl rounded-full border-2 border-white">
-                  <MapPin className="w-6 h-6" />
-                </div>
-                <div className="bg-[#1b1c1a] text-white text-[11px] font-bold px-3 py-1 shadow-md mt-1 rounded-sm whitespace-nowrap">
-                  Fresh Bakers Hearth
-                </div>
-              </div>
-
-              {/* Landmarks */}
-              <div className="absolute top-6 left-6 text-[10px] text-[#837469] font-semibold tracking-wider">
-                📍 Heritage Grain Silos (200m)
-              </div>
-              <div className="absolute bottom-6 right-6 text-[10px] text-[#837469] font-semibold tracking-wider">
-                🌊 Riverfront Promenade
-              </div>
-            </div>
-
-            <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-between items-center">
-              <p className="text-xs text-[#51443a]">
-                Free 30-minute bakery customer parking behind Mill Street.
-              </p>
-              <button
-                onClick={() => window.open('https://maps.google.com', '_blank')}
-                className="btn-secondary text-xs uppercase tracking-widest py-2 px-4 whitespace-nowrap"
-              >
-                Open in Google Maps
-              </button>
+            <div className="bg-[#1b1c1a] text-white text-[11px] font-bold px-3 py-1 shadow-md mt-1 rounded-sm whitespace-nowrap">
+              {bakeryName} Hearth
             </div>
           </div>
         </div>
 
-        {/* Right Column: Direct Message Form */}
-        <div className="lg:col-span-5 bg-white p-6 md:p-8 border border-[#d5c3b6] shadow-sm">
-          <span className="font-label-caps text-xs text-[#825425] uppercase tracking-widest block mb-1">
-            Send a Note
-          </span>
-          <h2 className="font-headline-sm text-2xl font-bold text-[#1b1c1a] mb-6">
-            Contact Bakery Team
-          </h2>
-
-          {submitted ? (
-            <div className="bg-[#825425] text-white p-6 text-center space-y-2 animate-fadeIn">
-              <CheckCircle2 className="w-8 h-8 mx-auto" />
-              <h3 className="font-headline-sm text-lg font-bold">Message Received!</h3>
-              <p className="font-body-md text-xs leading-relaxed">
-                Thank you for reaching out to Fresh Bakers. Our hearth manager will reply to your email within 24 hours.
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-[#51443a] uppercase tracking-wider mb-1">
-                  Your Full Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Marcus Vance"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-[#f5f3ef] border border-[#d5c3b6] px-3 py-2 text-sm text-[#1b1c1a] focus:outline-none focus:border-[#825425]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-[#51443a] uppercase tracking-wider mb-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="marcus@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full bg-[#f5f3ef] border border-[#d5c3b6] px-3 py-2 text-sm text-[#1b1c1a] focus:outline-none focus:border-[#825425]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-[#51443a] uppercase tracking-wider mb-1">
-                  Topic / Inquiry
-                </label>
-                <select
-                  value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full bg-[#f5f3ef] border border-[#d5c3b6] px-3 py-2 text-sm text-[#1b1c1a] focus:outline-none focus:border-[#825425]"
-                >
-                  <option value="Pre-Order Inquiry">Bakery Pre-Order</option>
-                  <option value="Custom Event Cake">Custom Wedding & Event Cake</option>
-                  <option value="Wholesale Supply">Wholesale Bread Supply</option>
-                  <option value="Feedback">Feedback & Compliments</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-[#51443a] uppercase tracking-wider mb-1">
-                  Your Message
-                </label>
-                <textarea
-                  rows={4}
-                  required
-                  placeholder="Tell us about your event, preferred date, or bread inquiry..."
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-[#f5f3ef] border border-[#d5c3b6] px-3 py-2 text-sm text-[#1b1c1a] focus:outline-none focus:border-[#825425]"
-                ></textarea>
-              </div>
-
-              <button type="submit" className="w-full btn-primary py-3 text-xs uppercase tracking-widest flex items-center justify-center gap-2">
-                <Send className="w-4 h-4" /> Send Message
-              </button>
-            </form>
-          )}
-
-          <div className="mt-6 pt-4 border-t border-[#d5c3b6] text-center">
-            <span className="text-xs text-[#51443a]">Need an instant response for today's bake?</span>
-            <button
-              onClick={onOpenOrderModal}
-              className="mt-2 w-full btn-secondary text-xs uppercase tracking-widest flex items-center justify-center gap-2"
-            >
-              <span className="material-symbols-outlined text-[18px]">chat</span>
-              Chat via WhatsApp
-            </button>
-          </div>
+        <div className="mt-4 flex flex-col sm:flex-row gap-3 justify-between items-center">
+          <p className="text-xs text-[#51443a]">
+            Customer parking available directly at our storefront location.
+          </p>
+          <button
+            onClick={handleOpenGoogleMaps}
+            className="btn-secondary text-xs uppercase tracking-widest py-2 px-4 whitespace-nowrap font-semibold"
+          >
+            Open in Google Maps
+          </button>
         </div>
       </div>
     </div>

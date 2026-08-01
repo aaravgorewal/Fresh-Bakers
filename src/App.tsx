@@ -159,12 +159,14 @@ export default function App() {
           <AboutView
             setActiveTab={setActiveTab}
             onOpenOrderModal={() => setIsOrderModalOpen(true)}
+            settings={bakerySettings}
           />
         )}
 
         {activeTab === 'contact' && (
           <ContactView
             onOpenOrderModal={() => setIsOrderModalOpen(true)}
+            settings={bakerySettings}
           />
         )}
       </main>
