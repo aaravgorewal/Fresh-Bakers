@@ -1,0 +1,6 @@
+{
+  "name": "Fresh Bakers",
+  "description": "Artisan bakery website featuring slow-fermented sourdoughs, pastries, online WhatsApp ordering, daily bake menu, and story.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
