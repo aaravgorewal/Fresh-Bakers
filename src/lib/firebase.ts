@@ -69,12 +69,12 @@ export const DEFAULT_SETTINGS: BakerySettings = {
 // Seed initial products into Firestore if database collection is empty AND user is authenticated
 export const seedInitialProductsIfEmpty = async (): Promise<void> => {
   try {
+    if (!auth.currentUser) {
+      console.log('Firestore products collection seeding deferred until admin login.');
+      return;
+    }
     const querySnapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
     if (querySnapshot.empty) {
-      if (!auth.currentUser) {
-        console.log('Firestore products collection is empty. Sign in as admin to seed initial products.');
-        return;
-      }
       console.log('Seeding initial products to Firestore...');
       for (const product of PRODUCTS) {
         await setDoc(doc(db, PRODUCTS_COLLECTION, product.id), {
@@ -83,7 +83,7 @@ export const seedInitialProductsIfEmpty = async (): Promise<void> => {
           price: product.priceNum ?? 8.5,
           description: product.description,
           imageUrl: product.image,
-          available: true,
+          available: product.available !== false,
           fermentationHours: product.fermentationHours || null,
           ingredients: product.ingredients || [],
           isSignature: !!product.isSignature,
@@ -100,9 +100,10 @@ export const seedInitialProductsIfEmpty = async (): Promise<void> => {
 // Seed initial bakery settings into Firestore if empty AND user is authenticated
 export const seedInitialSettingsIfEmpty = async (): Promise<void> => {
   try {
+    if (!auth.currentUser) return;
     const docRef = doc(db, SETTINGS_COLLECTION, MAIN_SETTINGS_DOC);
     const docSnap = await getDoc(docRef);
-    if (!docSnap.exists() && auth.currentUser) {
+    if (!docSnap.exists()) {
       await setDoc(docRef, {
         ...DEFAULT_SETTINGS,
         updatedAt: new Date().toISOString()
@@ -221,7 +222,27 @@ export const updateProductInFirestore = async (id: string, productData: Partial<
     if (productData.imageUrl !== undefined) {
       updatePayload.imageUrl = productData.imageUrl;
     }
-    await updateDoc(docRef, updatePayload);
+
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      const fallback = PRODUCTS.find((p) => p.id === id);
+      const fullDoc = {
+        name: productData.name || fallback?.name || 'Bakery Item',
+        category: productData.category || fallback?.category || 'Breads',
+        price: productData.price !== undefined ? Number(productData.price) : (fallback?.priceNum ?? 8.5),
+        description: productData.description || fallback?.description || '',
+        imageUrl: productData.imageUrl || fallback?.image || '',
+        available: productData.available !== undefined ? productData.available : (fallback?.available !== false),
+        fermentationHours: fallback?.fermentationHours || null,
+        ingredients: fallback?.ingredients || [],
+        isSignature: !!fallback?.isSignature,
+        createdAt: new Date().toISOString(),
+        ...updatePayload,
+      };
+      await setDoc(docRef, fullDoc);
+    } else {
+      await updateDoc(docRef, updatePayload);
+    }
   } catch (error) {
     handleFirestoreError(error, OperationType.UPDATE, `${PRODUCTS_COLLECTION}/${id}`);
     throw error;

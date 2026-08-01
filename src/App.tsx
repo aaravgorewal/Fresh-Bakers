@@ -22,16 +22,22 @@ export default function App() {
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
   const [products, setProducts] = useState<ProductItem[]>(PRODUCTS);
   const [bakerySettings, setBakerySettings] = useState<BakerySettings>(DEFAULT_SETTINGS);
+  const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
 
   // Initialize Firebase Firestore listeners & seed defaults if empty
   useEffect(() => {
     seedInitialProductsIfEmpty();
     seedInitialSettingsIfEmpty();
 
+    const timer = setTimeout(() => {
+      setIsLoadingData(false);
+    }, 600);
+
     const unsubscribeProducts = subscribeToProducts((firestoreProducts) => {
       if (firestoreProducts && firestoreProducts.length > 0) {
         setProducts(firestoreProducts);
       }
+      setIsLoadingData(false);
     });
 
     const unsubscribeSettings = subscribeToSettings((firestoreSettings) => {
@@ -41,6 +47,7 @@ export default function App() {
     });
 
     return () => {
+      clearTimeout(timer);
       unsubscribeProducts();
       unsubscribeSettings();
     };
@@ -151,49 +158,63 @@ export default function App() {
 
       {/* Main View Router */}
       <main className="flex-1">
-        {activeTab === 'home' && (
-          <HomeView
-            products={products}
-            setActiveTab={handleNavigate}
-            onSelectCategory={handleSelectCategory}
-            onOpenQuickView={(product) => setQuickViewProduct(product)}
-            onAddToCart={handleAddToCart}
-            onOpenOrderModal={() => setIsOrderModalOpen(true)}
-          />
-        )}
+        {isLoadingData ? (
+          <div className="min-h-[60vh] flex flex-col items-center justify-center p-8 text-center">
+            <div className="w-12 h-12 border-4 border-[#d5c3b6] border-t-[#825425] rounded-full animate-spin mb-4"></div>
+            <p className="font-headline-sm text-lg font-bold text-[#1b1c1a] mb-1">
+              FreshBakers Artisan Bakery
+            </p>
+            <p className="font-body-md text-xs text-[#51443a] tracking-wide uppercase">
+              Fetching daily menu & settings from Firestore...
+            </p>
+          </div>
+        ) : (
+          <>
+            {activeTab === 'home' && (
+              <HomeView
+                products={products}
+                setActiveTab={handleNavigate}
+                onSelectCategory={handleSelectCategory}
+                onOpenQuickView={(product) => setQuickViewProduct(product)}
+                onAddToCart={handleAddToCart}
+                onOpenOrderModal={() => setIsOrderModalOpen(true)}
+              />
+            )}
 
-        {activeTab === 'products' && (
-          <ProductsView
-            products={products}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={handleSetSelectedCategory}
-            onOpenQuickView={(product) => setQuickViewProduct(product)}
-            onAddToCart={handleAddToCart}
-            onOpenOrderModal={() => setIsOrderModalOpen(true)}
-            whatsappNumber={bakerySettings.whatsappNumber}
-          />
-        )}
+            {activeTab === 'products' && (
+              <ProductsView
+                products={products}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={handleSetSelectedCategory}
+                onOpenQuickView={(product) => setQuickViewProduct(product)}
+                onAddToCart={handleAddToCart}
+                onOpenOrderModal={() => setIsOrderModalOpen(true)}
+                whatsappNumber={bakerySettings.whatsappNumber}
+              />
+            )}
 
-        {activeTab === 'about' && (
-          <AboutView
-            setActiveTab={handleNavigate}
-            onOpenOrderModal={() => setIsOrderModalOpen(true)}
-            settings={bakerySettings}
-          />
-        )}
+            {activeTab === 'about' && (
+              <AboutView
+                setActiveTab={handleNavigate}
+                onOpenOrderModal={() => setIsOrderModalOpen(true)}
+                settings={bakerySettings}
+              />
+            )}
 
-        {activeTab === 'contact' && (
-          <ContactView
-            onOpenOrderModal={() => setIsOrderModalOpen(true)}
-            settings={bakerySettings}
-          />
-        )}
+            {activeTab === 'contact' && (
+              <ContactView
+                onOpenOrderModal={() => setIsOrderModalOpen(true)}
+                settings={bakerySettings}
+              />
+            )}
 
-        {activeTab === 'admin' && (
-          <AdminView
-            products={products}
-            settings={bakerySettings}
-          />
+            {activeTab === 'admin' && (
+              <AdminView
+                products={products}
+                settings={bakerySettings}
+              />
+            )}
+          </>
         )}
       </main>
 

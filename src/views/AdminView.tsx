@@ -9,6 +9,8 @@ import {
   uploadProductImage,
   subscribeToSettings,
   updateBakerySettings,
+  seedInitialProductsIfEmpty,
+  seedInitialSettingsIfEmpty,
   DEFAULT_SETTINGS
 } from '../lib/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
@@ -47,6 +49,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        seedInitialProductsIfEmpty();
+        seedInitialSettingsIfEmpty();
+      }
     });
 
     const unsubscribeSettings = subscribeToSettings((s) => {

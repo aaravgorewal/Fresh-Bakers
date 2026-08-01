@@ -130,18 +130,25 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 
       {/* Products Grid - 3 Columns Desktop, 1 Column Mobile */}
       {filteredProducts.length === 0 ? (
-        <div className="py-16 text-center bg-[#f5f3ef] border border-dashed border-[#d5c3b6] my-8">
-          <p className="text-[#51443a] font-body-md text-base mb-2">
-            No bakery items found matching "{searchQuery}".
+        <div className="py-16 text-center bg-[#f5f3ef] border border-dashed border-[#d5c3b6] my-8 px-4">
+          <p className="font-headline-sm text-xl font-bold text-[#1b1c1a] mb-2">
+            {selectedCategory !== 'All' ? 'No items in this category yet' : 'No items found'}
+          </p>
+          <p className="text-[#51443a] font-body-md text-sm mb-4 max-w-md mx-auto">
+            {searchQuery
+              ? `No bakery items matched your search query "${searchQuery}".`
+              : selectedCategory !== 'All'
+              ? `We currently don't have active menu items under ${selectedCategory}. Check back soon or view our other categories!`
+              : 'There are no products available at the moment.'}
           </p>
           <button
             onClick={() => {
               setSelectedCategory('All');
               setSearchQuery('');
             }}
-            className="btn-secondary text-xs uppercase tracking-widest mt-2"
+            className="btn-secondary text-xs uppercase tracking-widest px-4 py-2 font-semibold"
           >
-            Reset All Filters
+            Show All Products
           </button>
         </div>
       ) : (
