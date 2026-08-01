@@ -2,7 +2,7 @@ import React from 'react';
 import { NavTab, ProductItem, Category } from '../types';
 import { CATEGORIES, PRODUCTS } from '../data/products';
 import { motion } from 'motion/react';
-import { ArrowRight, Clock, Award, Sparkles, MessageSquare, Heart } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface HomeViewProps {
   products?: ProductItem[];
@@ -21,7 +21,33 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onAddToCart,
   onOpenOrderModal,
 }) => {
-  const signatureProducts = (products.length > 0 ? products : PRODUCTS).filter((p) => p.isSignature);
+  const currentProducts = products.length > 0 ? products : PRODUCTS;
+
+  // 1. Pull distinct category list from the products collection
+  const distinctCategories = Array.from(
+    new Set(currentProducts.map((p) => p.category))
+  ).filter(Boolean) as Category[];
+
+  const categoriesToShow = distinctCategories.length > 0 
+    ? distinctCategories 
+    : CATEGORIES.map((c) => c.name);
+
+  const getCategoryMeta = (catName: Category) => {
+    const predefined = CATEGORIES.find((c) => c.name === catName);
+    const prodInCat = currentProducts.find((p) => p.category === catName);
+    const count = currentProducts.filter((p) => p.category === catName).length;
+    const image = prodInCat?.imageUrl || prodInCat?.image || predefined?.image || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80';
+    return { image, count };
+  };
+
+  // 2. Featured Highlight Strip of 3-4 products
+  const featuredProducts = currentProducts
+    .filter((p) => p.isSignature || p.available !== false)
+    .slice(0, 4);
+
+  // Hero product photo
+  const heroProduct = currentProducts[0] || PRODUCTS[0];
+  const heroImg = heroProduct.imageUrl || heroProduct.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDul2LQs2RG_9n7r3zLnleXJxS0v3iAxlSim0mTOpfBf6_CevWWYAQN6ecQiJesN7OcCq0lqOe6YfVnCAHOooJ0O876EwFe09PT8zYk34cnlpYuCkYL_YlLqgUzdn5E2KW23DZt3BIFlq70B13_vg4Q7ngeR2HrDLOadq3Lc7XgKiBCX1M_6hYH9jWSpHpy0HTREiR11T1LyqNb8iWVXGj5dms0hIlEbTM-jfEQf9TMfu6Bi9OBYN3oBQ';
 
   return (
     <div className="w-full">
@@ -34,7 +60,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             transition={{ duration: 0.6 }}
             className="lg:col-span-7 space-y-6"
           >
-            <span className="font-label-caps text-[#825425] tracking-widest uppercase block text-xs">
+            <span className="font-label-caps text-[#825425] tracking-widest uppercase block text-xs font-semibold">
               Handcrafted in Small Batches Daily
             </span>
             <h1 className="font-display-lg md:text-5xl lg:text-6xl text-[#1b1c1a] font-bold leading-[1.1]">
@@ -46,17 +72,18 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="pt-4 flex flex-wrap gap-4 items-center">
               <button
                 onClick={() => {
+                  window.history.pushState(null, '', '/products');
                   setActiveTab('products');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="btn-primary text-xs uppercase tracking-widest flex items-center gap-2 group"
+                className="btn-primary text-xs uppercase tracking-widest flex items-center gap-2 group px-6 py-3"
               >
-                Explore Menu
+                Explore Full Menu
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
                 onClick={onOpenOrderModal}
-                className="btn-secondary text-xs uppercase tracking-widest flex items-center gap-2"
+                className="btn-secondary text-xs uppercase tracking-widest flex items-center gap-2 px-6 py-3 border-[#825425] text-[#825425] hover:bg-[#825425] hover:text-white transition-colors"
               >
                 <span className="material-symbols-outlined text-[18px]">chat</span>
                 Order via WhatsApp
@@ -89,13 +116,19 @@ export const HomeView: React.FC<HomeViewProps> = ({
           >
             <div className="relative border border-[#d5c3b6] p-3 bg-white shadow-xl">
               <img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDul2LQs2RG_9n7r3zLnleXJxS0v3iAxlSim0mTOpfBf6_CevWWYAQN6ecQiJesN7OcCq0lqOe6YfVnCAHOooJ0O876EwFe09PT8zYk34cnlpYuCkYL_YlLqgUzdn5E2KW23DZt3BIFlq70B13_vg4Q7ngeR2HrDLOadq3Lc7XgKiBCX1M_6hYH9jWSpHpy0HTREiR11T1LyqNb8iWVXGj5dms0hIlEbTM-jfEQf9TMfu6Bi9OBYN3oBQ"
-                alt="Country Sourdough loaf sliced open"
+                src={heroImg}
+                alt={heroProduct.name || 'Artisanal Bakery Loaf'}
                 className="w-full h-[400px] object-cover"
               />
-              <div className="absolute -bottom-6 -left-6 bg-[#825425] text-white p-4 shadow-lg hidden sm:block">
-                <p className="font-label-caps text-[10px] text-[#e6ded9] uppercase">Today's Fresh Batch</p>
-                <p className="font-headline-sm text-lg text-white">The Country Sourdough</p>
+              <div className="absolute -bottom-6 -left-6 bg-[#825425] text-white p-4 shadow-lg hidden sm:block max-w-[240px]">
+                <p className="font-label-caps text-[10px] text-[#e6ded9] uppercase tracking-wider">Today's Fresh Bake</p>
+                <p className="font-headline-sm text-base text-white font-bold truncate">{heroProduct.name}</p>
+                <button
+                  onClick={onOpenOrderModal}
+                  className="mt-2 text-[10px] text-[#e6ded9] underline uppercase font-semibold flex items-center gap-1 hover:text-white"
+                >
+                  Order on WhatsApp &rarr;
+                </button>
               </div>
             </div>
           </motion.div>
@@ -103,34 +136,82 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* Editorial Divider */}
-      <div className="max-w-[1200px] mx-auto px-5 md:px-16 my-8">
+      <div className="max-w-[1200px] mx-auto px-5 md:px-16 my-6">
         <div className="editorial-rule"></div>
       </div>
 
-      {/* 2. Our Signature Bakes (Page 1 Screenshot Section) */}
+      {/* 2. Shop by Category Grid (Pulled from distinct categories in products collection) */}
+      <section className="bg-[#f5f3ef] px-5 md:px-16 py-16 border-y border-[#d5c3b6] my-8">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <span className="font-label-caps text-[#825425] tracking-widest uppercase block mb-1 font-semibold">
+              From Our Oven to Your Table
+            </span>
+            <h2 className="font-headline-md text-3xl md:text-4xl text-[#1b1c1a] font-bold mb-3">
+              Shop by Category
+            </h2>
+            <p className="font-body-md text-sm text-[#51443a]">
+              Browse our fresh collection of handcrafted sourdoughs, french viennoiserie, cookies, and custom celebratory bakes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {categoriesToShow.map((catName) => {
+              const { image, count } = getCategoryMeta(catName);
+              return (
+                <div
+                  key={catName}
+                  onClick={() => onSelectCategory(catName)}
+                  className="group relative cursor-pointer overflow-hidden border border-[#d5c3b6] bg-white aspect-square shadow-sm hover:shadow-md transition-all duration-300"
+                >
+                  <img
+                    src={image}
+                    alt={catName}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-4 text-white">
+                    <span className="text-[10px] text-[#e6ded9] uppercase font-semibold tracking-wider mb-0.5">
+                      {count} {count === 1 ? 'Item' : 'Items'}
+                    </span>
+                    <h3 className="font-headline-sm text-lg font-bold group-hover:text-[#c68e5a] transition-colors leading-tight mb-1">
+                      {catName}
+                    </h3>
+                    <span className="text-[11px] text-[#d5c3b6] uppercase font-semibold tracking-wider flex items-center gap-1">
+                      Shop Category <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Featured Products Highlight Strip (3-4 Featured Items) */}
       <section className="px-5 md:px-16 py-12 max-w-[1200px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
           <div>
-            <span className="font-label-caps text-[#825425] tracking-widest uppercase block mb-1">
-              Curated Daily Selections
+            <span className="font-label-caps text-[#825425] tracking-widest uppercase block mb-1 font-semibold">
+              Hand-Selected Favorites
             </span>
             <h2 className="font-headline-md text-3xl md:text-4xl text-[#1b1c1a] font-bold">
-              Our Signature Bakes
+              Featured Bakes
             </h2>
           </div>
           <button
             onClick={() => {
+              window.history.pushState(null, '', '/products');
               setActiveTab('products');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="mt-4 md:mt-0 text-xs font-semibold uppercase tracking-wider text-[#825425] hover:text-[#673d10] flex items-center gap-1"
           >
-            View All Daily Bakes <ArrowRight className="w-4 h-4" />
+            View All Daily Menu <ArrowRight className="w-4 h-4" />
           </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {signatureProducts.map((item) => (
+          {featuredProducts.map((item) => (
             <div
               key={item.id}
               className="print-card bg-white p-4 flex flex-col justify-between group hover:shadow-lg transition-all duration-300"
@@ -141,20 +222,25 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   onClick={() => onOpenQuickView(item)}
                 >
                   <img
-                    src={item.image}
-                    alt={item.imageAlt}
+                    src={item.imageUrl || item.image}
+                    alt={item.imageAlt || item.name}
                     className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <span className="absolute top-2 right-2 bg-[#825425] text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5">
-                    {item.price}
+                  <span className="absolute top-2 right-2 bg-[#825425] text-white text-[11px] font-bold uppercase tracking-wider px-2 py-0.5">
+                    ${typeof item.price === 'number' ? item.price.toFixed(2) : item.price}
                   </span>
+                  {item.isSignature && (
+                    <span className="absolute bottom-2 left-2 bg-[#1b1c1a]/85 text-white text-[9px] font-bold uppercase tracking-widest px-2 py-0.5">
+                      Signature
+                    </span>
+                  )}
                 </div>
-                <span className="font-label-caps text-[10px] text-[#837469] block mb-1">
+                <span className="font-label-caps text-[10px] text-[#837469] block mb-1 uppercase font-semibold">
                   {item.category}
                 </span>
                 <h3
                   onClick={() => onOpenQuickView(item)}
-                  className="font-headline-sm text-lg font-bold text-[#1b1c1a] hover:text-[#825425] cursor-pointer mb-2 transition-colors"
+                  className="font-headline-sm text-base font-bold text-[#1b1c1a] hover:text-[#825425] cursor-pointer mb-2 transition-colors line-clamp-1"
                 >
                   {item.name}
                 </h3>
@@ -169,10 +255,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     onAddToCart(item);
                     onOpenOrderModal();
                   }}
-                  className="flex-1 btn-primary py-2 text-[11px] flex items-center justify-center gap-1"
+                  className="flex-1 btn-primary py-2 text-[11px] flex items-center justify-center gap-1 uppercase tracking-wider"
                 >
                   <span className="material-symbols-outlined text-[16px]">chat</span>
-                  WhatsApp Order
+                  Order on WhatsApp
                 </button>
               </div>
             </div>
@@ -180,53 +266,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 3. Shop by Category Grid */}
-      <section className="bg-[#f5f3ef] px-5 md:px-16 py-16 border-y border-[#d5c3b6] my-12">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="text-center max-w-xl mx-auto mb-12">
-            <span className="font-label-caps text-[#825425] tracking-widest uppercase block mb-1">
-              Explore Our Hearth
-            </span>
-            <h2 className="font-headline-md text-3xl md:text-4xl text-[#1b1c1a] font-bold mb-3">
-              Shop by Category
-            </h2>
-            <p className="font-body-md text-sm text-[#51443a]">
-              From crispy baguettes and buttery viennoiserie to bespoke event tier cakes and savory snacks.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {CATEGORIES.map((cat) => (
-              <div
-                key={cat.name}
-                onClick={() => {
-                  onSelectCategory(cat.name);
-                  setActiveTab('products');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="group relative cursor-pointer overflow-hidden border border-[#d5c3b6] bg-white aspect-square shadow-sm hover:shadow-md transition-all duration-300"
-              >
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-4 text-white">
-                  <h3 className="font-headline-sm text-lg font-bold group-hover:text-[#c68e5a] transition-colors">
-                    {cat.name}
-                  </h3>
-                  <span className="text-[11px] text-[#d5c3b6] uppercase font-semibold tracking-wider flex items-center gap-1">
-                    Explore <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 4. Heritage Story Teaser */}
-      <section className="px-5 md:px-16 py-12 max-w-[1200px] mx-auto">
+      <section className="px-5 md:px-16 py-12 max-w-[1200px] mx-auto border-t border-[#d5c3b6]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative border border-[#d5c3b6] p-4 bg-white">
             <img
@@ -237,20 +278,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
 
           <div className="space-y-4">
-            <span className="font-label-caps text-[#825425] tracking-widest uppercase block text-xs">
+            <span className="font-label-caps text-[#825425] tracking-widest uppercase block text-xs font-semibold">
               From Grain to Crumb
             </span>
             <h2 className="font-headline-md text-3xl font-bold text-[#1b1c1a]">
               Crafted With Patience & Stone-Ground Flour
             </h2>
             <p className="font-body-md text-[#51443a] leading-relaxed text-sm">
-              At Fresh Bakers, we believe good bread cannot be rushed. Every loaf begins with organic grain milled locally, hydrated pure water, and our 50-year inherited wild yeast starter culture.
+              At Fresh Bakers, we believe good bread cannot be rushed. Every loaf begins with organic grain milled locally, hydrated pure water, and our inherited wild yeast starter culture.
             </p>
             <p className="font-body-md text-[#51443a] leading-relaxed text-sm">
               Our 36-hour cold fermentation breaks down gluten proteins naturally, resulting in a bread that is deeply flavorful, easily digestible, and uniquely aromatic.
             </p>
             <button
               onClick={() => {
+                window.history.pushState(null, '', '/about');
                 setActiveTab('about');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -264,3 +306,4 @@ export const HomeView: React.FC<HomeViewProps> = ({
     </div>
   );
 };
+

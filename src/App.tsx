@@ -45,6 +45,46 @@ export default function App() {
     };
   }, []);
 
+  // Sync state with URL location & search query params (e.g. /products?category=Cakes)
+  useEffect(() => {
+    const syncUrlState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const categoryParam = params.get('category');
+      const pathname = window.location.pathname;
+
+      if (pathname.includes('/products') || categoryParam) {
+        setActiveTab('products');
+        if (categoryParam) {
+          setSelectedCategory(categoryParam as Category);
+        }
+      } else if (pathname.includes('/about')) {
+        setActiveTab('about');
+      } else if (pathname.includes('/contact')) {
+        setActiveTab('contact');
+      }
+    };
+
+    syncUrlState();
+    window.addEventListener('popstate', syncUrlState);
+    return () => window.removeEventListener('popstate', syncUrlState);
+  }, []);
+
+  const handleSelectCategory = (cat: Category) => {
+    setSelectedCategory(cat);
+    setActiveTab('products');
+    window.history.pushState(null, '', `/products?category=${encodeURIComponent(cat)}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSetSelectedCategory = (cat: Category | 'All') => {
+    setSelectedCategory(cat);
+    if (cat === 'All') {
+      window.history.pushState(null, '', '/products');
+    } else {
+      window.history.pushState(null, '', `/products?category=${encodeURIComponent(cat)}`);
+    }
+  };
+
   // Cart operations
   const handleAddToCart = (product: ProductItem) => {
     setCart((prevCart) => {
@@ -96,7 +136,7 @@ export default function App() {
           <HomeView
             products={products}
             setActiveTab={setActiveTab}
-            onSelectCategory={(cat) => setSelectedCategory(cat)}
+            onSelectCategory={handleSelectCategory}
             onOpenQuickView={(product) => setQuickViewProduct(product)}
             onAddToCart={handleAddToCart}
             onOpenOrderModal={() => setIsOrderModalOpen(true)}
@@ -107,7 +147,7 @@ export default function App() {
           <ProductsView
             products={products}
             selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
+            setSelectedCategory={handleSetSelectedCategory}
             onOpenQuickView={(product) => setQuickViewProduct(product)}
             onAddToCart={handleAddToCart}
             onOpenOrderModal={() => setIsOrderModalOpen(true)}
