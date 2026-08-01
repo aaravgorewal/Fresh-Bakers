@@ -1,4 +1,4 @@
-export type NavTab = 'home' | 'products' | 'about' | 'contact';
+export type NavTab = 'home' | 'products' | 'about' | 'contact' | 'admin';
 
 export type Category =
   | 'Cakes'

@@ -10,6 +10,7 @@ import { HomeView } from './views/HomeView';
 import { ProductsView } from './views/ProductsView';
 import { AboutView } from './views/AboutView';
 import { ContactView } from './views/ContactView';
+import { AdminView } from './views/AdminView';
 import { subscribeToProducts, subscribeToSettings, seedInitialProductsIfEmpty, seedInitialSettingsIfEmpty, DEFAULT_SETTINGS } from './lib/firebase';
 
 export default function App() {
@@ -45,14 +46,16 @@ export default function App() {
     };
   }, []);
 
-  // Sync state with URL location & search query params (e.g. /products?category=Cakes)
+  // Sync state with URL location & search query params (e.g. /admin, /products?category=Cakes)
   useEffect(() => {
     const syncUrlState = () => {
       const params = new URLSearchParams(window.location.search);
       const categoryParam = params.get('category');
       const pathname = window.location.pathname;
 
-      if (pathname.includes('/products') || categoryParam) {
+      if (pathname.includes('/admin')) {
+        setActiveTab('admin');
+      } else if (pathname.includes('/products') || categoryParam) {
         setActiveTab('products');
         if (categoryParam) {
           setSelectedCategory(categoryParam as Category);
@@ -61,6 +64,8 @@ export default function App() {
         setActiveTab('about');
       } else if (pathname.includes('/contact')) {
         setActiveTab('contact');
+      } else {
+        setActiveTab('home');
       }
     };
 
@@ -68,6 +73,20 @@ export default function App() {
     window.addEventListener('popstate', syncUrlState);
     return () => window.removeEventListener('popstate', syncUrlState);
   }, []);
+
+  const handleNavigate = (tab: NavTab) => {
+    setActiveTab(tab);
+    let path = '/';
+    if (tab === 'products') path = '/products';
+    else if (tab === 'about') path = '/about';
+    else if (tab === 'contact') path = '/contact';
+    else if (tab === 'admin') path = '/admin';
+
+    if (window.location.pathname !== path) {
+      window.history.pushState(null, '', path);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleSelectCategory = (cat: Category) => {
     setSelectedCategory(cat);
@@ -124,9 +143,9 @@ export default function App() {
       {/* Top Sticky Navigation */}
       <Navbar
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleNavigate}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
-        onOpenAdminModal={() => setIsAdminModalOpen(true)}
+        onOpenAdminModal={() => handleNavigate('admin')}
         cartCount={totalCartCount}
       />
 
@@ -135,7 +154,7 @@ export default function App() {
         {activeTab === 'home' && (
           <HomeView
             products={products}
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
             onSelectCategory={handleSelectCategory}
             onOpenQuickView={(product) => setQuickViewProduct(product)}
             onAddToCart={handleAddToCart}
@@ -157,7 +176,7 @@ export default function App() {
 
         {activeTab === 'about' && (
           <AboutView
-            setActiveTab={setActiveTab}
+            setActiveTab={handleNavigate}
             onOpenOrderModal={() => setIsOrderModalOpen(true)}
             settings={bakerySettings}
           />
@@ -169,13 +188,20 @@ export default function App() {
             settings={bakerySettings}
           />
         )}
+
+        {activeTab === 'admin' && (
+          <AdminView
+            products={products}
+            settings={bakerySettings}
+          />
+        )}
       </main>
 
       {/* Shared Editorial Footer */}
       <Footer
-        setActiveTab={setActiveTab}
+        setActiveTab={handleNavigate}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
-        onOpenAdminModal={() => setIsAdminModalOpen(true)}
+        onOpenAdminModal={() => handleNavigate('admin')}
       />
 
       {/* WhatsApp Pre-Order Drawer/Modal */}

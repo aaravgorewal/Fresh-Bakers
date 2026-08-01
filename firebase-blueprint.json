@@ -1,0 +1,44 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Bakery menu product item",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "maxLength": 50 },
+        "price": { "type": "number" },
+        "description": { "type": "string", "maxLength": 1000 },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "available": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "category", "price", "description", "imageUrl"]
+    },
+    "Settings": {
+      "title": "BakerySettings",
+      "description": "Bakery store settings and contact info",
+      "type": "object",
+      "properties": {
+        "bakeryName": { "type": "string", "maxLength": 100 },
+        "tagline": { "type": "string", "maxLength": 200 },
+        "whatsappNumber": { "type": "string", "maxLength": 30 },
+        "address": { "type": "string", "maxLength": 200 },
+        "instagram": { "type": "string", "maxLength": 100 },
+        "openHours": { "type": "string", "maxLength": 100 },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["bakeryName", "tagline", "whatsappNumber", "address", "instagram", "openHours"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Public menu items"
+    },
+    "/settings/{settingId}": {
+      "schema": "Settings",
+      "description": "Bakery configuration details"
+    }
+  }
+}
