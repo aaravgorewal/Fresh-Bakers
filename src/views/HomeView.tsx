@@ -2,7 +2,7 @@ import React from 'react';
 import { NavTab, ProductItem, Category } from '../types';
 import { CATEGORIES, PRODUCTS } from '../data/products';
 import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Star, Quote } from 'lucide-react';
 
 interface HomeViewProps {
   products?: ProductItem[];
@@ -300,6 +300,94 @@ export const HomeView: React.FC<HomeViewProps> = ({
             >
               Read Our Story
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Customer Testimonials & Reviews Grid */}
+      <section className="bg-[#f5f3ef] px-5 md:px-16 py-16 border-t border-[#d5c3b6] mt-8">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <span className="font-label-caps text-[#825425] tracking-widest uppercase block mb-1 font-semibold text-xs">
+              Loved by Our Community
+            </span>
+            <h2 className="font-headline-md text-3xl md:text-4xl text-[#1b1c1a] font-bold mb-3">
+              What Our Customers Say
+            </h2>
+            <p className="font-body-md text-sm text-[#51443a]">
+              Real stories and reviews from local sourdough enthusiasts, breakfast regulars, and celebration hosts.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white p-6 border border-[#d5c3b6] shadow-sm flex flex-col justify-between relative group hover:border-[#825425] transition-colors">
+              <div>
+                <Quote className="w-8 h-8 text-[#d5c3b6] group-hover:text-[#825425] transition-colors mb-3 opacity-60" />
+                <div className="flex items-center gap-1 text-amber-500 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-500" />
+                  ))}
+                </div>
+                <p className="font-body-md text-sm text-[#1b1c1a] leading-relaxed mb-6 italic">
+                  "The Classic Sourdough has the most unbelievable blistered crust and open airy crumb. We order two loaves every single Friday for weekend family breakfasts!"
+                </p>
+              </div>
+              <div className="pt-4 border-t border-[#f5f3ef] flex items-center justify-between text-xs">
+                <div>
+                  <h4 className="font-bold text-[#1b1c1a]">Sarah Mitchell</h4>
+                  <span className="text-[#837469] text-[11px] block">Neighborhood Resident</span>
+                </div>
+                <span className="bg-[#f5f3ef] text-[#825425] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#d5c3b6]">
+                  Classic Sourdough
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 border border-[#d5c3b6] shadow-sm flex flex-col justify-between relative group hover:border-[#825425] transition-colors">
+              <div>
+                <Quote className="w-8 h-8 text-[#d5c3b6] group-hover:text-[#825425] transition-colors mb-3 opacity-60" />
+                <div className="flex items-center gap-1 text-amber-500 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-500" />
+                  ))}
+                </div>
+                <p className="font-body-md text-sm text-[#1b1c1a] leading-relaxed mb-6 italic">
+                  "Hands down the crispest almond croissants in town. The butter layers melt in your mouth and the WhatsApp pre-order makes morning pickup completely seamless."
+                </p>
+              </div>
+              <div className="pt-4 border-t border-[#f5f3ef] flex items-center justify-between text-xs">
+                <div>
+                  <h4 className="font-bold text-[#1b1c1a]">David Kapoor</h4>
+                  <span className="text-[#837469] text-[11px] block">Daily Coffee & Bakery Regular</span>
+                </div>
+                <span className="bg-[#f5f3ef] text-[#825425] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#d5c3b6]">
+                  Almond Croissant
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-white p-6 border border-[#d5c3b6] shadow-sm flex flex-col justify-between relative group hover:border-[#825425] transition-colors">
+              <div>
+                <Quote className="w-8 h-8 text-[#d5c3b6] group-hover:text-[#825425] transition-colors mb-3 opacity-60" />
+                <div className="flex items-center gap-1 text-amber-500 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-500" />
+                  ))}
+                </div>
+                <p className="font-body-md text-sm text-[#1b1c1a] leading-relaxed mb-6 italic">
+                  "FreshBakers designed our custom pistachio raspberry celebratory cake. Not only was it visually breathtaking, but our guests were raving about how fresh every bite was!"
+                </p>
+              </div>
+              <div className="pt-4 border-t border-[#f5f3ef] flex items-center justify-between text-xs">
+                <div>
+                  <h4 className="font-bold text-[#1b1c1a]">Priya & Rohan S.</h4>
+                  <span className="text-[#837469] text-[11px] block">Event & Celebration Client</span>
+                </div>
+                <span className="bg-[#f5f3ef] text-[#825425] text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-[#d5c3b6]">
+                  Custom Cake
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
