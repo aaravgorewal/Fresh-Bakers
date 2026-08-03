@@ -34,7 +34,7 @@ export default function App() {
     }, 600);
 
     const unsubscribeProducts = subscribeToProducts((firestoreProducts) => {
-      if (firestoreProducts && firestoreProducts.length > 0) {
+      if (firestoreProducts) {
         setProducts(firestoreProducts);
       }
       setIsLoadingData(false);

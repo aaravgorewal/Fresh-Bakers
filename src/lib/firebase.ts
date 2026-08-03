@@ -50,7 +50,7 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
     path
   };
   console.error('Firestore Error:', JSON.stringify(errInfo));
-  return errInfo;
+  throw new Error(JSON.stringify(errInfo));
 }
 
 const PRODUCTS_COLLECTION = 'products';
@@ -84,21 +84,33 @@ export const seedInitialProductsIfEmpty = async (): Promise<void> => {
     }
     const querySnapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
     if (querySnapshot.empty) {
+      const seedSentinelRef = doc(db, SETTINGS_COLLECTION, 'seed_status');
+      const seedSnap = await getDoc(seedSentinelRef);
+      if (seedSnap.exists() && seedSnap.data()?.hasSeeded) {
+        console.log('Products collection is empty because products were deleted by admin. Skipping re-seed.');
+        return;
+      }
+
       console.log('Seeding initial products to Firestore...');
       for (const product of PRODUCTS) {
         await setDoc(doc(db, PRODUCTS_COLLECTION, product.id), {
           name: product.name,
           category: product.category,
-          price: product.priceNum ?? 8.5,
-          description: product.description,
-          imageUrl: product.image,
+          price: product.priceNum ?? product.price ?? 499,
+          description: product.description || '',
+          imageUrl: product.image || product.imageUrl || '',
           available: product.available !== false,
           fermentationHours: product.fermentationHours || null,
           ingredients: product.ingredients || [],
           isSignature: !!product.isSignature,
+          isFeatured: !!product.isFeatured,
+          isTrending: !!product.isTrending,
+          isRecommended: !!product.isRecommended,
+          isEggless: product.isEggless !== false,
           createdAt: new Date().toISOString()
         });
       }
+      await setDoc(seedSentinelRef, { hasSeeded: true, seededAt: new Date().toISOString() });
       console.log('Seeding products complete.');
     }
   } catch (error) {
@@ -129,7 +141,7 @@ export const subscribeToProducts = (callback: (products: ProductItem[]) => void)
   const colRef = collection(db, PRODUCTS_COLLECTION);
   return onSnapshot(colRef, (snapshot) => {
     if (snapshot.empty) {
-      callback(PRODUCTS);
+      callback([]);
       return;
     }
     const list: ProductItem[] = snapshot.docs.map((docSnap) => {
@@ -151,12 +163,15 @@ export const subscribeToProducts = (callback: (products: ProductItem[]) => void)
         fermentationHours: data.fermentationHours || undefined,
         ingredients: data.ingredients || [],
         isSignature: !!data.isSignature,
+        isFeatured: !!data.isFeatured,
+        isTrending: !!data.isTrending,
+        isRecommended: !!data.isRecommended,
+        isEggless: data.isEggless !== false,
       };
     });
     callback(list);
   }, (err) => {
     handleFirestoreError(err, OperationType.LIST, PRODUCTS_COLLECTION);
-    callback(PRODUCTS);
   });
 };
 
@@ -189,7 +204,6 @@ export const subscribeToSettings = (callback: (settings: BakerySettings) => void
     }
   }, (err) => {
     handleFirestoreError(err, OperationType.GET, `${SETTINGS_COLLECTION}/${MAIN_SETTINGS_DOC}`);
-    callback(DEFAULT_SETTINGS);
   });
 };
 
@@ -215,7 +229,7 @@ export const addProductToFirestore = async (productData: Omit<ProductItem, 'id'>
       name: productData.name,
       price: Number(productData.price),
       category: productData.category,
-      description: productData.description,
+      description: productData.description || '',
       imageUrl: productData.imageUrl || productData.image || '',
       available: productData.available !== false,
       fermentationHours: productData.fermentationHours || null,
@@ -224,7 +238,7 @@ export const addProductToFirestore = async (productData: Omit<ProductItem, 'id'>
       isFeatured: !!productData.isFeatured,
       isTrending: !!productData.isTrending,
       isRecommended: !!productData.isRecommended,
-      isEggless: !!productData.isEggless,
+      isEggless: productData.isEggless !== false,
       gallery: productData.gallery || [],
       weightOptions: productData.weightOptions || [],
       createdAt: new Date().toISOString()
@@ -239,27 +253,40 @@ export const addProductToFirestore = async (productData: Omit<ProductItem, 'id'>
 export const updateProductInFirestore = async (id: string, productData: Partial<ProductItem>) => {
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
-    const updatePayload: Record<string, any> = { ...productData };
-    if (productData.price !== undefined) {
-      updatePayload.price = Number(productData.price);
-    }
-    if (productData.imageUrl !== undefined) {
-      updatePayload.imageUrl = productData.imageUrl;
-    }
+    const updatePayload: Record<string, any> = {};
+
+    if (productData.name !== undefined) updatePayload.name = productData.name;
+    if (productData.category !== undefined) updatePayload.category = productData.category;
+    if (productData.price !== undefined) updatePayload.price = Number(productData.price);
+    if (productData.description !== undefined) updatePayload.description = productData.description;
+    if (productData.imageUrl !== undefined) updatePayload.imageUrl = productData.imageUrl;
+    if (productData.image !== undefined && !productData.imageUrl) updatePayload.imageUrl = productData.image;
+    if (productData.available !== undefined) updatePayload.available = productData.available;
+    if (productData.isSignature !== undefined) updatePayload.isSignature = !!productData.isSignature;
+    if (productData.isFeatured !== undefined) updatePayload.isFeatured = !!productData.isFeatured;
+    if (productData.isTrending !== undefined) updatePayload.isTrending = !!productData.isTrending;
+    if (productData.isRecommended !== undefined) updatePayload.isRecommended = !!productData.isRecommended;
+    if (productData.isEggless !== undefined) updatePayload.isEggless = !!productData.isEggless;
+    if (productData.ingredients !== undefined) updatePayload.ingredients = productData.ingredients;
+    if (productData.fermentationHours !== undefined) updatePayload.fermentationHours = productData.fermentationHours;
 
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
       const fallback = PRODUCTS.find((p) => p.id === id);
       const fullDoc = {
         name: productData.name || fallback?.name || 'Bakery Item',
-        category: productData.category || fallback?.category || 'Breads',
-        price: productData.price !== undefined ? Number(productData.price) : (fallback?.priceNum ?? 8.5),
+        category: productData.category || fallback?.category || 'Birthday Cakes',
+        price: productData.price !== undefined ? Number(productData.price) : (fallback?.priceNum ?? 499),
         description: productData.description || fallback?.description || '',
-        imageUrl: productData.imageUrl || fallback?.image || '',
+        imageUrl: productData.imageUrl || productData.image || fallback?.image || '',
         available: productData.available !== undefined ? productData.available : (fallback?.available !== false),
         fermentationHours: fallback?.fermentationHours || null,
-        ingredients: fallback?.ingredients || [],
-        isSignature: !!fallback?.isSignature,
+        ingredients: productData.ingredients || fallback?.ingredients || [],
+        isSignature: productData.isSignature !== undefined ? !!productData.isSignature : !!fallback?.isSignature,
+        isFeatured: productData.isFeatured !== undefined ? !!productData.isFeatured : !!fallback?.isFeatured,
+        isTrending: productData.isTrending !== undefined ? !!productData.isTrending : !!fallback?.isTrending,
+        isRecommended: productData.isRecommended !== undefined ? !!productData.isRecommended : !!fallback?.isRecommended,
+        isEggless: productData.isEggless !== undefined ? !!productData.isEggless : (fallback?.isEggless !== false),
         createdAt: new Date().toISOString(),
         ...updatePayload,
       };
