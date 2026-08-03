@@ -2,6 +2,7 @@ import React from 'react';
 import { NavTab, BakerySettings } from '../types';
 import { Wheat, Sparkles, ShieldCheck, Clock, Award, Flame, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import { ScrollReveal, ImageZoom, RippleButton } from '../components/animations/AnimatedComponents';
 
 interface AboutViewProps {
   setActiveTab: (tab: NavTab) => void;

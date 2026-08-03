@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavTab, ProductItem, Category } from '../types';
 import { CATEGORIES, PRODUCTS } from '../data/products';
 import { motion, AnimatePresence } from 'motion/react';
+import { ScrollReveal, ImageZoom, RippleButton, SkeletonCard } from '../components/animations/AnimatedComponents';
 import {
   Search,
   ArrowRight,
@@ -445,25 +446,26 @@ export const HomeView: React.FC<HomeViewProps> = ({
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4"
             >
-              <button
+              <RippleButton
                 onClick={() => {
                   window.history.pushState(null, '', '/products');
                   setActiveTab('products');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="btn-gold py-3.5 px-8 flex items-center justify-center gap-2 font-bold shadow-lg group"
+                className="btn-gold py-3.5 px-8 font-bold shadow-lg"
+                icon={<ArrowRight className="w-4 h-4" />}
               >
-                <span>Explore Full Menu</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+                Explore Full Menu
+              </RippleButton>
 
-              <button
+              <RippleButton
                 onClick={onOpenOrderModal}
-                className="btn-primary py-3.5 px-8 flex items-center justify-center gap-2 bg-[#825425] hover:bg-[#673d10] text-white"
+                variant="primary"
+                className="py-3.5 px-8 font-bold"
+                icon={<MessageCircle className="w-4 h-4" />}
               >
-                <MessageCircle className="w-4 h-4" />
                 WhatsApp Pre-Order
-              </button>
+              </RippleButton>
             </motion.div>
           </div>
 

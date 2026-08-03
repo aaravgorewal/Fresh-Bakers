@@ -2,6 +2,7 @@ import React from 'react';
 import { MapPin, Clock, Navigation, ExternalLink, Sparkles, MessageCircle } from 'lucide-react';
 import { BakerySettings } from '../types';
 import { motion } from 'motion/react';
+import { ScrollReveal, RippleButton } from '../components/animations/AnimatedComponents';
 
 interface ContactViewProps {
   onOpenOrderModal: () => void;

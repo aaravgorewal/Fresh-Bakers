@@ -62,8 +62,17 @@ export const DEFAULT_SETTINGS: BakerySettings = {
   tagline: 'Artisan sourdoughs & handcrafted pastries baked fresh daily.',
   whatsappNumber: '15550192824',
   address: '142 Artisan Boulevard, Breadville',
+  email: 'hello@freshbakers.com',
+  phone: '+1 555-019-2824',
   instagram: '@freshbakers',
-  openHours: 'Tue-Sun: 7am - 4pm'
+  openHours: 'Tue-Sun: 7am - 4pm',
+  currencySymbol: '₹',
+  heroTitle: 'Handcrafted Birthday Cakes & Celebration Hampers',
+  heroSubtitle: 'Baking happiness daily with organic stone-ground flours, pure Belgian chocolate, and fresh floral artistry.',
+  announcementText: '✨ FREE Express Delivery on Orders Above ₹999 | Daily Fresh Oven Batches',
+  heroImageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=1600',
+  deliveryFee: 50,
+  minOrder: 299,
 };
 
 // Seed initial products into Firestore if database collection is empty AND user is authenticated
@@ -163,8 +172,17 @@ export const subscribeToSettings = (callback: (settings: BakerySettings) => void
         tagline: data.tagline || DEFAULT_SETTINGS.tagline,
         whatsappNumber: data.whatsappNumber || DEFAULT_SETTINGS.whatsappNumber,
         address: data.address || DEFAULT_SETTINGS.address,
+        email: data.email || DEFAULT_SETTINGS.email,
+        phone: data.phone || DEFAULT_SETTINGS.phone,
         instagram: data.instagram || DEFAULT_SETTINGS.instagram,
         openHours: data.openHours || DEFAULT_SETTINGS.openHours,
+        currencySymbol: data.currencySymbol || DEFAULT_SETTINGS.currencySymbol,
+        heroTitle: data.heroTitle || DEFAULT_SETTINGS.heroTitle,
+        heroSubtitle: data.heroSubtitle || DEFAULT_SETTINGS.heroSubtitle,
+        announcementText: data.announcementText || DEFAULT_SETTINGS.announcementText,
+        heroImageUrl: data.heroImageUrl || DEFAULT_SETTINGS.heroImageUrl,
+        deliveryFee: data.deliveryFee !== undefined ? data.deliveryFee : DEFAULT_SETTINGS.deliveryFee,
+        minOrder: data.minOrder !== undefined ? data.minOrder : DEFAULT_SETTINGS.minOrder,
       });
     } else {
       callback(DEFAULT_SETTINGS);
@@ -203,6 +221,12 @@ export const addProductToFirestore = async (productData: Omit<ProductItem, 'id'>
       fermentationHours: productData.fermentationHours || null,
       ingredients: productData.ingredients || [],
       isSignature: !!productData.isSignature,
+      isFeatured: !!productData.isFeatured,
+      isTrending: !!productData.isTrending,
+      isRecommended: !!productData.isRecommended,
+      isEggless: !!productData.isEggless,
+      gallery: productData.gallery || [],
+      weightOptions: productData.weightOptions || [],
       createdAt: new Date().toISOString()
     });
     return docRef.id;
