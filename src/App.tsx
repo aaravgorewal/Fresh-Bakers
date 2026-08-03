@@ -243,6 +243,9 @@ export default function App() {
         onClose={() => setQuickViewProduct(null)}
         onAddToCart={handleAddToCart}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
+        allProducts={products}
+        onSelectProduct={(p) => setQuickViewProduct(p)}
+        whatsappNumber={bakerySettings.whatsappNumber}
       />
 
       {/* Admin Login & Firestore CRUD Modal */}

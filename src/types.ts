@@ -35,6 +35,9 @@ export interface ProductItem {
   fermentationHours?: number;
   ingredients?: string[];
   isSignature?: boolean;
+  gallery?: string[];
+  isEggless?: boolean;
+  weightOptions?: { label: string; multiplier: number }[];
 }
 
 export interface BakerySettings {
