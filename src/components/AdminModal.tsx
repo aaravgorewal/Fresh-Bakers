@@ -34,7 +34,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, product
   // Form state for creating / editing products
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
-  const [category, setCategory] = useState<Category>('Breads');
+  const [category, setCategory] = useState<Category>('Birthday Cakes');
   const [priceNum, setPriceNum] = useState<number>(8.5);
   const [description, setDescription] = useState('');
   const [available, setAvailable] = useState<boolean>(true);
@@ -112,7 +112,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, product
   const resetForm = () => {
     setEditingId(null);
     setName('');
-    setCategory('Breads');
+    setCategory('Birthday Cakes');
     setPriceNum(8.5);
     setDescription('');
     setAvailable(true);

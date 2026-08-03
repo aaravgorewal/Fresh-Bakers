@@ -130,7 +130,7 @@ export const subscribeToProducts = (callback: (products: ProductItem[]) => void)
       return {
         id: docSnap.id,
         name: data.name || '',
-        category: data.category || 'Breads',
+        category: data.category || 'Birthday Cakes',
         price: priceVal,
         description: data.description || '',
         imageUrl: imgVal,

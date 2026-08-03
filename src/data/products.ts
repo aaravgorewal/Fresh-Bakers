@@ -3,201 +3,464 @@ import { ProductItem, Category } from '../types';
 export interface CategoryInfo {
   name: Category;
   image: string;
+  icon: string;
+  tagline: string;
+  bannerImage: string;
+  type: 'cake' | 'additional';
 }
 
 export const CATEGORIES: CategoryInfo[] = [
+  // --- CAKE CATEGORIES ---
   {
-    name: 'Cakes',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBNL70v8HzlrJCg1EYxfqVSof3XnXIQ7qOjyn1OgAI9LoWjnQjDoReDoNrv0lEV_KbpUa7PsbJACoCo_TjmRWp1-ba8kTq3lhJP8O4kyZHsS5Fpr7eN_nUoDPljW7Zd9KH_A9lAlHURq18EStuhzyrXSesXGTqhYDE3rc9O-jr-MnbthPs_jLk-bN3VveII4uNmCFLXRJLCcJTpRr22MIzzawtZBNZdSa4z4COWFQ3hw4l8FRkTNg1Hnw'
+    name: 'Birthday Cakes',
+    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Cake',
+    tagline: 'Make birthday wishes extra magical with hand-decorated multi-tier sponges and sparkler tops.',
+    type: 'cake'
   },
   {
-    name: 'Pastries',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCoJjGHkLajnlvGbkkGfEQGc8oVRv7OLxtswU8VF7v7Cu3vyOe4Tz-UV0sV09IDSpJoZntTVBvV5ClMQzXXGRZpPnVrGIGKF6TWVC6HMFowtzwDiq4q4koyTsiTUd30yBOz9dX1OkkujZBrZPy_N0KgdhR2aIrAfX8LGpuqJtl4HActHwJtHaIYOfIqyLe2mhj3jDj9KtD1svE4ihBTStbJFclB1PrBas_tdiUk77JUg9UqKz-Z-GZt_w'
+    name: 'Anniversary Cakes',
+    image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Heart',
+    tagline: 'Celebrate love and milestones with elegant 24k gold leaf and fresh floral heart-shaped gateaux.',
+    type: 'cake'
   },
   {
-    name: 'Breads',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCvG0YpfGuIDIhlPMlQPxF1BMlL4AgniDbBJELDrOcddXmplAIPoavB5D3DqaDw3a8SB4c3SjutGdBIhkiDGEGG8OpfqbMEto9oOW3TfF4cuLZkfdlladXcNpraVDlrVkHAuvD5jruC0LiSmb9TZi4eKSOwnOuBbduIQxTdhf4cQRuVOQLNkZY_QRHWIV_K3RBmcT8CmSZPJ6SSAfzckK1poY7rksWSda2eofOlaDHsVMMyKZHVI1mcWg'
+    name: 'Designer Cakes',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Sparkles',
+    tagline: 'Artisanal architectural centerpieces created by our master pastry chefs for bespoke events.',
+    type: 'cake'
   },
   {
-    name: 'Cookies & Biscuits',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDlQbJaTjSz2XKo056hm9hYg-54BlIb9nY6MBlvnztXMtFvSIZ-2Fj_giXnNDGXHO7G16PWBzXHIzRFIdQKZ-P_zSIIxN1wYcecPQQXe7EY0HixcTto3Whx6meOIpjnDaQuQHYOrBJbN9p2O_HjnJpuUj57OSw4b91pDkcrbYaKqH_2Fui89YzIKMWvBNn6EbXQUCcjNFCqKq9KYxXD5m2iPevibFTeTsbl3MkfaI_1566RNl3jwmlzjw'
+    name: 'Photo Cakes',
+    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Camera',
+    tagline: 'Turn cherished memories into edible art printed on high-resolution sugar sheets.',
+    type: 'cake'
   },
   {
-    name: 'Snacks & Puffs',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPmaWROL2-g7TiwC91RHV_IZe0Nd_CLzkbWroZ2H68_Vlh_Kui5tLFAhiTIjmK9V_5IdCk60ZBi1kouhIlomPYRcfQwWW1c-v6nU5jzug_8Qr3H_oeC30wgZrW2-YUaAfxO6qseW_79OWZPTNkjub73igX_yKr5-0_qlrGIJQ7DnrfAwDqTI82nxxi7CQLPxsFRIxMxv6HDcvqIglShe2xRpR9_jTQ3K-KftRliwUHZI2t9L-EhVIi2Q'
+    name: 'Premium Cakes',
+    image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Crown',
+    tagline: 'Decadent Belgian couverture chocolate, Iranian pistachios, and French butter perfection.',
+    type: 'cake'
   },
   {
-    name: 'Custom Orders',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCYsds9gO4-ou-y-KTDz0idyn0DPWfaMhozFeRoJdnFEEX-U13C6uBslnwmTuweVvOI5d7yga78SyozydTfCO3AiFPTgvfwF6HV4sVQtAWFXLUdaFNgSfBPkr3ouukvljsXGEKSrNc6qElDd0kCKmPMPorTIYX3bqeOmVyAJxqW0B2lRV3BGpKJNiPAjinB-nFmb87w5gjApW-9eAUtwAzwALzI9u6wPGPFhwaS6TLQT_sa5gnG58oUCA'
+    name: 'Eggless Cakes',
+    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=1200',
+    icon: 'ShieldCheck',
+    tagline: '100% pure vegetarian & eggless delicacies crafted with avocado mousse and condensed milk.',
+    type: 'cake'
   },
   {
-    name: 'Seasonal Specials',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAs_93jzIsTzEc2hlIyfX6qAsSfxAb5LaYLxF5RIJaKSz6II5tn13QRkL240VasQ0mM-fd-d2ayC2-dtL7sRjH6WQdMxZqoZ6JaguEG7Vn-N6tZtRsdvv1qUGRMOTbsMJc7abhHllYXtTp4PlUtBKQmmhkKHAqle75jOc1zNswTSuK4nTq3X-QW1sTkQiOGat9CHbQwYfT6v1nP909Aoxawrv4e172aInf4Dg1gtA9XbdSLSFh9Cb3Ixw'
-  }
+    name: 'Chocolate Cakes',
+    image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Flame',
+    tagline: 'Sinful fudge, ganache, truffle, and nutella layers for true chocoholics.',
+    type: 'cake'
+  },
+  {
+    name: 'Kids Theme Cakes',
+    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Smile',
+    tagline: 'Vibrant superhero, fairytale, animal, and cartoon character birthday wonderlands.',
+    type: 'cake'
+  },
+  {
+    name: 'Fruit Cakes',
+    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Apple',
+    tagline: 'Loaded with farm-fresh berries, tropical mangoes, kiwis, and vanilla diplomat cream.',
+    type: 'cake'
+  },
+
+  // --- ADDITIONAL CATEGORIES ---
+  {
+    name: 'Gift Portal',
+    image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Gift',
+    tagline: 'One-stop gifting sanctuary for curated boxes, greeting cards, and artisan hampers.',
+    type: 'additional'
+  },
+  {
+    name: 'Flowers',
+    image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Flower2',
+    tagline: 'Freshly harvested Dutch roses, lilies, orchids, and carnation floral bouquets.',
+    type: 'additional'
+  },
+  {
+    name: 'Chocolate Bouquets',
+    image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Package',
+    tagline: 'Hand-crafted Ferrero Rocher & Swiss chocolate arrangements wrapped in satin ribbons.',
+    type: 'additional'
+  },
+  {
+    name: 'Gift Hampers',
+    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Box',
+    tagline: 'Rustic wooden chests filled with sourdough breads, raw honeys, teas, and cookies.',
+    type: 'additional'
+  },
+  {
+    name: 'Balloon Decoration',
+    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=1200',
+    icon: 'PartyPopper',
+    tagline: 'Organic balloon arches, foil age numbers, and fairy light table decor setups.',
+    type: 'additional'
+  },
+  {
+    name: 'Birthday Accessories',
+    image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Sparkle',
+    tagline: 'Pure beeswax candles, acrylic cake toppers, sparklers, and party crowns.',
+    type: 'additional'
+  },
+  {
+    name: 'Recommend For You',
+    image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=1200',
+    icon: 'ThumbsUp',
+    tagline: 'Personalized pairings recommended by our head baker for tea and celebration time.',
+    type: 'additional'
+  },
+  {
+    name: 'Trending',
+    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=1200',
+    icon: 'TrendingUp',
+    tagline: 'The most popular WhatsApp pre-ordered items trending among our customers right now.',
+    type: 'additional'
+  },
+  {
+    name: 'Bamboo + Chocolate Gifts',
+    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Sprout',
+    tagline: 'Eco-friendly lucky bamboo plant pots paired with luxury artisanal chocolate truffles.',
+    type: 'additional'
+  },
 ];
 
 export const PRODUCTS: ProductItem[] = [
+  // --- Birthday Cakes ---
   {
-    id: 'classic-sourdough',
-    name: 'The Classic Sourdough',
-    category: 'Breads',
-    price: 8.5,
-    description: 'Wild yeast, long fermentation, and traditional stone-ground flour with a crisp blistered crust.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDul2LQs2RG_9n7r3zLnleXJxS0v3iAxlSim0mTOpfBf6_CevWWYAQN6ecQiJesN7OcCq0lqOe6YfVnCAHOooJ0O876EwFe09PT8zYk34cnlpYuCkYL_YlLqgUzdn5E2KW23DZt3BIFlq70B13_vg4Q7ngeR2HrDLOadq3Lc7XgKiBCX1M_6hYH9jWSpHpy0HTREiR11T1LyqNb8iWVXGj5dms0hIlEbTM-jfEQf9TMfu6Bi9OBYN3oBQ',
+    id: 'bday-confetti-funfetti',
+    name: 'Golden Confetti Birthday Extravaganza',
+    category: 'Birthday Cakes',
+    price: 38.0,
+    priceNum: 38.0,
+    description: 'Triple-layer vanilla bean sponge infused with colorful funfetti, layered with white chocolate buttercream and topped with birthday sparklers.',
+    imageUrl: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
     available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDul2LQs2RG_9n7r3zLnleXJxS0v3iAxlSim0mTOpfBf6_CevWWYAQN6ecQiJesN7OcCq0lqOe6YfVnCAHOooJ0O876EwFe09PT8zYk34cnlpYuCkYL_YlLqgUzdn5E2KW23DZt3BIFlq70B13_vg4Q7ngeR2HrDLOadq3Lc7XgKiBCX1M_6hYH9jWSpHpy0HTREiR11T1LyqNb8iWVXGj5dms0hIlEbTM-jfEQf9TMfu6Bi9OBYN3oBQ',
-    priceNum: 8.5,
-    imageAlt: 'Sourdough loaf sliced open showing airy crumb structure',
-    fermentationHours: 36,
-    ingredients: ['Stone-Ground Organic Wheat', 'Filtered Water', 'Sea Salt', '50-Year Heritage Starter'],
-    isSignature: true
+    isSignature: true,
+    ingredients: ['Madagascar Vanilla', 'White Chocolate Buttercream', 'Organic Wheat Flour', 'Edible Sparkles']
   },
   {
-    id: 'almond-croissant',
-    name: 'Almond Croissant',
-    category: 'Pastries',
-    price: 6.5,
-    description: 'Twice-baked butter pastry filled with rich house-made frangipane and dusted with toasted almonds.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBjLrMTbtR3ndAksAsZZTvX9hWK27SbjrsN_4l8sUq0_ThyERXEd3NYubnGUNQhZVjxtOA3fUKTdSJp869OpG0z8ZylpDf5-H8sP9nKJtTCXuwHlyiCaN1F7YgDx8gf60hBUa73j9BOZeg62FfKT-2xNqPyH3pZOJ-ysuJzkvb_VtEZWux5yyh16fmMhNlPbYDNBE9Q8s1VsVPh_v3fvUcw4N6vARl4-P2Uinv8Y1JiUz1rceTqrlaJHQ',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBjLrMTbtR3ndAksAsZZTvX9hWK27SbjrsN_4l8sUq0_ThyERXEd3NYubnGUNQhZVjxtOA3fUKTdSJp869OpG0z8ZylpDf5-H8sP9nKJtTCXuwHlyiCaN1F7YgDx8gf60hBUa73j9BOZeg62FfKT-2xNqPyH3pZOJ-ysuJzkvb_VtEZWux5yyh16fmMhNlPbYDNBE9Q8s1VsVPh_v3fvUcw4N6vARl4-P2Uinv8Y1JiUz1rceTqrlaJHQ',
-    priceNum: 6.5,
-    imageAlt: 'Artisanal almond croissant dusted with powdered sugar',
-    ingredients: ['French Cultured Butter', 'Pastry Flour', 'Almond Frangipane', 'Powdered Sugar', 'Toasted Almond Flakes'],
-    isSignature: true
-  },
-  {
-    id: 'honey-brioche',
-    name: 'Honey Brioche',
-    category: 'Breads',
-    price: 7.0,
-    description: 'A tender, buttery loaf enriched with local wildflower honey and egg wash glaze.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBCLUma4HBt-ez0U6bDckFnApOBLg7KO3mEMDVZ5FsGgoOKZ6DkvpaqMJhe5B96IeEiQqd4FJNzt_svGuVW_MDMfQ-5bnPW2U_iUk_86FcbTUEP2XHkeF_p49zrJrV2uto6WhyEYLf5uTrtmrJMqE9U8mMLBN0NnWieVGmeuVlbBkDTC_YTWDxGrcJHl1UOJuibVjCaHdopk5FV6bsaZinubFZmjvMqI0O6czVQSgKRpqteLwgCr0Phcw',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBCLUma4HBt-ez0U6bDckFnApOBLg7KO3mEMDVZ5FsGgoOKZ6DkvpaqMJhe5B96IeEiQqd4FJNzt_svGuVW_MDMfQ-5bnPW2U_iUk_86FcbTUEP2XHkeF_p49zrJrV2uto6WhyEYLf5uTrtmrJMqE9U8mMLBN0NnWieVGmeuVlbBkDTC_YTWDxGrcJHl1UOJuibVjCaHdopk5FV6bsaZinubFZmjvMqI0O6czVQSgKRpqteLwgCr0Phcw',
-    priceNum: 7.0,
-    imageAlt: 'Golden braided brioche loaf on cooling rack',
-    ingredients: ['Wildflower Honey', 'High-Fat Butter', 'Farm Eggs', 'Enriched Wheat Flour', 'Milk'],
-    isSignature: true
-  },
-  {
-    id: 'pain-au-chocolat',
-    name: 'Pain au Chocolat',
-    category: 'Pastries',
-    price: 6.0,
-    description: 'Layered sourdough pastry with 70% dark Belgian chocolate batons.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAjhB3V87xNze4P4z3Q1cco-aRRra8-W1LwNPbjSWSo_0PRhdeXBduIY9JN4mhdJdYt_srtg-ZoMzvv6MyLBxciIMLpEhzDo_z45EAmjYLQ3HJopTLI2T3vf3SlbajveQslH3UcBofSkmErIuumfGqYcRrunXOrMrwMi78h8F6DGSJkaAU0qUnW3P0TwKkejLko07zABOtz9wEOh88FGMPt3xYkgP7hOyXVdSC7ktTVdyFAYJPHEt4P_Q',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAjhB3V87xNze4P4z3Q1cco-aRRra8-W1LwNPbjSWSo_0PRhdeXBduIY9JN4mhdJdYt_srtg-ZoMzvv6MyLBxciIMLpEhzDo_z45EAmjYLQ3HJopTLI2T3vf3SlbajveQslH3UcBofSkmErIuumfGqYcRrunXOrMrwMi78h8F6DGSJkaAU0qUnW3P0TwKkejLko07zABOtz9wEOh88FGMPt3xYkgP7hOyXVdSC7ktTVdyFAYJPHEt4P_Q',
-    priceNum: 6.0,
-    imageAlt: 'Flaky Pain au Chocolat with dark chocolate center',
-    ingredients: ['70% Dark Belgian Chocolate', 'French Cultured Butter', 'Organic Wheat Flour', 'Sea Salt'],
-    isSignature: true
-  },
-  {
-    id: 'traditional-baguette',
-    name: 'Traditional Baguette',
-    category: 'Breads',
-    price: 4.5,
-    description: 'Classic Parisian style with a thin, crispy crust and airy honeycomb interior.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDfun0VHGjAK63rKMcvGPLwxQJsDX_0xHQyy4iLiDIPAijnkgVzpvlxPvVWgBk3TReOwOIbFevkXDnmXhGto55uEAQ5MThseaKRUO5zhx6CvfPEKAemLIUKcc0Eina1zFPEzwivRQo8bcs03igdQn6ELCJe4g6k3Or6Do5Ni-cGu91ugYfBysG3FxCCRmedhIEU0B32EdXuWI7LDk6-Lqm9Ki-tDXJvmTayWa4F4Wrps6_hIJP6i6s20g',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDfun0VHGjAK63rKMcvGPLwxQJsDX_0xHQyy4iLiDIPAijnkgVzpvlxPvVWgBk3TReOwOIbFevkXDnmXhGto55uEAQ5MThseaKRUO5zhx6CvfPEKAemLIUKcc0Eina1zFPEzwivRQo8bcs03igdQn6ELCJe4g6k3Or6Do5Ni-cGu91ugYfBysG3FxCCRmedhIEU0B32EdXuWI7LDk6-Lqm9Ki-tDXJvmTayWa4F4Wrps6_hIJP6i6s20g',
-    priceNum: 4.5,
-    imageAlt: 'Golden French baguette on parchment paper',
-    fermentationHours: 24,
-    ingredients: ['T65 French Wheat Flour', 'Water', 'Sea Salt', 'Wild Yeast']
-  },
-  {
-    id: 'classic-croissant',
-    name: 'Classic Croissant',
-    category: 'Pastries',
-    price: 5.5,
-    description: 'Hand-laminated over three days with premium high-fat cultured butter.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBDRFs1IWGO8cX-0jzwbK7bVrrMzXrFSdwVG2CgDRmgvOvvbC-DYYu3a5YUf7fpdHK7wnZWk7XFNo_LrP7uRC3Zcfr1Ywzhg3xjIhn2t-7SuQUfRsP5HoJ7l8GhgH7MDCQYuVyTyyrl0bkBCdJUMkGki7cNXK5tzFwpaLXvBkCkNB1bq_905drVPQ-0Unz_kXgwEP85kFB_CYIcyjBgVmPy938d6g9Pq8NPeME1Nwc6iCJEqIkd2u-cg',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBDRFs1IWGO8cX-0jzwbK7bVrrMzXrFSdwVG2CgDRmgvOvvbC-DYYu3a5YUf7fpdHK7wnZWk7XFNo_LrP7uRC3Zcfr1Ywzhg3xjIhn2t-7SuQUfRsP5HoJ7l8GhgH7MDCQYuVyTyyrl0bkBCdJUMkGki7cNXK5tzFwpaLXvBkCkNB1bq_905drVPQ-0Unz_kXgwEP85kFB_CYIcyjBgVmPy938d6g9Pq8NPeME1Nwc6iCJEqIkd2u-cg',
-    priceNum: 5.5,
-    imageAlt: 'Single flaky golden butter croissant',
-    ingredients: ['84% Fat Cultured Butter', 'T55 Flour', 'Cane Sugar', 'Sea Salt']
-  },
-  {
-    id: 'sea-salt-chocolate',
-    name: 'Sea Salt Chocolate Cookie',
-    category: 'Cookies & Biscuits',
-    price: 4.0,
-    description: 'Brown butter base with 72% dark chocolate chunks and Maldon sea salt flakes.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAgpY9DTemMh8LH6ILISmFRRoSGPA9Cj9iE1jNRhLD_LD9P-KBJmtE6Uoj1BCcDWA1_Y3bXjRIDhnOgLTy9Smp_fhrFGBD4p0yID5wS8N6Xq9N9FbaOUoEqKQjs_Vr6zVFIhzeUgRXNoRXjCHCsnjToBZLUTG9s_t8lHK48azuy2yM7lhFxiOh94rXVgXkPasR7CHcsXuqTlVpay3Hmn5d4Wwv3QShU51PGm88CEzjWfBJ84Ihommz3eQ',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAgpY9DTemMh8LH6ILISmFRRoSGPA9Cj9iE1jNRhLD_LD9P-KBJmtE6Uoj1BCcDWA1_Y3bXjRIDhnOgLTy9Smp_fhrFGBD4p0yID5wS8N6Xq9N9FbaOUoEqKQjs_Vr6zVFIhzeUgRXNoRXjCHCsnjToBZLUTG9s_t8lHK48azuy2yM7lhFxiOh94rXVgXkPasR7CHcsXuqTlVpay3Hmn5d4Wwv3QShU51PGm88CEzjWfBJ84Ihommz3eQ',
-    priceNum: 4.0,
-    imageAlt: 'Chocolate chunk cookie topped with Maldon sea salt',
-    ingredients: ['Brown Butter', '72% Valrhona Dark Chocolate', 'Maldon Flaky Sea Salt', 'Brown Sugar', 'Pastry Flour']
-  },
-  {
-    id: 'pistachio-shortbread',
-    name: 'Pistachio Shortbread',
-    category: 'Cookies & Biscuits',
-    price: 3.5,
-    description: 'Tender, melt-in-mouth shortbread with roasted Iranian pistachios.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAFe1tZk6QJu0oSSprRh_veIPSnNiOuQrl4kOLQbn3kfkZBZ-rSqp1ZLwDSc-r5d47I0R9cT05evEVSaTIez16Qbtv_gibVDhV9aQGFUNbMTwhMzCAQnzx77QuhvPlDYildDP5T-UCmmyEl7z4r2ftVrY7qPrBjc8KwQXrA4uBfifPaY3nmoNHPvSfALOvf_UZXCmGY_peajickylk5yBFQ_pHBfIKWBB8jjDfmz-SV8Xk3KtT1g9jAow',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAFe1tZk6QJu0oSSprRh_veIPSnNiOuQrl4kOLQbn3kfkZBZ-rSqp1ZLwDSc-r5d47I0R9cT05evEVSaTIez16Qbtv_gibVDhV9aQGFUNbMTwhMzCAQnzx77QuhvPlDYildDP5T-UCmmyEl7z4r2ftVrY7qPrBjc8KwQXrA4uBfifPaY3nmoNHPvSfALOvf_UZXCmGY_peajickylk5yBFQ_pHBfIKWBB8jjDfmz-SV8Xk3KtT1g9jAow',
-    priceNum: 3.5,
-    imageAlt: 'Pistachio shortbread rectangles in ceramic bowl',
-    ingredients: ['Iranian Pistachios', 'Sweet Cream Butter', 'Pure Vanilla Bean', 'Powdered Sugar']
-  },
-  {
-    id: 'seeded-dark-rye',
-    name: 'Seeded Dark Rye',
-    category: 'Breads',
-    price: 9.0,
-    description: 'Dense, nutrient-rich sourdough rye with toasted sunflower and flax seeds.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCHxq-Ul_ayDrsewOYcmQ3YEUnaH9U34WGV8IBDBZReqgDGXayDvikoHvy0H_ReHs-M-c-EHj18bviyxahHk0vMCXCzzAHFFCjM5IFYrcuymU5JQ1YX3I8H8GTWp_EMWW72ZlnwLsQZmwybDBqiXf87kPiYSRBVt9u0cEfLHrMAGCWSY6175G8slCAW256XKNSD_o0DUeUZcfxHakHRJ6yHawSAomer1-n-nG9XXs7AuFOJLruZSj2KdA',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCHxq-Ul_ayDrsewOYcmQ3YEUnaH9U34WGV8IBDBZReqgDGXayDvikoHvy0H_ReHs-M-c-EHj18bviyxahHk0vMCXCzzAHFFCjM5IFYrcuymU5JQ1YX3I8H8GTWp_EMWW72ZlnwLsQZmwybDBqiXf87kPiYSRBVt9u0cEfLHrMAGCWSY6175G8slCAW256XKNSD_o0DUeUZcfxHakHRJ6yHawSAomer1-n-nG9XXs7AuFOJLruZSj2KdA',
-    priceNum: 9.0,
-    imageAlt: 'Seeded dark rye bread sliced on linen',
-    fermentationHours: 48,
-    ingredients: ['Whole Grain Dark Rye Flour', 'Toasted Sunflower Seeds', 'Brown Flaxseeds', 'Rye Starter', 'Sea Salt']
-  },
-  {
-    id: 'seasonal-fruit-danish',
-    name: 'Seasonal Fruit Danish',
-    category: 'Pastries',
-    price: 6.5,
-    description: 'Fresh seasonal fruit and vanilla bean diplomat cream on flaky puff pastry.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAZfA59QpVzgkeJ8daoo7pp_nVxKyTjkdPFIkFW6lsR-7p5aefqkXhxwlZSmqeJWxXZ8wz7dfkLPFat_C4CqLF_VggYD5s-XcxLzVHTMhdl8beq_N9NDk7Aqx3HxStxWYPXVNXdCXcrPvaKG0EIPGAmfRLWvcwU1530TA6HaPKJdKMiPWEEiuNsl3tWxybvTN3nW8yaJPaWgBVmM0jLif6B2MqhZcH6G7-nccHCwK0__ai1DNfa86PrwQ',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAZfA59QpVzgkeJ8daoo7pp_nVxKyTjkdPFIkFW6lsR-7p5aefqkXhxwlZSmqeJWxXZ8wz7dfkLPFat_C4CqLF_VggYD5s-XcxLzVHTMhdl8beq_N9NDk7Aqx3HxStxWYPXVNXdCXcrPvaKG0EIPGAmfRLWvcwU1530TA6HaPKJdKMiPWEEiuNsl3tWxybvTN3nW8yaJPaWgBVmM0jLif6B2MqhZcH6G7-nccHCwK0__ai1DNfa86PrwQ',
-    priceNum: 6.5,
-    imageAlt: 'Fruit danish topped with cherries and diplomat cream',
-    ingredients: ['Fresh Seasonal Cherries', 'Vanilla Bean Custard', 'Laminated Butter Pastry', 'Apricot Glaze']
-  },
-  {
-    id: 'berry-mascarpone-cake',
-    name: 'Berry Mascarpone Cake',
-    category: 'Cakes',
+    id: 'bday-berry-drip',
+    name: 'Berry Drip Birthday Celebration Cake',
+    category: 'Birthday Cakes',
     price: 42.0,
-    description: 'Fluffy vanilla sponge layered with wild berry compote, mascarpone frost, and fresh floral garnishes.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBNL70v8HzlrJCg1EYxfqVSof3XnXIQ7qOjyn1OgAI9LoWjnQjDoReDoNrv0lEV_KbpUa7PsbJACoCo_TjmRWp1-ba8kTq3lhJP8O4kyZHsS5Fpr7eN_nUoDPljW7Zd9KH_A9lAlHURq18EStuhzyrXSesXGTqhYDE3rc9O-jr-MnbthPs_jLk-bN3VveII4uNmCFLXRJLCcJTpRr22MIzzawtZBNZdSa4z4COWFQ3hw4l8FRkTNg1Hnw',
-    available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBNL70v8HzlrJCg1EYxfqVSof3XnXIQ7qOjyn1OgAI9LoWjnQjDoReDoNrv0lEV_KbpUa7PsbJACoCo_TjmRWp1-ba8kTq3lhJP8O4kyZHsS5Fpr7eN_nUoDPljW7Zd9KH_A9lAlHURq18EStuhzyrXSesXGTqhYDE3rc9O-jr-MnbthPs_jLk-bN3VveII4uNmCFLXRJLCcJTpRr22MIzzawtZBNZdSa4z4COWFQ3hw4l8FRkTNg1Hnw',
     priceNum: 42.0,
-    imageAlt: 'Artisanal cake topped with berries and edible flowers',
-    ingredients: ['Madagascar Vanilla', 'Fresh Berries', 'Italian Mascarpone', 'Organic Flour', 'Eggs']
+    description: 'Fresh strawberry compote sponge with pink ruby chocolate drip glaze and mountain of fresh raspberries.',
+    imageUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    ingredients: ['Fresh Strawberries', 'Ruby Chocolate Drip', 'Swiss Meringue Buttercream']
+  },
+
+  // --- Anniversary Cakes ---
+  {
+    id: 'anni-gold-heart',
+    name: '24k Gold Leaf Velvet Heart Gateau',
+    category: 'Anniversary Cakes',
+    price: 52.0,
+    priceNum: 52.0,
+    description: 'Romantic heart-shaped red velvet sponge with cream cheese frosting, edible 24k gold leaf flakes, and fresh red rose petals.',
+    imageUrl: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true,
+    ingredients: ['Red Velvet Cocoa Sponge', '24k Gold Leaf', 'Organic Rose Petals', 'Philadelphia Cream Cheese']
   },
   {
-    id: 'savory-cheese-puff',
-    name: 'Savory Gruyère Puff',
-    category: 'Snacks & Puffs',
-    price: 4.5,
-    description: 'Golden puff pastry lattice stuffed with aged Gruyère cheese, thymes, and slow-caramelised shallots.',
-    imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPmaWROL2-g7TiwC91RHV_IZe0Nd_CLzkbWroZ2H68_Vlh_Kui5tLFAhiTIjmK9V_5IdCk60ZBi1kouhIlomPYRcfQwWW1c-v6nU5jzug_8Qr3H_oeC30wgZrW2-YUaAfxO6qseW_79OWZPTNkjub73igX_yKr5-0_qlrGIJQ7DnrfAwDqTI82nxxi7CQLPxsFRIxMxv6HDcvqIglShe2xRpR9_jTQ3K-KftRliwUHZI2t9L-EhVIi2Q',
+    id: 'anni-floral-tiered',
+    name: 'Blush Rose Milestone Anniversary Cake',
+    category: 'Anniversary Cakes',
+    price: 68.0,
+    priceNum: 68.0,
+    description: 'Two-tier vanilla bean & almond cake adorned with handcrafted wafer paper roses and subtle gold pearl dust.',
+    imageUrl: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
     available: true,
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAPmaWROL2-g7TiwC91RHV_IZe0Nd_CLzkbWroZ2H68_Vlh_Kui5tLFAhiTIjmK9V_5IdCk60ZBi1kouhIlomPYRcfQwWW1c-v6nU5jzug_8Qr3H_oeC30wgZrW2-YUaAfxO6qseW_79OWZPTNkjub73igX_yKr5-0_qlrGIJQ7DnrfAwDqTI82nxxi7CQLPxsFRIxMxv6HDcvqIglShe2xRpR9_jTQ3K-KftRliwUHZI2t9L-EhVIi2Q',
-    priceNum: 4.5,
-    imageAlt: 'Golden savory cheese puff pastry',
-    ingredients: ['Aged Swiss Gruyère', 'Caramelised Shallots', 'Fresh Thyme', 'Puff Pastry']
+    ingredients: ['Vanilla Bean', 'Almond Flour', 'Wafer Paper Florals', 'Champagne Syrup']
+  },
+
+  // --- Designer Cakes ---
+  {
+    id: 'dsgn-marble-arch',
+    name: 'Modern Geode & Marble Sculpted Cake',
+    category: 'Designer Cakes',
+    price: 75.0,
+    priceNum: 75.0,
+    description: 'Avant-garde edible crystal geode carved into fondant marble finish with isomalt sugar quartz and gold veins.',
+    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true,
+    ingredients: ['Isomalt Sugar Crystals', 'Marshmallow Fondant', 'Dark Ganache Core']
+  },
+
+  // --- Photo Cakes ---
+  {
+    id: 'photo-custom-memory',
+    name: 'Custom Edible Memory Photo Cake',
+    category: 'Photo Cakes',
+    price: 45.0,
+    priceNum: 45.0,
+    description: 'Your favorite family photo printed in high-res edible food colors on premium icing sheet atop vanilla buttercream sponge.',
+    imageUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    ingredients: ['Edible Sugar Print', 'Whipped Cream Frosting', 'Sponge Cake Base']
+  },
+
+  // --- Premium Cakes ---
+  {
+    id: 'prem-pistachio-opera',
+    name: 'Royal Persian Pistachio & Opera Gateau',
+    category: 'Premium Cakes',
+    price: 58.0,
+    priceNum: 58.0,
+    description: 'Seven layers of Iranian pistachio jaconde, coffee espresso ganache, and dark chocolate mirror glaze.',
+    imageUrl: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true,
+    ingredients: ['Iranian Pistachios', 'Valrhona Chocolate', 'Single Origin Espresso']
+  },
+
+  // --- Eggless Cakes ---
+  {
+    id: 'eggless-choco-fudge',
+    name: 'Pure Eggless Dark Chocolate Fudge Cake',
+    category: 'Eggless Cakes',
+    price: 36.0,
+    priceNum: 36.0,
+    description: '100% vegetarian moist cocoa sponge bound with greek yogurt mousse and silky dark chocolate ganache.',
+    imageUrl: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    ingredients: ['100% Pure Cocoa', 'Greek Yogurt', 'Dark Belgian Choco Flakes']
+  },
+
+  // --- Chocolate Cakes ---
+  {
+    id: 'choco-nutella-truffle',
+    name: 'Belgian Nutella Truffle Overload',
+    category: 'Chocolate Cakes',
+    price: 48.0,
+    priceNum: 48.0,
+    description: 'Deep chocolate sponge filled with hazelnut Nutella spread, Ferrero Rocher pralines, and dark truffle glaze.',
+    imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true,
+    ingredients: ['Nutella Spread', 'Ferrero Rocher Chunks', '70% Belgian Chocolate']
+  },
+
+  // --- Kids Theme Cakes ---
+  {
+    id: 'kids-superhero-fantasy',
+    name: 'Super Kingdom Kids Fantasy Cake',
+    category: 'Kids Theme Cakes',
+    price: 55.0,
+    priceNum: 55.0,
+    description: 'Playful multi-colored rainbow sponge cake with fondant superhero emblems and star toppers.',
+    imageUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    ingredients: ['Natural Food Colors', 'Rainbow Sponge', 'Vanilla Buttercream']
+  },
+
+  // --- Fruit Cakes ---
+  {
+    id: 'fruit-harvest-tart',
+    name: 'Exotic Fruit Harvest Gateau',
+    category: 'Fruit Cakes',
+    price: 40.0,
+    priceNum: 40.0,
+    description: 'Light vanilla sponge layered with kiwi, dragonfruit, fresh mangoes, and passionfruit curd.',
+    imageUrl: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    ingredients: ['Kiwi', 'Dragonfruit', 'Alphonso Mango', 'Diplomat Cream']
+  },
+
+  // --- Gift Portal ---
+  {
+    id: 'gift-deluxe-box',
+    name: 'The King Bakers Royal Celebration Box',
+    price: 65.0,
+    priceNum: 65.0,
+    description: 'Luxury velvet box containing mini bento cake, 6 macaron assortment, and a personalized wax-sealed greeting card.',
+    imageUrl: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=600',
+    category: 'Gift Portal',
+    available: true,
+    isSignature: true,
+    ingredients: ['Mini Bento Cake', 'French Macarons', 'Wax-Sealed Card', 'Luxury Box']
+  },
+
+  // --- Flowers ---
+  {
+    id: 'flower-dutch-roses',
+    name: 'Royal Crimson Dutch Rose Bouquet',
+    category: 'Flowers',
+    price: 35.0,
+    priceNum: 35.0,
+    description: 'Bunch of 12 long-stemmed crimson Dutch roses hand-tied in rustic craft paper with eucalyptus sprigs.',
+    imageUrl: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    ingredients: ['12x Crimson Dutch Roses', 'Eucalyptus Foliage', 'Craft Wrapping']
+  },
+  {
+    id: 'flower-pastel-lilies',
+    name: 'Pastel Lily & Carnation Bunch',
+    category: 'Flowers',
+    price: 42.0,
+    priceNum: 42.0,
+    description: 'Fragrant white Asiatic lilies blended with soft pink carnations and gypsophila baby breath.',
+    imageUrl: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=600',
+    available: true
+  },
+
+  // --- Chocolate Bouquets ---
+  {
+    id: 'choco-bouquet-ferrero',
+    name: 'Ferrero Rocher Golden Chocolate Bouquet',
+    category: 'Chocolate Bouquets',
+    price: 45.0,
+    priceNum: 45.0,
+    description: '16 golden Ferrero Rocher pralines sculpted into a stunning floral bouquet wrapped in black satin ribbon.',
+    imageUrl: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true,
+    ingredients: ['16x Ferrero Rocher', 'Satin Bows', 'Floral Base']
+  },
+
+  // --- Gift Hampers ---
+  {
+    id: 'hamper-sourdough-chest',
+    name: 'Artisan Sourdough & Wild Honey Hamper',
+    category: 'Gift Hampers',
+    price: 52.0,
+    priceNum: 52.0,
+    description: 'Handcrafted wooden chest containing 1 sourdough loaf, raw wildflower honey, seeded rye crispbreads, and organic tea.',
+    imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true
+  },
+
+  // --- Balloon Decoration ---
+  {
+    id: 'balloon-pastel-arch',
+    name: 'Pastel & Metallic Gold Balloon Arch Package',
+    category: 'Balloon Decoration',
+    price: 85.0,
+    priceNum: 85.0,
+    description: 'Custom 8ft organic balloon arch styled in blush nude, sage green, and chrome gold for cake backdrop setup.',
+    imageUrl: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=600',
+    available: true
+  },
+
+  // --- Birthday Accessories ---
+  {
+    id: 'acc-beeswax-candle-pack',
+    name: 'Natural Honey Beeswax Birthday Candles',
+    category: 'Birthday Accessories',
+    price: 6.0,
+    priceNum: 6.0,
+    description: 'Hand-dipped 100% natural beeswax candles with subtle sweet honey aroma.',
+    imageUrl: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600',
+    available: true
+  },
+  {
+    id: 'acc-sparkler-fountain',
+    name: 'Golden Cake Sparkler Fountain (Pack of 4)',
+    category: 'Birthday Accessories',
+    price: 12.0,
+    priceNum: 12.0,
+    description: 'Smokeless cake sparklers erupting into 45 seconds of gold glitter flame.',
+    imageUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=600',
+    available: true
+  },
+
+  // --- Recommend For You ---
+  {
+    id: 'rec-almond-croissant',
+    name: 'Baker Choice Twice-Baked Almond Croissant',
+    category: 'Recommend For You',
+    price: 6.5,
+    priceNum: 6.5,
+    description: 'Flaky French butter pastry filled with rich house-made frangipane and toasted almonds.',
+    imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true
+  },
+
+  // --- Trending ---
+  {
+    id: 'trend-sea-salt-cookie',
+    name: 'Maldon Sea Salt Dark Choco Chunk Cookie',
+    category: 'Trending',
+    price: 4.0,
+    priceNum: 4.0,
+    description: 'Brown butter base with 72% dark chocolate chunks and Maldon sea salt flakes.',
+    imageUrl: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true
+  },
+
+  // --- Bamboo + Chocolate Gifts ---
+  {
+    id: 'bamboo-choco-serenity',
+    name: 'Lucky 2-Layer Bamboo & Truffle Planter Gift',
+    category: 'Bamboo + Chocolate Gifts',
+    price: 32.0,
+    priceNum: 32.0,
+    description: 'Fresh 2-layer lucky indoor bamboo plant in ceramic vase paired with a box of 8 artisanal dark chocolate pralines.',
+    imageUrl: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true,
+    ingredients: ['2-Layer Bamboo Plant', 'Ceramic Pot', '8x Dark Truffle Pralines']
   }
 ];

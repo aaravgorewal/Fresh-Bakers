@@ -6,26 +6,28 @@
     --color-primary-hover: #673d10;
     --color-primary-container: #c68e5a;
     --color-on-primary-container: #4d2900;
-    --color-background: #fbf9f5;
-    --color-surface: #fbf9f5;
-    --color-surface-container-low: #f5f3ef;
-    --color-surface-container: #efeeea;
-    --color-surface-container-high: #eae8e4;
-    --color-surface-container-highest: #e4e2de;
-    --color-surface-dim: #dbdad6;
-    --color-on-surface: #1b1c1a;
-    --color-on-surface-variant: #51443a;
-    --color-outline: #837469;
-    --color-outline-variant: #d5c3b6;
-    --color-secondary-container: #e6ded9;
-    --color-on-secondary-container: #67625e;
+    --color-background: #faf6f0;
+    --color-surface: #faf6f0;
+    --color-surface-container-low: #f4ebe1;
+    --color-surface-container: #ede2d5;
+    --color-surface-container-high: #e5d8c8;
+    --color-surface-container-highest: #dccbbb;
+    --color-on-surface: #1f1610;
+    --color-on-surface-variant: #6e5d4f;
+    --color-outline: #a38f7d;
+    --color-outline-variant: #e8dec9;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {
-    background-color: #fbf9f5;
-    color: #1b1c1a;
-    font-family: 'Inter', sans-serif;
+    background-color: #faf6f0;
+    color: #1f1610;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, .font-serif-display {
@@ -39,116 +41,166 @@
   display: inline-block;
 }
 
-/* Custom Typography Helpers matching the design specification */
-.font-display-lg {
-  font-family: 'Playfair Display', serif;
-  font-size: 48px;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-weight: 700;
+/* Glassmorphism & Luxury Cards */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 222, 201, 0.7);
 }
 
-.font-display-lg-mobile {
+.glass-panel-dark {
+  background: rgba(31, 22, 16, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.luxury-card {
+  background: #ffffff;
+  border: 1px solid #e8dec9;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 20px -2px rgba(130, 84, 37, 0.05);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card:hover {
+  transform: translateY(-4px);
+  border-color: #c59b27;
+  box-shadow: 0 16px 32px -8px rgba(130, 84, 37, 0.12);
+}
+
+/* Custom Typography Helpers */
+.font-display-lg {
   font-family: 'Playfair Display', serif;
-  font-size: 36px;
-  line-height: 1.2;
+  font-size: 52px;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   font-weight: 700;
 }
 
 .font-headline-md {
   font-family: 'Playfair Display', serif;
-  font-size: 32px;
-  line-height: 1.2;
+  font-size: 34px;
+  line-height: 1.18;
   font-weight: 600;
 }
 
 .font-headline-sm {
   font-family: 'Playfair Display', serif;
   font-size: 24px;
-  line-height: 1.3;
+  line-height: 1.28;
   font-weight: 600;
 }
 
 .font-body-lg {
-  font-family: 'Inter', sans-serif;
   font-size: 18px;
-  line-height: 1.6;
+  line-height: 1.65;
   font-weight: 400;
 }
 
 .font-body-md {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.6;
   font-weight: 400;
 }
 
 .font-label-caps {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.0;
-  letter-spacing: 0.1em;
-  font-weight: 600;
+  letter-spacing: 0.14em;
+  font-weight: 700;
   text-transform: uppercase;
 }
 
-/* Buttons and Editorial Rules */
+/* Premium Buttons & Controls */
 .btn-primary {
-  background-color: #825425;
+  background: linear-gradient(135deg, #825425 0%, #673d10 100%);
   color: #ffffff;
-  padding: 12px 32px;
-  border: 1px solid #825425;
-  transition: all 0.2s ease;
-  font-family: 'Inter', sans-serif;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 14px rgba(130, 84, 37, 0.25);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   font-size: 12px;
   letter-spacing: 0.1em;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
 }
 
 .btn-primary:hover {
-  background-color: #673d10;
-  border-color: #673d10;
+  background: linear-gradient(135deg, #673d10 0%, #4d2900 100%);
+  box-shadow: 0 6px 20px rgba(130, 84, 37, 0.38);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background-color: transparent;
-  color: #1b1c1a;
-  padding: 12px 32px;
-  border: 1px solid #1b1c1a;
-  transition: all 0.2s ease;
-  font-family: 'Inter', sans-serif;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1f1610;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  border: 1px solid #e8dec9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   font-size: 12px;
   letter-spacing: 0.1em;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
 }
 
 .btn-secondary:hover {
-  background-color: #f5f3ef;
+  background: #f4ebe1;
+  border-color: #825425;
+  color: #825425;
+  transform: translateY(-1px);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #d4a373 0%, #c59b27 100%);
+  color: #1f1610;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 14px rgba(197, 155, 39, 0.3);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #c59b27 0%, #b3881c 100%);
+  box-shadow: 0 6px 20px rgba(197, 155, 39, 0.45);
+  transform: translateY(-1px);
 }
 
 .editorial-rule {
   height: 1px;
-  background-color: #d5c3b6;
+  background: linear-gradient(90deg, transparent 0%, #e8dec9 15%, #e8dec9 85%, transparent 100%);
   width: 100%;
 }
 
-.print-card {
-  border: 1px solid #e8e2d9;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.print-card:hover {
-  border-color: #825425;
+::-webkit-scrollbar-track {
+  background: #faf6f0;
 }
 
-.active-tab {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  border-bottom: 1px solid #825425;
-  color: #825425;
+::-webkit-scrollbar-thumb {
+  background: #dccbbb;
+  border-radius: 4px;
 }
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a38f7d;
+}
+
 
