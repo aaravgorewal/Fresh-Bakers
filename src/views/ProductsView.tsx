@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Category, ProductItem } from '../types';
 import { PRODUCTS, CATEGORIES, CategoryInfo } from '../data/products';
+import { sendProductWhatsAppOrder } from '../utils/whatsapp';
 import {
   Search,
   Clock,
@@ -148,14 +149,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
   };
 
   const handleDirectWhatsAppOrder = (product: ProductItem) => {
-    const rawPrice = typeof product.price === 'number' ? product.price : parseFloat(String(product.price) || '0');
-    const formattedPrice = `$${rawPrice.toFixed(2)}`;
-
-    const message = `Hi Fresh Bakers! I would like to order: ${product.name} - ${formattedPrice} from your ${product.category} menu. Is it available for instant delivery/pickup?`;
-    const encoded = encodeURIComponent(message);
-    const cleanNum = (whatsappNumber || '15550192824').replace(/[\+\s]/g, '');
-    const whatsappUrl = `https://wa.me/${cleanNum}?text=${encoded}`;
-    window.open(whatsappUrl, '_blank');
+    sendProductWhatsAppOrder(product, whatsappNumber);
   };
 
   const cakeCategories = CATEGORIES.filter((c) => c.type === 'cake');

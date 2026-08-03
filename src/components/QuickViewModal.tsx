@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProductItem, Category } from '../types';
+import { sendProductWhatsAppOrder } from '../utils/whatsapp';
 import {
   X,
   Clock,
@@ -144,21 +145,11 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
   };
 
   const handleWhatsAppDirectOrder = () => {
-    const selectedWeightLabel = weightOptions[selectedWeightIndex]?.label || 'Standard';
-    const eggText = selectedEggOption === 'eggless' ? '100% Eggless (Pure Veg)' : 'Contains Egg';
-    const message = `Hi Fresh Bakers! I would like to order:
-- Item: ${product.name}
-- Category: ${product.category}
-- Weight / Size: ${selectedWeightLabel}
-- Preference: ${eggText}
-- Estimated Total: ${formattedPrice}
-
-Is this available for instant delivery/pickup?`;
-
-    const encoded = encodeURIComponent(message);
-    const cleanNum = (whatsappNumber || '15550192824').replace(/[\+\s]/g, '');
-    const whatsappUrl = `https://wa.me/${cleanNum}?text=${encoded}`;
-    window.open(whatsappUrl, '_blank');
+    const selectedWeightLabel = weightOptions[selectedWeightIndex]?.label || '1 Kg';
+    sendProductWhatsAppOrder(product, whatsappNumber, {
+      weight: selectedWeightLabel,
+      price: formattedPrice,
+    });
   };
 
   return (
