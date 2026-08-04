@@ -24,7 +24,7 @@ export const CATEGORIES: CategoryInfo[] = [
     image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600',
     bannerImage: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=1200',
     icon: 'Heart',
-    tagline: 'Celebrate love and milestones with elegant 24k gold leaf and fresh floral heart-shaped gateaux.',
+    tagline: 'Celebrate love and milestones with elegant red velvet and 24k gold leaf heart-shaped gateaux.',
     type: 'cake'
   },
   {
@@ -48,7 +48,7 @@ export const CATEGORIES: CategoryInfo[] = [
     image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600',
     bannerImage: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=1200',
     icon: 'Crown',
-    tagline: 'Decadent Belgian couverture chocolate, Iranian pistachios, and French butter perfection.',
+    tagline: 'Decadent Belgian couverture chocolate, Iranian pistachios, and saffron perfection.',
     type: 'cake'
   },
   {
@@ -56,7 +56,7 @@ export const CATEGORIES: CategoryInfo[] = [
     image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
     bannerImage: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=1200',
     icon: 'ShieldCheck',
-    tagline: '100% pure vegetarian & eggless delicacies crafted with avocado mousse and condensed milk.',
+    tagline: '100% pure vegetarian & eggless delicacies crafted with whipped cream and condensed milk.',
     type: 'cake'
   },
   {
@@ -64,7 +64,7 @@ export const CATEGORIES: CategoryInfo[] = [
     image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=600',
     bannerImage: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=1200',
     icon: 'Flame',
-    tagline: 'Sinful fudge, ganache, truffle, and nutella layers for true chocoholics.',
+    tagline: 'Sinful fudge, ganache, truffle, KitKat, Oreo, and Nutella layers for true chocoholics.',
     type: 'cake'
   },
   {
@@ -80,7 +80,15 @@ export const CATEGORIES: CategoryInfo[] = [
     image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
     bannerImage: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=1200',
     icon: 'Apple',
-    tagline: 'Loaded with farm-fresh berries, tropical mangoes, kiwis, and vanilla diplomat cream.',
+    tagline: 'Loaded with farm-fresh Alphonso mangoes, pineapples, kiwis, and fresh cream.',
+    type: 'cake'
+  },
+  {
+    name: 'Bento Cakes',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
+    bannerImage: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=1200',
+    icon: 'Sparkles',
+    tagline: 'Trendy 4-inch cute Korean style bento mini cakes for intimate celebrations.',
     type: 'cake'
   },
 
@@ -106,7 +114,7 @@ export const CATEGORIES: CategoryInfo[] = [
     image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=600',
     bannerImage: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=1200',
     icon: 'Package',
-    tagline: 'Hand-crafted Ferrero Rocher & Swiss chocolate arrangements wrapped in satin ribbons.',
+    tagline: 'Hand-crafted Ferrero Rocher & Cadbury Silk arrangements wrapped in satin ribbons.',
     type: 'additional'
   },
   {
@@ -114,7 +122,7 @@ export const CATEGORIES: CategoryInfo[] = [
     image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600',
     bannerImage: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=1200',
     icon: 'Box',
-    tagline: 'Rustic wooden chests filled with sourdough breads, raw honeys, teas, and cookies.',
+    tagline: 'Gourmet gift hampers filled with artisan tea cakes, dry fruit cookies, roasted nuts, and sweets.',
     type: 'additional'
   },
   {
@@ -162,70 +170,114 @@ export const CATEGORIES: CategoryInfo[] = [
 export const PRODUCTS: ProductItem[] = [
   // --- Birthday Cakes ---
   {
-    id: 'bday-confetti-funfetti',
-    name: 'Golden Confetti Birthday Extravaganza',
+    id: 'bday-choco-truffle',
+    name: 'Classic Dutch Chocolate Truffle Cake',
     category: 'Birthday Cakes',
-    price: 38.0,
-    priceNum: 38.0,
-    description: 'Triple-layer vanilla bean sponge infused with colorful funfetti, layered with white chocolate buttercream and topped with birthday sparklers.',
+    price: 599,
+    priceNum: 599,
+    description: 'Rich dark chocolate sponge layered with smooth 70% dark chocolate ganache and chocolate curls.',
+    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isSignature: true,
+    isFeatured: true,
+    ingredients: ['Dark Couverture Chocolate', 'Fresh Dairy Cream', 'Dutch Cocoa', 'Vanilla Extract']
+  },
+  {
+    id: 'bday-black-forest',
+    name: 'Classic Black Forest Cream Cake',
+    category: 'Birthday Cakes',
+    price: 499,
+    priceNum: 499,
+    description: 'Soft cocoa sponge soaked in cherry syrup, layered with fresh whipped cream and juicy red cherries.',
+    imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isFeatured: true,
+    ingredients: ['Whipped Cream', 'Dark Chocolate Shavings', 'Maraschino Cherries', 'Cocoa Sponge']
+  },
+  {
+    id: 'bday-butterscotch',
+    name: 'Royal Butterscotch Crunch Cake',
+    category: 'Birthday Cakes',
+    price: 499,
+    priceNum: 499,
+    description: 'Moist vanilla sponge infused with butterscotch syrup, topped with crunchy caramelized praline and butterscotch chips.',
     imageUrl: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
     available: true,
-    isSignature: true,
-    ingredients: ['Madagascar Vanilla', 'White Chocolate Buttercream', 'Organic Wheat Flour', 'Edible Sparkles']
+    isTrending: true,
+    ingredients: ['Butterscotch Praline', 'Caramel Drizzle', 'Vanilla Sponge', 'Buttercream']
   },
   {
-    id: 'bday-berry-drip',
-    name: 'Berry Drip Birthday Celebration Cake',
+    id: 'bday-kitkat-overload',
+    name: 'KitKat & Gems Birthday Extravaganza',
     category: 'Birthday Cakes',
-    price: 42.0,
-    priceNum: 42.0,
-    description: 'Fresh strawberry compote sponge with pink ruby chocolate drip glaze and mountain of fresh raspberries.',
+    price: 799,
+    priceNum: 799,
+    description: 'Crisp KitKat chocolate fence surrounding a dark chocolate truffle cake topped with colorful Cadbury Gems.',
+    imageUrl: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isTrending: true,
+    ingredients: ['KitKat Chocolate Bars', 'Cadbury Gems', 'Dark Truffle Sponge', 'Chocolate Ribbon']
+  },
+  {
+    id: 'bday-blueberry-drip',
+    name: 'Fresh Blueberry Drip Celebration Cake',
+    category: 'Birthday Cakes',
+    price: 699,
+    priceNum: 699,
+    description: 'Vanilla sponge filled with organic blueberry compote, finished with purple white chocolate drip and fresh berries.',
     imageUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
     available: true,
-    ingredients: ['Fresh Strawberries', 'Ruby Chocolate Drip', 'Swiss Meringue Buttercream']
+    ingredients: ['Blueberry Compote', 'White Chocolate Drip', 'Whipped Frosting']
   },
 
   // --- Anniversary Cakes ---
   {
-    id: 'anni-gold-heart',
-    name: '24k Gold Leaf Velvet Heart Gateau',
+    id: 'anni-red-velvet',
+    name: 'Red Velvet Heart Anniversary Cake',
     category: 'Anniversary Cakes',
-    price: 52.0,
-    priceNum: 52.0,
-    description: 'Romantic heart-shaped red velvet sponge with cream cheese frosting, edible 24k gold leaf flakes, and fresh red rose petals.',
+    price: 699,
+    priceNum: 699,
+    description: 'Romantic heart-shaped red velvet sponge layered with cream cheese frosting and gold sprinkles.',
     imageUrl: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600',
     available: true,
     isSignature: true,
-    ingredients: ['Red Velvet Cocoa Sponge', '24k Gold Leaf', 'Organic Rose Petals', 'Philadelphia Cream Cheese']
+    isFeatured: true,
+    ingredients: ['Red Velvet Cocoa Sponge', 'Cream Cheese Frosting', 'Edible Gold Sprinkles']
   },
   {
-    id: 'anni-floral-tiered',
-    name: 'Blush Rose Milestone Anniversary Cake',
+    id: 'anni-rasmalai-fusion',
+    name: 'Royal Rasmalai Fusion Gateau',
     category: 'Anniversary Cakes',
-    price: 68.0,
-    priceNum: 68.0,
-    description: 'Two-tier vanilla bean & almond cake adorned with handcrafted wafer paper roses and subtle gold pearl dust.',
-    imageUrl: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
-    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
+    price: 899,
+    priceNum: 899,
+    description: 'Cardamom infused sponge layered with saffron milk cream, soft cottage cheese rasmalai pieces, and pistachios.',
+    imageUrl: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600',
     available: true,
-    ingredients: ['Vanilla Bean', 'Almond Flour', 'Wafer Paper Florals', 'Champagne Syrup']
+    isSignature: true,
+    isFeatured: true,
+    ingredients: ['Authentic Rasmalai', 'Saffron Kesar Milk', 'Pistachios', 'Cardamom Sponge']
   },
 
   // --- Designer Cakes ---
   {
     id: 'dsgn-marble-arch',
-    name: 'Modern Geode & Marble Sculpted Cake',
+    name: 'Modern Geode & Marble Designer Cake',
     category: 'Designer Cakes',
-    price: 75.0,
-    priceNum: 75.0,
-    description: 'Avant-garde edible crystal geode carved into fondant marble finish with isomalt sugar quartz and gold veins.',
+    price: 1499,
+    priceNum: 1499,
+    description: 'Hand-sculpted edible crystal geode carved into marshmallow fondant with gold sugar veins.',
     imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
     available: true,
     isSignature: true,
+    isFeatured: true,
     ingredients: ['Isomalt Sugar Crystals', 'Marshmallow Fondant', 'Dark Ganache Core']
   },
 
@@ -234,57 +286,74 @@ export const PRODUCTS: ProductItem[] = [
     id: 'photo-custom-memory',
     name: 'Custom Edible Memory Photo Cake',
     category: 'Photo Cakes',
-    price: 45.0,
-    priceNum: 45.0,
-    description: 'Your favorite family photo printed in high-res edible food colors on premium icing sheet atop vanilla buttercream sponge.',
+    price: 699,
+    priceNum: 699,
+    description: 'High-res edible photo print on sugar sheet, customized with your favorite memory atop fresh vanilla frosting.',
     imageUrl: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
     available: true,
-    ingredients: ['Edible Sugar Print', 'Whipped Cream Frosting', 'Sponge Cake Base']
+    isTrending: true,
+    ingredients: ['Edible Sugar Print Sheet', 'Whipped Cream', 'Vanilla Sponge']
   },
 
   // --- Premium Cakes ---
   {
-    id: 'prem-pistachio-opera',
-    name: 'Royal Persian Pistachio & Opera Gateau',
+    id: 'prem-ferrero-rocher',
+    name: 'Ferrero Rocher Royal Chocolate Cake',
     category: 'Premium Cakes',
-    price: 58.0,
-    priceNum: 58.0,
-    description: 'Seven layers of Iranian pistachio jaconde, coffee espresso ganache, and dark chocolate mirror glaze.',
+    price: 1199,
+    priceNum: 1199,
+    description: 'Decadent Belgian hazelnut chocolate cake topped with original Ferrero Rocher pralines and roasted hazelnuts.',
     imageUrl: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600',
     available: true,
     isSignature: true,
-    ingredients: ['Iranian Pistachios', 'Valrhona Chocolate', 'Single Origin Espresso']
+    isFeatured: true,
+    ingredients: ['Ferrero Rocher Chocolates', 'Nutella Cream', 'Belgian Chocolate']
   },
 
   // --- Eggless Cakes ---
   {
-    id: 'eggless-choco-fudge',
-    name: 'Pure Eggless Dark Chocolate Fudge Cake',
+    id: 'eggless-pineapple',
+    name: 'Pure Eggless Fresh Pineapple Cake',
     category: 'Eggless Cakes',
-    price: 36.0,
-    priceNum: 36.0,
-    description: '100% vegetarian moist cocoa sponge bound with greek yogurt mousse and silky dark chocolate ganache.',
+    price: 499,
+    priceNum: 499,
+    description: '100% vegetarian moist sponge layered with juicy pineapple crushed slices and light vanilla cream.',
     imageUrl: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
     available: true,
-    ingredients: ['100% Pure Cocoa', 'Greek Yogurt', 'Dark Belgian Choco Flakes']
+    isEggless: true,
+    isFeatured: true,
+    ingredients: ['100% Eggless Sponge', 'Fresh Pineapple Slices', 'Whipped Cream', 'Cherries']
+  },
+  {
+    id: 'eggless-choco-fudge',
+    name: 'Pure Eggless Dark Chocolate Truffle Cake',
+    category: 'Eggless Cakes',
+    price: 599,
+    priceNum: 599,
+    description: '100% vegetarian dark chocolate sponge covered in rich dark ganache.',
+    imageUrl: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isEggless: true,
+    ingredients: ['100% Eggless Cocoa Sponge', 'Belgian Ganache', 'Dark Chocolate Shavings']
   },
 
   // --- Chocolate Cakes ---
   {
-    id: 'choco-nutella-truffle',
-    name: 'Belgian Nutella Truffle Overload',
+    id: 'choco-oreo-overload',
+    name: 'Oreo Crunch & Truffle Overload Cake',
     category: 'Chocolate Cakes',
-    price: 48.0,
-    priceNum: 48.0,
-    description: 'Deep chocolate sponge filled with hazelnut Nutella spread, Ferrero Rocher pralines, and dark truffle glaze.',
+    price: 599,
+    priceNum: 599,
+    description: 'Moist chocolate sponge filled with crushed Oreo cookies and chocolate ganache cream.',
     imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=600',
     available: true,
-    isSignature: true,
-    ingredients: ['Nutella Spread', 'Ferrero Rocher Chunks', '70% Belgian Chocolate']
+    isTrending: true,
+    ingredients: ['Oreo Biscuits', 'Dark Ganache', 'Whipped Oreo Cream']
   },
 
   // --- Kids Theme Cakes ---
@@ -292,42 +361,83 @@ export const PRODUCTS: ProductItem[] = [
     id: 'kids-superhero-fantasy',
     name: 'Super Kingdom Kids Fantasy Cake',
     category: 'Kids Theme Cakes',
-    price: 55.0,
-    priceNum: 55.0,
-    description: 'Playful multi-colored rainbow sponge cake with fondant superhero emblems and star toppers.',
+    price: 899,
+    priceNum: 899,
+    description: 'Playful rainbow sponge cake with hand-crafted superhero fondant toppers.',
     imageUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=600',
     available: true,
-    ingredients: ['Natural Food Colors', 'Rainbow Sponge', 'Vanilla Buttercream']
+    ingredients: ['Rainbow Sponge', 'Fondant Toppers', 'Vanilla Buttercream']
   },
 
   // --- Fruit Cakes ---
   {
-    id: 'fruit-harvest-tart',
-    name: 'Exotic Fruit Harvest Gateau',
+    id: 'fruit-fresh-pineapple',
+    name: 'Classic Fresh Pineapple Delight Cake',
     category: 'Fruit Cakes',
-    price: 40.0,
-    priceNum: 40.0,
-    description: 'Light vanilla sponge layered with kiwi, dragonfruit, fresh mangoes, and passionfruit curd.',
+    price: 499,
+    priceNum: 499,
+    description: 'Soft sponge soaked in pineapple juice, garnished with glazed pineapple slices and cherries.',
     imageUrl: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
     available: true,
-    ingredients: ['Kiwi', 'Dragonfruit', 'Alphonso Mango', 'Diplomat Cream']
+    ingredients: ['Pineapple Slices', 'Vanilla Sponge', 'Cherries']
+  },
+  {
+    id: 'fruit-harvest-tart',
+    name: 'Exotic Fresh Fruit Harvest Gateau',
+    category: 'Fruit Cakes',
+    price: 699,
+    priceNum: 699,
+    description: 'Vanilla sponge loaded with kiwi, dragonfruit, fresh Alphonso mangoes, and sweet cream.',
+    imageUrl: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isRecommended: true,
+    ingredients: ['Kiwi', 'Dragonfruit', 'Alphonso Mango', 'Fresh Cream']
+  },
+
+  // --- Bento Cakes ---
+  {
+    id: 'bento-cute-love',
+    name: 'Cute Pastel Love Bento Cake',
+    category: 'Bento Cakes',
+    price: 299,
+    priceNum: 299,
+    description: '4-inch mini bento cake in eco-friendly sugar cane box with custom pastel piping.',
+    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    isTrending: true,
+    ingredients: ['Vanilla Sponge', 'Pastel Cream', 'Bento Box']
+  },
+  {
+    id: 'bento-birthday-wish',
+    name: 'Personalized Birthday Wish Bento Cake',
+    category: 'Bento Cakes',
+    price: 349,
+    priceNum: 349,
+    description: '4-inch chocolate truffle mini bento cake with custom written birthday message.',
+    imageUrl: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
+    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
+    available: true,
+    ingredients: ['Chocolate Sponge', 'Truffle Cream', 'Personalized Piping']
   },
 
   // --- Gift Portal ---
   {
     id: 'gift-deluxe-box',
     name: 'The King Bakers Royal Celebration Box',
-    price: 65.0,
-    priceNum: 65.0,
-    description: 'Luxury velvet box containing mini bento cake, 6 macaron assortment, and a personalized wax-sealed greeting card.',
+    category: 'Gift Portal',
+    price: 1499,
+    priceNum: 1499,
+    description: 'Luxury box containing mini bento cake, dry fruit cookies, and a personalized wax-sealed card.',
     imageUrl: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=600',
-    category: 'Gift Portal',
     available: true,
     isSignature: true,
-    ingredients: ['Mini Bento Cake', 'French Macarons', 'Wax-Sealed Card', 'Luxury Box']
+    isFeatured: true,
+    ingredients: ['Mini Bento Cake', 'Dry Fruit Cookies', 'Greeting Card', 'Luxury Box']
   },
 
   // --- Flowers ---
@@ -335,20 +445,21 @@ export const PRODUCTS: ProductItem[] = [
     id: 'flower-dutch-roses',
     name: 'Royal Crimson Dutch Rose Bouquet',
     category: 'Flowers',
-    price: 35.0,
-    priceNum: 35.0,
-    description: 'Bunch of 12 long-stemmed crimson Dutch roses hand-tied in rustic craft paper with eucalyptus sprigs.',
+    price: 599,
+    priceNum: 599,
+    description: 'Bunch of 12 long-stemmed crimson Dutch roses hand-tied in craft paper with eucalyptus sprigs.',
     imageUrl: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=600',
     available: true,
+    isTrending: true,
     ingredients: ['12x Crimson Dutch Roses', 'Eucalyptus Foliage', 'Craft Wrapping']
   },
   {
     id: 'flower-pastel-lilies',
     name: 'Pastel Lily & Carnation Bunch',
     category: 'Flowers',
-    price: 42.0,
-    priceNum: 42.0,
+    price: 799,
+    priceNum: 799,
     description: 'Fragrant white Asiatic lilies blended with soft pink carnations and gypsophila baby breath.',
     imageUrl: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=600',
@@ -360,28 +471,31 @@ export const PRODUCTS: ProductItem[] = [
     id: 'choco-bouquet-ferrero',
     name: 'Ferrero Rocher Golden Chocolate Bouquet',
     category: 'Chocolate Bouquets',
-    price: 45.0,
-    priceNum: 45.0,
-    description: '16 golden Ferrero Rocher pralines sculpted into a stunning floral bouquet wrapped in black satin ribbon.',
+    price: 699,
+    priceNum: 699,
+    description: '16 golden Ferrero Rocher pralines sculpted into a stunning bouquet wrapped in red satin ribbon.',
     imageUrl: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=600',
     available: true,
     isSignature: true,
+    isTrending: true,
     ingredients: ['16x Ferrero Rocher', 'Satin Bows', 'Floral Base']
   },
 
   // --- Gift Hampers ---
   {
-    id: 'hamper-sourdough-chest',
-    name: 'Artisan Sourdough & Wild Honey Hamper',
+    id: 'hamper-royal-chest',
+    name: 'Artisan Indian Celebration Sweets & Tea Hamper',
     category: 'Gift Hampers',
-    price: 52.0,
-    priceNum: 52.0,
-    description: 'Handcrafted wooden chest containing 1 sourdough loaf, raw wildflower honey, seeded rye crispbreads, and organic tea.',
+    price: 999,
+    priceNum: 999,
+    description: 'Handcrafted wooden chest containing 1 dry fruit plum cake, raw wildflower honey, pistachio shortbread, and Assam tea.',
     imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600',
     available: true,
-    isSignature: true
+    isSignature: true,
+    isFeatured: true,
+    ingredients: ['Dry Fruit Cake', 'Assam Tea', 'Raw Honey', 'Gourmet Cookies']
   },
 
   // --- Balloon Decoration ---
@@ -389,8 +503,8 @@ export const PRODUCTS: ProductItem[] = [
     id: 'balloon-pastel-arch',
     name: 'Pastel & Metallic Gold Balloon Arch Package',
     category: 'Balloon Decoration',
-    price: 85.0,
-    priceNum: 85.0,
+    price: 1499,
+    priceNum: 1499,
     description: 'Custom 8ft organic balloon arch styled in blush nude, sage green, and chrome gold for cake backdrop setup.',
     imageUrl: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=600',
@@ -402,8 +516,8 @@ export const PRODUCTS: ProductItem[] = [
     id: 'acc-beeswax-candle-pack',
     name: 'Natural Honey Beeswax Birthday Candles',
     category: 'Birthday Accessories',
-    price: 6.0,
-    priceNum: 6.0,
+    price: 149,
+    priceNum: 149,
     description: 'Hand-dipped 100% natural beeswax candles with subtle sweet honey aroma.',
     imageUrl: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600',
@@ -413,8 +527,8 @@ export const PRODUCTS: ProductItem[] = [
     id: 'acc-sparkler-fountain',
     name: 'Golden Cake Sparkler Fountain (Pack of 4)',
     category: 'Birthday Accessories',
-    price: 12.0,
-    priceNum: 12.0,
+    price: 199,
+    priceNum: 199,
     description: 'Smokeless cake sparklers erupting into 45 seconds of gold glitter flame.',
     imageUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=600',
@@ -423,30 +537,32 @@ export const PRODUCTS: ProductItem[] = [
 
   // --- Recommend For You ---
   {
-    id: 'rec-almond-croissant',
-    name: 'Baker Choice Twice-Baked Almond Croissant',
+    id: 'rec-rasmalai-jar',
+    name: 'Eggless Rasmalai Jar Cake',
     category: 'Recommend For You',
-    price: 6.5,
-    priceNum: 6.5,
-    description: 'Flaky French butter pastry filled with rich house-made frangipane and toasted almonds.',
+    price: 199,
+    priceNum: 199,
+    description: 'Layered glass jar with cardamom sponge, saffron rabri, and soft rasmalai chunks.',
     imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600',
     available: true,
-    isSignature: true
+    isSignature: true,
+    isRecommended: true
   },
 
   // --- Trending ---
   {
     id: 'trend-sea-salt-cookie',
-    name: 'Maldon Sea Salt Dark Choco Chunk Cookie',
+    name: 'Dark Choco Chunk Bakery Cookie',
     category: 'Trending',
-    price: 4.0,
-    priceNum: 4.0,
-    description: 'Brown butter base with 72% dark chocolate chunks and Maldon sea salt flakes.',
+    price: 149,
+    priceNum: 149,
+    description: 'Butter dough infused with 72% dark chocolate chunks and sea salt flakes.',
     imageUrl: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=600',
     available: true,
-    isSignature: true
+    isSignature: true,
+    isTrending: true
   },
 
   // --- Bamboo + Chocolate Gifts ---
@@ -454,8 +570,8 @@ export const PRODUCTS: ProductItem[] = [
     id: 'bamboo-choco-serenity',
     name: 'Lucky 2-Layer Bamboo & Truffle Planter Gift',
     category: 'Bamboo + Chocolate Gifts',
-    price: 32.0,
-    priceNum: 32.0,
+    price: 599,
+    priceNum: 599,
     description: 'Fresh 2-layer lucky indoor bamboo plant in ceramic vase paired with a box of 8 artisanal dark chocolate pralines.',
     imageUrl: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600',

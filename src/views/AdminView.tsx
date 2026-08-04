@@ -95,9 +95,9 @@ const DEFAULT_GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: 'g4',
-    title: 'Artisan Fresh Sourdough Loaves',
+    title: 'Artisan Rasmalai Celebration Cake',
     category: 'Gift Hampers',
-    imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600'
+    imageUrl: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600'
   }
 ];
 
@@ -1651,7 +1651,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
                   type="text"
                   value={bakerySettings.address}
                   onChange={(e) => setBakerySettings({ ...bakerySettings, address: e.target.value })}
-                  placeholder="142 Artisan Boulevard, Breadville"
+                  placeholder="142 Artisan Boulevard, MG Road"
                   className="w-full px-3.5 py-2.5 border border-[#d5c3b6] rounded-lg text-sm"
                 />
               </div>

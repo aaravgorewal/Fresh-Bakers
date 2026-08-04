@@ -37,9 +37,9 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
     if (cart.length > 0) {
       msg += `*Order Items:*\n`;
       cart.forEach((item) => {
-        msg += `• ${item.quantity}x ${item.product.name} - $${(item.product.priceNum * item.quantity).toFixed(2)}\n`;
+        msg += `• ${item.quantity}x ${item.product.name} - ₹${(item.product.priceNum * item.quantity)}\n`;
       });
-      msg += `\n*Total Amount:* $${totalAmount.toFixed(2)}\n`;
+      msg += `\n*Total Amount:* ₹${totalAmount}\n`;
     } else {
       msg += `I have a general inquiry about your daily bakes & custom catering.\n`;
     }
@@ -73,7 +73,7 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
         <div className="flex justify-between items-start border-b border-[#e8dec9] pb-4">
           <div>
             <span className="inline-flex items-center gap-1 font-label-caps text-xs text-[#825425] tracking-widest uppercase block font-bold mb-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#c59b27]" /> Direct Hearth Reservation
+              <Sparkles className="w-3.5 h-3.5 text-[#c59b27]" /> Direct Bakery Reservation
             </span>
             <h2 className="font-serif-display text-2xl sm:text-3xl text-[#1f1610] font-bold">WhatsApp Order</h2>
           </div>
@@ -91,7 +91,7 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
           <h3 className="font-serif-display font-bold text-sm text-[#1f1610] mb-3 uppercase tracking-wider flex items-center justify-between">
             <span>Your Selected Bakes ({cart.reduce((a, b) => a + b.quantity, 0)})</span>
             {cart.length > 0 && (
-              <span className="text-[#825425] font-bold text-base">${totalAmount.toFixed(2)}</span>
+              <span className="text-[#825425] font-bold text-base">₹{totalAmount}</span>
             )}
           </h3>
 
@@ -170,7 +170,7 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
               </label>
               <input
                 type="text"
-                placeholder="e.g. Sarah Jenkins"
+                placeholder="e.g. Priya Sharma"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
                 className="w-full bg-[#f4ebe1] border border-[#e8dec9] rounded-xl px-3.5 py-2.5 text-sm text-[#1f1610] focus:outline-none focus:border-[#825425]"
@@ -196,11 +196,11 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
 
           <div>
             <label className="block text-xs font-bold text-[#6e5d4f] uppercase tracking-wider mb-1.5 flex items-center gap-1">
-              <FileText className="w-3.5 h-3.5 text-[#825425]" /> Slicing or Custom Notes
+              <FileText className="w-3.5 h-3.5 text-[#825425]" /> Cake Message or Custom Notes
             </label>
             <input
               type="text"
-              placeholder="e.g. Please slice sourdoughs, gift box packaging"
+              placeholder='e.g. Eggless preference, cake message "Happy Birthday Aarav!", gift wrapping'
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className="w-full bg-[#f4ebe1] border border-[#e8dec9] rounded-xl px-3.5 py-2.5 text-sm text-[#1f1610] focus:outline-none focus:border-[#825425]"

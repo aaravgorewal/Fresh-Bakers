@@ -111,8 +111,8 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
       ? product.price
       : parseFloat(String(product.price).replace(/[^0-9.]/g, '') || '0');
   const currentMultiplier = weightOptions[selectedWeightIndex]?.multiplier || 1.0;
-  const finalPriceNum = rawBasePrice * currentMultiplier;
-  const formattedPrice = `$${finalPriceNum.toFixed(2)}`;
+  const finalPriceNum = Math.round(rawBasePrice * currentMultiplier);
+  const formattedPrice = `₹${finalPriceNum}`;
 
   // Related products logic
   const relatedProducts = allProducts
@@ -293,7 +293,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                     </span>
                     {currentMultiplier !== 1.0 && (
                       <span className="text-xs text-[#a38f7d] line-through">
-                        ${(rawBasePrice * currentMultiplier * 1.15).toFixed(2)}
+                        ₹{Math.round(rawBasePrice * currentMultiplier * 1.15)}
                       </span>
                     )}
                     <span className="text-[11px] font-bold text-[#6e5d4f] bg-[#f4ebe1] px-2.5 py-0.5 rounded-full border border-[#e8dec9]">

@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavTab, BakerySettings } from '../types';
-import { Wheat, Sparkles, ShieldCheck, Clock, Award, Flame, ArrowRight } from 'lucide-react';
+import { Cake, Sparkles, ShieldCheck, Heart, Award, Flame, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
-import { ScrollReveal, ImageZoom, RippleButton } from '../components/animations/AnimatedComponents';
 
 interface AboutViewProps {
   setActiveTab: (tab: NavTab) => void;
@@ -19,33 +18,33 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
       <section className="px-4 sm:px-8 pt-6 max-w-[1280px] mx-auto text-center space-y-6">
         <div className="space-y-3 max-w-2xl mx-auto">
           <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-4 py-1 rounded-full border border-[#e8dec9]">
-            <Sparkles className="w-3.5 h-3.5 text-[#c59b27]" /> Our Heritage & Hearth Ethos
+            <Sparkles className="w-3.5 h-3.5 text-[#c59b27]" /> Our Heritage & Artisanal Ethos
           </span>
           <h1 className="font-serif-display text-4xl sm:text-5xl md:text-6xl text-[#1f1610] font-bold tracking-tight">
             About {bakeryName}
           </h1>
           <p className="font-body-md text-[#6e5d4f] text-base sm:text-lg leading-relaxed">
-            A quiet devotion to traditional hearth breadmaking, wild sourdough fermentation, and regional heirloom grains.
+            A passionate dedication to authentic Indian bakery delicacies, Belgian chocolate truffle cakes, and fresh fusion desserts.
           </p>
         </div>
 
         {/* Hero Image Banner */}
         <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#c59b27]/30 min-h-[420px] max-w-[1100px] mx-auto flex items-end p-8 text-left">
           <img
-            src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=1600"
-            alt={`Baker working at ${bakeryName}`}
+            src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1600"
+            alt={`Master baker at ${bakeryName}`}
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#16110d] via-[#16110d]/50 to-transparent" />
           <div className="relative z-10 space-y-2 max-w-xl text-[#faf6f0]">
             <span className="text-[#d4a373] text-xs font-bold uppercase tracking-widest flex items-center gap-1.5">
-              <Award className="w-4 h-4" /> Established Hearth Heritage
+              <Award className="w-4 h-4" /> Established Indian Bakery Tradition
             </span>
             <h2 className="font-serif-display text-2xl sm:text-3xl font-bold">
-              Where Time, Flour & Hearth Steam Meet
+              Where Pure Dairy Cream & Master Craft Meet
             </h2>
             <p className="text-xs sm:text-sm text-[#dccbbb] leading-relaxed">
-              Every loaf is shaped by hand using our 50-year-old sourdough starter and baked on stone decks at 480°F.
+              Every celebration cake is baked fresh daily using pure ingredients, Belgian chocolate ganache, and authentic saffron infusion.
             </p>
           </div>
         </div>
@@ -56,19 +55,19 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
         <div className="luxury-card p-8 sm:p-12 space-y-6">
           <div className="border-l-4 border-[#825425] pl-6 py-1">
             <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-[#1f1610]">
-              The Philosophy of Slow Bread
+              The Art of Fine Indian Baking
             </h2>
             <p className="font-body-md text-sm sm:text-base text-[#825425] font-semibold mt-1">
-              Refusing chemical accelerants in favor of 36-hour cold wild yeast proofing.
+              Refusing artificial preservatives in favor of daily fresh-whipped creams and authentic ingredients.
             </p>
           </div>
 
           <p className="font-body-md text-sm sm:text-base text-[#6e5d4f] leading-relaxed">
-            In an era of rapid industrial baking, {bakeryName} chooses the patient path. Every piece of bread that leaves our hearth undergoes a rigorous 36-hour cold fermentation. This extended timeline allows native wild yeasts and lactic bacteria to naturally break down complex starches into deeply aromatic, gut-friendly nutrition.
+            At {bakeryName}, we believe every milestone celebration deserves an extraordinary centerpiece. From iconic Dutch Chocolate Truffles and rich Black Forest gateaux to our signature Rasmalai Fusion cakes, every bake is crafted with precision and love.
           </p>
 
           <p className="font-body-md text-sm sm:text-base text-[#6e5d4f] leading-relaxed">
-            We work directly with local organic millers cultivating ancient heirloom wheat varieties—Einkorn, Emmer, Spelt, and Dark Rye. Our flour is stone-milled weekly, preserving the germ and essential oils that give our bread its golden crumb and distinct hazelnut aroma.
+            We source 100% pure vegetarian ingredients, rich cocoa, fresh Alphonso mangoes, organic dry fruits, and authentic Kashmiri saffron kesar. Whether it is an eggless birthday cake or a custom bento gift box, our master pastry chefs take pride in every delicate detail.
           </p>
         </div>
 
@@ -76,31 +75,31 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <motion.div whileHover={{ y: -4 }} className="luxury-card p-6 text-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-[#825425] text-white flex items-center justify-center mx-auto shadow-md">
-              <Wheat className="w-6 h-6" />
+              <ShieldCheck className="w-6 h-6" />
             </div>
-            <h3 className="font-serif-display text-lg font-bold text-[#1f1610]">100% Stone-Ground</h3>
+            <h3 className="font-serif-display text-lg font-bold text-[#1f1610]">100% Pure & Fresh</h3>
             <p className="font-body-md text-xs text-[#6e5d4f] leading-relaxed">
-              Milled at low temperatures to retain natural vitamins, bran, and nutrient-dense germ.
+              Prepared daily with pure butter, fresh dairy cream, and zero artificial preservatives.
             </p>
           </motion.div>
 
           <motion.div whileHover={{ y: -4 }} className="luxury-card p-6 text-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-[#825425] text-white flex items-center justify-center mx-auto shadow-md">
-              <Clock className="w-6 h-6" />
+              <Heart className="w-6 h-6" />
             </div>
-            <h3 className="font-serif-display text-lg font-bold text-[#1f1610]">36h Cold Ferment</h3>
+            <h3 className="font-serif-display text-lg font-bold text-[#1f1610]">Eggless Speciality</h3>
             <p className="font-body-md text-xs text-[#6e5d4f] leading-relaxed">
-              Naturally fermented wild starter builds gut-friendly flora and rich caramelisation.
+              Wide collection of 100% vegetarian eggless cakes crafted with light, fluffy sponges.
             </p>
           </motion.div>
 
           <motion.div whileHover={{ y: -4 }} className="luxury-card p-6 text-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-[#825425] text-white flex items-center justify-center mx-auto shadow-md">
-              <Flame className="w-6 h-6" />
+              <Cake className="w-6 h-6" />
             </div>
-            <h3 className="font-serif-display text-lg font-bold text-[#1f1610]">Hand Lamination</h3>
+            <h3 className="font-serif-display text-lg font-bold text-[#1f1610]">Custom Cake Design</h3>
             <p className="font-body-md text-xs text-[#6e5d4f] leading-relaxed">
-              Our pastries are layered by hand with 84% Normandy cultured butter over 3 days.
+              Bespoke photo cakes, multi-tier wedding showpieces, and cute mini bento boxes.
             </p>
           </motion.div>
         </div>
@@ -120,37 +119,37 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="luxury-card p-4 space-y-3">
             <img
-              src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600"
-              alt="Hand shaping sourdough dough"
+              src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600"
+              alt="Chocolate Truffle Glazing"
               className="w-full h-56 object-cover rounded-2xl"
             />
-            <h4 className="font-serif-display text-lg font-bold text-[#1f1610]">1. Hand Shaping</h4>
+            <h4 className="font-serif-display text-lg font-bold text-[#1f1610]">1. Truffle Glazing</h4>
             <p className="font-body-md text-xs text-[#6e5d4f] leading-relaxed">
-              Gentle tension building preserves delicate fermentation gas bubbles.
+              Rich 70% dark Belgian cocoa ganache poured smoothly over moist sponge layers.
             </p>
           </div>
 
           <div className="luxury-card p-4 space-y-3">
             <img
-              src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=600"
-              alt="Flaky viennoiserie croissant fold"
+              src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=600"
+              alt="Rasmalai Fusion Layering"
               className="w-full h-56 object-cover rounded-2xl"
             />
-            <h4 className="font-serif-display text-lg font-bold text-[#1f1610]">2. Viennoiserie Lamination</h4>
+            <h4 className="font-serif-display text-lg font-bold text-[#1f1610]">2. Fusion Crafting</h4>
             <p className="font-body-md text-xs text-[#6e5d4f] leading-relaxed">
-              27 precise butter folds create paper-thin flaky layers that melt in your mouth.
+              Soft cardamom sponge infused with authentic saffron rabri and rasmalai.
             </p>
           </div>
 
           <div className="luxury-card p-4 space-y-3">
             <img
-              src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&q=80&w=600"
-              alt="Baguettes emerging hot from hearth oven"
+              src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600"
+              alt="Bespoke Cake Finishing"
               className="w-full h-56 object-cover rounded-2xl"
             />
-            <h4 className="font-serif-display text-lg font-bold text-[#1f1610]">3. Stone Hearth Firing</h4>
+            <h4 className="font-serif-display text-lg font-bold text-[#1f1610]">3. Bespoke Finishing</h4>
             <p className="font-body-md text-xs text-[#6e5d4f] leading-relaxed">
-              Direct contact with 480°F stone deck produces dark caramelised crusts.
+              Hand-decorating with edible 24k gold leaf, fresh flowers, and sparkler tops.
             </p>
           </div>
         </div>
@@ -160,10 +159,10 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
         <div className="relative rounded-3xl bg-[#16110d] text-[#faf6f0] p-8 sm:p-12 border border-[#c59b27]/30 text-center max-w-3xl mx-auto space-y-6 shadow-2xl">
           <h2 className="font-serif-display text-3xl sm:text-4xl font-bold">
-            Taste the Difference of Real Artisan Bread
+            Taste the Magic of Authentic Bakery Delicacies
           </h2>
           <p className="font-body-md text-xs sm:text-sm text-[#dccbbb] leading-relaxed max-w-md mx-auto">
-            Reserve your fresh daily bakes or custom hampers directly on WhatsApp for guaranteed same-day pickup.
+            Pre-order your favorite celebration cake or gift hamper on WhatsApp for instant delivery or pickup.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <button
@@ -173,7 +172,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
               }}
               className="btn-gold py-3 px-8 text-xs font-bold uppercase tracking-wider flex items-center gap-2"
             >
-              <span>Explore Daily Menu</span>
+              <span>Explore Menu</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
@@ -189,4 +188,3 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
     </div>
   );
 };
-

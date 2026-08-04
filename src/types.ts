@@ -10,6 +10,7 @@ export type Category =
   | 'Chocolate Cakes'
   | 'Kids Theme Cakes'
   | 'Fruit Cakes'
+  | 'Bento Cakes'
   | 'Gift Portal'
   | 'Flowers'
   | 'Chocolate Bouquets'

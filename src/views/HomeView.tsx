@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { NavTab, ProductItem, Category } from '../types';
 import { CATEGORIES, PRODUCTS } from '../data/products';
+import { CategorySection } from '../components/CategorySection';
+import { ProductCard } from '../components/ProductCard';
 import { motion, AnimatePresence } from 'motion/react';
 import { ScrollReveal, ImageZoom, RippleButton, SkeletonCard } from '../components/animations/AnimatedComponents';
 import {
@@ -47,6 +49,7 @@ interface HomeViewProps {
   onOpenQuickView: (product: ProductItem) => void;
   onAddToCart: (product: ProductItem) => void;
   onOpenOrderModal: () => void;
+  whatsappNumber?: string;
 }
 
 // Custom data for popular cake categories
@@ -55,7 +58,7 @@ const POPULAR_CAKE_CATEGORIES = [
     id: 'celebration-gateaux',
     title: 'Signature Celebration Gateaux',
     description: 'Multi-layer vanilla & Belgian dark chocolate sponges layered with fresh fruit compotes.',
-    startingPrice: '$38.00',
+    startingPrice: '₹499',
     tag: 'Bestseller',
     image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
   },
@@ -63,7 +66,7 @@ const POPULAR_CAKE_CATEGORIES = [
     id: 'bento-cakes',
     title: 'Bento Mini Party Cakes',
     description: 'Adorable 4-inch customized bento box cakes with personalized piping and vintage pastel frosting.',
-    startingPrice: '$18.00',
+    startingPrice: '₹299',
     tag: 'Trending',
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600',
   },
@@ -71,7 +74,7 @@ const POPULAR_CAKE_CATEGORIES = [
     id: 'fresh-fruit-tarts',
     title: 'Fresh Fruit & Tart Gateaux',
     description: 'Butter shortcrust loaded with vanilla bean diplomat cream and fresh seasonal berries.',
-    startingPrice: '$32.00',
+    startingPrice: '₹499',
     tag: 'Fresh Harvest',
     image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=600',
   },
@@ -79,7 +82,7 @@ const POPULAR_CAKE_CATEGORIES = [
     id: 'pistachio-velvet',
     title: 'Pistachio & Matcha Velvet',
     description: 'Pure roasted Iranian pistachio mousse paired with delicate matcha sponge layers.',
-    startingPrice: '$44.00',
+    startingPrice: '₹699',
     tag: 'Chef Choice',
     image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=600',
   },
@@ -87,7 +90,7 @@ const POPULAR_CAKE_CATEGORIES = [
     id: 'eggless-glutenfree',
     title: 'Eggless & Dietary Speciality',
     description: 'Decadent dark chocolate avocado mousse and almond flour sponge cakes.',
-    startingPrice: '$36.00',
+    startingPrice: '₹599',
     tag: 'Dietary Safe',
     image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&q=80&w=600',
   },
@@ -95,7 +98,7 @@ const POPULAR_CAKE_CATEGORIES = [
     id: 'tiered-wedding',
     title: 'Tiered Wedding & Milestone',
     description: 'Multi-tier showpiece cakes adorned with wafer paper florals and edible 24k gold leaf.',
-    startingPrice: '$120.00',
+    startingPrice: '₹1499',
     tag: 'Bespoke',
     image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=600',
   },
@@ -105,33 +108,33 @@ const POPULAR_CAKE_CATEGORIES = [
 const GIFT_HAMPERS = [
   {
     id: 'hamper-royal',
-    name: 'The Royal Sourdough & Wild Honey Chest',
-    price: 48.0,
-    items: ['1x Classic Sourdough Loaf', '1x Jar Wildflower Raw Honey', '1x Seeded Rye Crispbread', '1x Wooden Honey Dipper'],
+    name: 'The Royal Indian Celebration & Tea Chest',
+    price: 999,
+    items: ['1x Premium Dry Fruit Cake', '1x Jar Wildflower Raw Honey', '1x Pistachio Shortbread Pack', '1x Wooden Dipper & Assam Tea'],
     image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=600',
     badge: 'Luxury Box',
   },
   {
     id: 'hamper-morning',
-    name: "Morning Pastry Lover's Box",
-    price: 36.0,
-    items: ['2x Almond Croissants', '2x Pain au Chocolat', '2x Fruit Danish', '1x Single-Origin Coffee Bag'],
+    name: 'Royal Indian Sweet & Bakery Lover Box',
+    price: 799,
+    items: ['2x Chocolate Truffle Jars', '2x Eggless Pineapple Slices', '2x Butterscotch Cupcakes', '1x Special Masala Chai Tin'],
     image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=600',
     badge: 'Popular Gift',
   },
   {
     id: 'hamper-cookie',
-    name: 'Artisan Cookie & Tea Tin',
-    price: 28.0,
-    items: ['6x Sea Salt Chocolate Cookies', '6x Pistachio Shortbread', '1x Loose Leaf Earl Grey Tin'],
+    name: 'Artisan Bakery Cookie & Tea Tin',
+    price: 599,
+    items: ['6x Choco Chunk Bakery Cookies', '6x Pista Nankhatai Biscuits', '1x Loose Leaf Assam Tea Tin'],
     image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&q=80&w=600',
     badge: 'Sweet Treat',
   },
   {
     id: 'hamper-champagne',
-    name: 'Celebration Cake & Macaron Hamper',
-    price: 75.0,
-    items: ['1x Mini Bento Celebration Cake', '6x French Macarons', '1x Sparkling Cider Bottle', 'Custom Greeting Card'],
+    name: 'Celebration Bento Cake & Flowers Hamper',
+    price: 1499,
+    items: ['1x Mini Bento Celebration Cake', '6x Ferrero Rocher Chocolates', '1x Fresh Rose Bouquet', 'Custom Greeting Card'],
     image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=600',
     badge: 'Grand Celebration',
   },
@@ -142,28 +145,28 @@ const BALLOON_PACKAGES = [
   {
     id: 'balloon-arch',
     title: 'Pastel Organic Balloon Arch',
-    price: '$85.00',
+    price: '₹1499',
     desc: 'Soft nude, blush, and metallic gold balloon arch tailored for dessert table backdrops.',
     image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&q=80&w=600',
   },
   {
     id: 'balloon-numbers',
     title: 'Golden Metallic Age Balloons',
-    price: '$18.00',
+    price: '₹299',
     desc: '40-inch foil helium number balloons (0-9) anchored with satin ribbon weights.',
     image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=600',
   },
   {
     id: 'balloon-backdrop',
     title: 'Theme Cake Table Decor Setup',
-    price: '$120.00',
+    price: '₹1999',
     desc: 'Complete table styling with arch, acrylic cake pedestal, and LED warm fairy lights.',
     image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=600',
   },
   {
     id: 'balloon-reveal',
     title: 'Gender Reveal Balloon Bundle',
-    price: '$65.00',
+    price: '₹999',
     desc: '36-inch opaque confetti pop balloon plus matching pastel table bouquets.',
     image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80&w=600',
   },
@@ -175,8 +178,8 @@ const BIRTHDAY_ACCESSORIES: ProductItem[] = [
     id: 'acc-beeswax-candles',
     name: 'Honey Beeswax Birthday Candles',
     category: 'Birthday Accessories',
-    price: 6.0,
-    priceNum: 6.0,
+    price: 149,
+    priceNum: 149,
     description: 'Hand-dipped 100% natural beeswax candles with subtle sweet honey aroma.',
     imageUrl: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&q=80&w=600',
@@ -186,8 +189,8 @@ const BIRTHDAY_ACCESSORIES: ProductItem[] = [
     id: 'acc-gold-topper',
     name: "Acrylic 'Happy Birthday' Topper",
     category: 'Birthday Accessories',
-    price: 8.0,
-    priceNum: 8.0,
+    price: 199,
+    priceNum: 199,
     description: 'Mirror gold reusable acrylic cake topper statement piece.',
     imageUrl: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&q=80&w=600',
@@ -197,8 +200,8 @@ const BIRTHDAY_ACCESSORIES: ProductItem[] = [
     id: 'acc-sparkler-fountains',
     name: 'Golden Sparkler Fountains (Pack of 4)',
     category: 'Birthday Accessories',
-    price: 12.0,
-    priceNum: 12.0,
+    price: 299,
+    priceNum: 299,
     description: 'Smokeless cake sparklers that erupt into 45 seconds of gold glitter flames.',
     imageUrl: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=600',
@@ -208,8 +211,8 @@ const BIRTHDAY_ACCESSORIES: ProductItem[] = [
     id: 'acc-party-crown',
     name: 'Luxe Velvet Party Crown & Banner',
     category: 'Birthday Accessories',
-    price: 10.0,
-    priceNum: 10.0,
+    price: 199,
+    priceNum: 199,
     description: 'Soft velvet embroidered crown and matching rustic linen celebration banner.',
     imageUrl: 'https://images.unsplash.com/photo-1531956531700-dc024130f3a0?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1531956531700-dc024130f3a0?auto=format&fit=crop&q=80&w=600',
@@ -219,8 +222,8 @@ const BIRTHDAY_ACCESSORIES: ProductItem[] = [
     id: 'acc-wooden-server',
     name: 'Engraved Wooden Cake Server Set',
     category: 'Birthday Accessories',
-    price: 16.0,
-    priceNum: 16.0,
+    price: 399,
+    priceNum: 399,
     description: 'Handcrafted walnut cake knife and slice server with brass brass accents.',
     imageUrl: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&q=80&w=600',
     image: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&q=80&w=600',
@@ -232,15 +235,15 @@ const BIRTHDAY_ACCESSORIES: ProductItem[] = [
 const GALLERY_ITEMS = [
   {
     id: 'gal-1',
-    title: 'Hearth Fired Sourdough Crumb',
-    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=800',
-    caption: 'Airy, open structure from 36-hour wild starter fermentation.',
+    title: 'Chocolate Truffle Cake Decorating',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800',
+    caption: 'Rich 70% dark Belgian couverture truffle glaze poured over fresh cocoa sponge.',
   },
   {
     id: 'gal-2',
-    title: 'Hand Laminated Viennoiserie',
-    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=800',
-    caption: '27 butter folds prepared with French cultured butter.',
+    title: 'Fresh Rasmalai Fusion Cake Layering',
+    image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=800',
+    caption: 'Authentic saffron milk soaked sponges infused with cardamom and pistachios.',
   },
   {
     id: 'gal-3',
@@ -275,6 +278,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onOpenQuickView,
   onAddToCart,
   onOpenOrderModal,
+  whatsappNumber = '15550192824',
 }) => {
   const currentProducts = products.length > 0 ? products : PRODUCTS;
 
@@ -380,8 +384,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
           {/* Hero Background Image with Multi-layer Gradient */}
           <div className="absolute inset-0 z-0">
             <img
-              src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=1600"
-              alt="Freshly baked sourdoughs & artisan pastries"
+              src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1600"
+              alt="Freshly baked Indian cakes & celebration bakes"
               className="w-full h-full object-cover object-center opacity-40 scale-105 transition-transform duration-1000"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-[#16110d] via-[#16110d]/90 to-transparent md:w-3/4" />
@@ -418,7 +422,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               transition={{ duration: 0.6, delay: 0.2 }}
               className="font-body-md text-base sm:text-lg text-[#dccbbb] leading-relaxed max-w-xl"
             >
-              Slow-fermented wild sourdoughs, flaky butter viennoiserie, custom celebration cakes, and handcrafted hampers — prepared daily with stone-ground heirloom grains.
+              Freshly baked chocolate truffle cakes, authentic rasmalai fusion gateaux, custom bento cakes, and luxury gift hampers — prepared daily with fresh ingredients.
             </motion.p>
 
             {/* Value Badges */}
@@ -511,7 +515,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#825425]" />
             <input
               type="text"
-              placeholder="Search sourdough, almond croissant, celebration cake, cookies, hampers..."
+              placeholder="Search chocolate truffle, black forest, rasmalai cake, bento cake, hampers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-[#f4ebe1] border border-[#e8dec9] rounded-2xl pl-12 pr-10 py-3.5 text-sm text-[#1f1610] placeholder-[#a38f7d] focus:outline-none focus:border-[#825425] transition-all shadow-inner"
@@ -556,7 +560,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           {/* Live Search Results Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-[#e8dec9]">
             {filteredSearchProducts.slice(0, 4).map((product) => {
-              const formattedPrice = typeof product.price === 'number' ? `$${product.price.toFixed(2)}` : product.price;
+              const formattedPrice = typeof product.price === 'number' ? `₹${product.price}` : String(product.price).startsWith('₹') ? product.price : `₹${product.price}`;
               const img = product.imageUrl || product.image;
               return (
                 <div
@@ -666,76 +670,21 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 4. POPULAR CAKE CATEGORIES */}
+      {/* 4. PREMIUM CATEGORY CARDS SECTION */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
-        <div className="bg-[#1f1610] text-[#faf6f0] rounded-3xl p-6 sm:p-10 border border-[#c59b27]/30 space-y-8 shadow-2xl">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-[#c59b27]/30 pb-6">
-            <div className="space-y-2">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#c59b27] uppercase tracking-widest bg-[#c59b27]/10 px-3.5 py-1 rounded-full border border-[#c59b27]/30">
-                <Cake className="w-3.5 h-3.5" /> Celebration Masterpieces
-              </span>
-              <h2 className="font-serif-display text-3xl md:text-4xl font-bold text-[#faf6f0]">
-                Popular Cake Categories
-              </h2>
-            </div>
-            <button
-              onClick={() => {
-                onSelectCategory('Cakes');
-                setActiveTab('products');
-              }}
-              className="btn-gold py-2.5 px-6 text-xs font-bold uppercase tracking-wider"
-            >
-              Browse All Cakes
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {POPULAR_CAKE_CATEGORIES.map((cakeCat) => (
-              <motion.div
-                key={cakeCat.id}
-                whileHover={{ y: -6 }}
-                className="luxury-card overflow-hidden bg-[#2d2118] border border-[#c59b27]/30 flex flex-col justify-between group"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={cakeCat.image}
-                    alt={cakeCat.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-3 left-3 bg-[#1f1610]/90 text-[#c59b27] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border border-[#c59b27]/40 shadow-md">
-                    {cakeCat.tag}
-                  </div>
-                </div>
-
-                <div className="p-5 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-serif-display font-bold text-lg text-[#faf6f0] group-hover:text-[#c59b27] transition-colors">
-                      {cakeCat.title}
-                    </h3>
-                    <span className="text-xs font-bold text-[#d4a373] bg-[#c59b27]/10 px-2.5 py-1 rounded-md">
-                      from {cakeCat.startingPrice}
-                    </span>
-                  </div>
-
-                  <p className="font-body-md text-xs text-[#dccbbb] leading-relaxed line-clamp-2">
-                    {cakeCat.description}
-                  </p>
-
-                  <button
-                    onClick={() => {
-                      onSelectCategory('Cakes');
-                      setActiveTab('products');
-                    }}
-                    className="w-full pt-3 text-xs font-bold uppercase tracking-wider text-[#c59b27] group-hover:text-white transition-colors flex items-center justify-between border-t border-white/10"
-                  >
-                    <span>Order Custom Cake</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        <ScrollReveal delay={0.2}>
+          <CategorySection
+            selectedCategory="All"
+            onSelectCategory={(cat) => {
+              onSelectCategory(cat);
+              setActiveTab('products');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            products={products}
+            title="Explore Premium Categories"
+            subtitle="Explore handcrafted celebration cakes, fresh floral bouquets, chocolate arrangements, and luxury gift hampers."
+          />
+        </ScrollReveal>
       </section>
 
       {/* 5. TRENDING PRODUCTS */}
@@ -743,7 +692,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-3.5 py-1 rounded-full border border-[#e8dec9] mb-2">
-              <Flame className="w-3.5 h-3.5 text-amber-600" /> Hearth Top Picks
+              <Flame className="w-3.5 h-3.5 text-amber-600" /> Bakery Top Picks
             </span>
             <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
               Trending Products This Week
@@ -762,62 +711,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {trendingProducts.map((product) => {
-            const formattedPrice = typeof product.price === 'number' ? `$${product.price.toFixed(2)}` : product.price;
-            const img = product.imageUrl || product.image;
-            return (
-              <motion.div
-                key={product.id}
-                whileHover={{ y: -4 }}
-                className="luxury-card overflow-hidden flex flex-col justify-between group"
-              >
-                <div className="relative aspect-[4/3] bg-[#f4ebe1]">
-                  <img
-                    src={img}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-3 left-3 bg-[#825425] text-white text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-                    <Flame className="w-3 h-3 text-amber-300" /> HOT / TRENDING
-                  </div>
-                </div>
-
-                <div className="p-6 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase tracking-widest font-bold text-[#825425]">
-                      {product.category}
-                    </span>
-                    <span className="font-serif-display font-bold text-lg text-[#825425]">
-                      {formattedPrice}
-                    </span>
-                  </div>
-
-                  <h3 className="font-serif-display text-xl font-bold text-[#1f1610] group-hover:text-[#825425] transition-colors">
-                    {product.name}
-                  </h3>
-
-                  <p className="font-body-md text-xs text-[#6e5d4f] line-clamp-2 leading-relaxed">
-                    {product.description}
-                  </p>
-
-                  <div className="pt-3 border-t border-[#e8dec9] flex gap-2">
-                    <button
-                      onClick={() => handleQuickAdd(product)}
-                      className="flex-1 btn-gold py-2.5 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" /> Quick Add
-                    </button>
-                    <button
-                      onClick={() => onOpenQuickView(product)}
-                      className="btn-secondary py-2.5 px-3 text-xs"
-                    >
-                      Details
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+          {trendingProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onOpenQuickView={onOpenQuickView}
+              onAddToCart={handleQuickAdd}
+              whatsappNumber={whatsappNumber}
+            />
+          ))}
         </div>
       </section>
 
@@ -840,7 +742,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {recommendedProducts.map((product) => {
-              const formattedPrice = typeof product.price === 'number' ? `$${product.price.toFixed(2)}` : product.price;
+              const formattedPrice = typeof product.price === 'number' ? `₹${product.price}` : String(product.price).startsWith('₹') ? product.price : `₹${product.price}`;
               const img = product.imageUrl || product.image;
               return (
                 <div
@@ -938,7 +840,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             Artisan Gift Portal
           </h2>
           <p className="font-body-md text-sm text-[#6e5d4f] leading-relaxed">
-            Handcrafted wooden chests, luxury gift boxes, and gourmet sourdough hampers packed with raw honeys, organic jams, and sweet bakery treats.
+            Handcrafted wooden chests, luxury gift boxes, and gourmet celebration hampers packed with dry fruit cakes, artisanal cookies, chocolates, and flowers.
           </p>
         </div>
 
@@ -963,7 +865,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                       {hamper.name}
                     </h3>
                   </div>
-                  <p className="text-lg font-serif-display font-bold text-[#825425] mb-3">${hamper.price.toFixed(2)}</p>
+                  <p className="text-lg font-serif-display font-bold text-[#825425] mb-3">₹{hamper.price}</p>
 
                   <ul className="space-y-1.5 text-xs text-[#6e5d4f] border-t border-[#e8dec9] pt-3">
                     {hamper.items.map((item, idx) => (
@@ -1065,7 +967,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 <img src={acc.imageUrl} alt={acc.name} className="w-full h-32 object-cover rounded-xl border border-[#e8dec9]" />
                 <div>
                   <h4 className="font-serif-display font-bold text-xs text-[#1f1610] line-clamp-1">{acc.name}</h4>
-                  <p className="text-xs font-bold text-[#825425] mt-0.5">${acc.price.toFixed(2)}</p>
+                  <p className="text-xs font-bold text-[#825425] mt-0.5">₹{acc.price}</p>
                 </div>
                 <button
                   onClick={() => handleQuickAdd(acc)}
@@ -1099,23 +1001,23 @@ export const HomeView: React.FC<HomeViewProps> = ({
             </div>
             <div className="p-4 bg-[#2d2118] rounded-2xl border border-[#c59b27]/20 flex flex-col items-center justify-center space-y-1">
               <ShieldCheck className="w-6 h-6 text-[#c59b27]" />
-              <span className="font-bold text-[#faf6f0]">84% Normandy Butter</span>
-              <span className="text-[10px] text-[#a38f7d]">French Cultured</span>
+              <span className="font-bold text-[#faf6f0]">Pure Dairy Cream</span>
+              <span className="text-[10px] text-[#a38f7d]">100% Rich Butter</span>
             </div>
             <div className="p-4 bg-[#2d2118] rounded-2xl border border-[#c59b27]/20 flex flex-col items-center justify-center space-y-1">
               <Award className="w-6 h-6 text-[#c59b27]" />
-              <span className="font-bold text-[#faf6f0]">Valrhona Belgian Choc</span>
-              <span className="text-[10px] text-[#a38f7d]">72% Single Origin</span>
+              <span className="font-bold text-[#faf6f0]">Belgian Dark Chocolate</span>
+              <span className="text-[10px] text-[#a38f7d]">70% Cocoa Truffle</span>
             </div>
             <div className="p-4 bg-[#2d2118] rounded-2xl border border-[#c59b27]/20 flex flex-col items-center justify-center space-y-1">
               <Crown className="w-6 h-6 text-[#c59b27]" />
-              <span className="font-bold text-[#faf6f0]">Wildflower Raw Honey</span>
-              <span className="text-[10px] text-[#a38f7d]">Local Apiary Direct</span>
+              <span className="font-bold text-[#faf6f0]">Authentic Saffron Kesar</span>
+              <span className="text-[10px] text-[#a38f7d]">Direct Farm Sourced</span>
             </div>
             <div className="p-4 bg-[#2d2118] rounded-2xl border border-[#c59b27]/20 flex flex-col items-center justify-center space-y-1 col-span-2 sm:col-span-1">
               <Sparkles className="w-6 h-6 text-[#c59b27]" />
-              <span className="font-bold text-[#faf6f0]">Free-Range Farm Eggs</span>
-              <span className="text-[10px] text-[#a38f7d]">100% Organic Pasture</span>
+              <span className="font-bold text-[#faf6f0]">100% Eggless Option</span>
+              <span className="text-[10px] text-[#a38f7d]">Pure Vegetarian Safe</span>
             </div>
           </div>
         </div>
@@ -1131,7 +1033,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             Craftsmanship Gallery
           </h2>
           <p className="font-body-md text-xs sm:text-sm text-[#6e5d4f]">
-            Behind the scenes at our hearth: wild sourdough shaping, pastry lamination, and bespoke cake styling.
+            Behind the scenes at our bakery kitchen: chocolate truffle glazing, rasmalai cake layering, and bespoke cake styling.
           </p>
         </div>
 
@@ -1182,10 +1084,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
             Community Stories
           </span>
           <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
-            Loved by Sourdough Enthusiasts
+            Loved by Cake & Dessert Lovers
           </h2>
           <p className="font-body-md text-sm text-[#6e5d4f]">
-            Real feedback from local regulars, breakfast hosts, and custom cake clients.
+            Real feedback from local regulars, celebration hosts, and custom cake clients.
           </p>
         </div>
 
@@ -1199,16 +1101,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 ))}
               </div>
               <p className="font-body-md text-sm text-[#1f1610] leading-relaxed mb-6 italic">
-                "The Classic Sourdough has the most unbelievable blistered crust and open airy crumb. We order two loaves every single Friday for weekend family breakfasts!"
+                "The Chocolate Truffle Cake has the most unbelievable rich ganache and moist sponge. We order it for every single family birthday!"
               </p>
             </div>
             <div className="pt-4 border-t border-[#e8dec9] flex items-center justify-between text-xs">
               <div>
-                <h4 className="font-bold text-[#1f1610]">Sarah Mitchell</h4>
+                <h4 className="font-bold text-[#1f1610]">Aarav Sharma</h4>
                 <span className="text-[#a38f7d] text-[11px] block">Neighborhood Resident</span>
               </div>
               <span className="bg-[#f4ebe1] text-[#825425] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-[#e8dec9]">
-                Classic Sourdough
+                Chocolate Truffle Cake
               </span>
             </div>
           </motion.div>
@@ -1222,16 +1124,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 ))}
               </div>
               <p className="font-body-md text-sm text-[#1f1610] leading-relaxed mb-6 italic">
-                "Hands down the crispest almond croissants in town. The butter layers melt in your mouth and the WhatsApp pre-order makes morning pickup completely seamless."
+                "Hands down the best Rasmalai Fusion Cake in town! The saffron milk and fresh pistachios melted in our mouth. WhatsApp pre-order was seamless."
               </p>
             </div>
             <div className="pt-4 border-t border-[#e8dec9] flex items-center justify-between text-xs">
               <div>
-                <h4 className="font-bold text-[#1f1610]">David Kapoor</h4>
+                <h4 className="font-bold text-[#1f1610]">Neha & Rahul Kapoor</h4>
                 <span className="text-[#a38f7d] text-[11px] block">Daily Bakery Regular</span>
               </div>
               <span className="bg-[#f4ebe1] text-[#825425] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-[#e8dec9]">
-                Almond Croissant
+                Rasmalai Cake
               </span>
             </div>
           </motion.div>
@@ -1266,13 +1168,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
         <div className="luxury-card p-8 sm:p-12 space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
             <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block font-bold text-xs">
-              Visit Our Bakery Hearth
+              Visit Our Bakery
             </span>
             <h2 className="font-serif-display text-3xl font-bold text-[#1f1610]">
               Get in Touch & Pre-Order
             </h2>
             <p className="font-body-md text-xs sm:text-sm text-[#6e5d4f]">
-              142 Artisan Boulevard, Mill District • Tue – Sun: 7:00 AM – 4:00 PM
+              142 Artisan Boulevard, MG Road • Mon – Sun: 8:00 AM – 10:00 PM
             </p>
           </div>
 
@@ -1280,7 +1182,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="bg-[#f4ebe1] p-6 rounded-2xl border border-[#e8dec9] text-center space-y-2">
               <MapPin className="w-6 h-6 text-[#825425] mx-auto" />
               <h4 className="font-serif-display font-bold text-base text-[#1f1610]">Bakery Storefront</h4>
-              <p className="text-xs text-[#6e5d4f]">142 Artisan Boulevard, Mill District</p>
+              <p className="text-xs text-[#6e5d4f]">142 Artisan Boulevard, MG Road</p>
               <button
                 onClick={() => {
                   window.open('https://maps.google.com/?q=142+Artisan+Boulevard', '_blank');
@@ -1293,9 +1195,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
             <div className="bg-[#f4ebe1] p-6 rounded-2xl border border-[#e8dec9] text-center space-y-2">
               <Clock className="w-6 h-6 text-[#825425] mx-auto" />
-              <h4 className="font-serif-display font-bold text-base text-[#1f1610]">Hearth Hours</h4>
-              <p className="text-xs text-[#6e5d4f]">Tue – Sun: 7:00 AM – 4:00 PM</p>
-              <p className="text-[10px] text-[#a38f7d]">Fresh oven bakes ready at sunrise</p>
+              <h4 className="font-serif-display font-bold text-base text-[#1f1610]">Bakery Hours</h4>
+              <p className="text-xs text-[#6e5d4f]">Mon – Sun: 8:00 AM – 10:00 PM</p>
+              <p className="text-[10px] text-[#a38f7d]">Fresh oven bakes ready every morning</p>
             </div>
 
             <div className="bg-[#f4ebe1] p-6 rounded-2xl border border-[#e8dec9] text-center space-y-2 sm:col-span-2 lg:col-span-1">

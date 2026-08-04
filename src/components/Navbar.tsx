@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavTab } from '../types';
-import { ShoppingBag, Menu, X, Lock, Wheat, Sparkles } from 'lucide-react';
+import { ShoppingBag, Menu, X, Lock, Cake, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface NavbarProps {
@@ -42,14 +42,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="group flex items-center gap-3 text-left focus:outline-none"
         >
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#825425] to-[#673d10] text-[#faf6f0] flex items-center justify-center shadow-md shadow-[#825425]/20 group-hover:scale-105 transition-transform duration-300">
-            <Wheat className="w-5 h-5 text-[#d4a373]" />
+            <Cake className="w-5 h-5 text-[#d4a373]" />
           </div>
           <div>
             <span className="font-serif-display text-xl sm:text-2xl font-bold tracking-tight text-[#1f1610] group-hover:text-[#825425] transition-colors block leading-none">
               Fresh Bakers
             </span>
             <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#a38f7d] block mt-0.5">
-              Artisan Hearth & Gifting
+              Indian Bakery & Gifting
             </span>
           </div>
         </button>

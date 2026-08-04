@@ -34,13 +34,13 @@ export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
       {/* 1. PAGE HEADER */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
         <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-4 py-1 rounded-full border border-[#e8dec9]">
-          <Sparkles className="w-3.5 h-3.5 text-[#c59b27]" /> Visit Our Bakery Hearth
+          <Sparkles className="w-3.5 h-3.5 text-[#c59b27]" /> Visit Our Bakery
         </span>
         <h1 className="font-serif-display text-4xl sm:text-5xl text-[#1f1610] font-bold tracking-tight">
           Get in Touch
         </h1>
         <p className="font-body-md text-[#6e5d4f] text-sm sm:text-base leading-relaxed">
-          Stop by our bakery counter for warm sourdough and artisanal coffee, or connect directly with us for pre-orders, custom celebratory cakes, and catering hampers.
+          Stop by our bakery counter for fresh cakes and artisanal beverages, or connect directly with us for pre-orders, custom celebratory cakes, and gift hampers.
         </p>
       </div>
 
@@ -179,7 +179,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
               <MapPin className="w-6 h-6" />
             </div>
             <div className="bg-[#1f1610] text-[#faf6f0] text-xs font-bold px-3.5 py-1.5 shadow-xl mt-1.5 rounded-full border border-[#c59b27]/40 whitespace-nowrap">
-              {bakeryName} Hearth Storefront
+              {bakeryName} Storefront
             </div>
           </div>
         </div>

@@ -57,12 +57,14 @@ export function generateProductWhatsAppMessage(
       const symbol = options.currencySymbol || '₹';
       priceStr = `${symbol}${options.price}`;
     } else {
-      priceStr = String(options.price);
+      priceStr = String(options.price).replace(/\$/g, '₹');
     }
   } else {
     const rawPriceStr = String(product.price);
-    if (rawPriceStr.includes('₹') || rawPriceStr.includes('$')) {
+    if (rawPriceStr.includes('₹')) {
       priceStr = rawPriceStr;
+    } else if (rawPriceStr.includes('$')) {
+      priceStr = rawPriceStr.replace(/\$/g, '₹');
     } else {
       const numPrice = typeof product.price === 'number'
         ? product.price
