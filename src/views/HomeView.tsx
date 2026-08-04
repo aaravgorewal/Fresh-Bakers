@@ -348,12 +348,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
     }, 2000);
   };
 
-  // Trending & Recommend sets
+  // Best Seller & Trending sets
+  const bestSellerCakes = currentProducts.filter((p) => p.category.includes('Cake') || p.isFeatured || p.isSignature).slice(0, 4);
   const trendingProducts = currentProducts.slice(0, 6);
-  const recommendedProducts = currentProducts.filter((p) => p.isSignature || p.priceNum! > 5.0).slice(0, 4);
 
   return (
-    <div className="w-full space-y-20 pb-20 relative">
+    <div className="w-full space-y-24 md:space-y-32 pb-28 relative bg-[#FFFBF7]">
       {/* Toast Feedback */}
       <AnimatePresence>
         {addedItemName && (
@@ -491,7 +491,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       {/* 2. CIRCULAR SHOP BY CATEGORY NAVIGATION */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
-        <div className="mb-6 text-center md:text-left">
+        <div className="mb-8 text-center">
           <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block mb-1 font-bold text-xs">
             Curated Collections
           </span>
@@ -500,7 +500,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </h2>
         </div>
 
-        <div className="flex items-center justify-start lg:justify-between gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-none pb-3 pt-1 max-w-full">
+        <div className="flex items-center justify-start lg:justify-between gap-6 sm:gap-8 overflow-x-auto scrollbar-none pb-4 pt-2 max-w-full">
           {CIRCULAR_CATEGORIES.map((cat) => (
             <button
               key={cat.name}
@@ -510,16 +510,16 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 setActiveTab('products');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="flex flex-col items-center gap-2.5 group cursor-pointer shrink-0 transition-transform duration-300"
+              className="flex flex-col items-center gap-3 group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105"
             >
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-[#f4ebe1] border-2 border-[#e8dec9] group-hover:border-[#c59b27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-[#F4EBE1] border-2 border-[#E8DEC9] group-hover:border-[#C59B27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
                 <img
                   src={cat.image}
                   alt={cat.name}
                   className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500 ease-out"
                 />
               </div>
-              <span className="text-xs sm:text-sm font-bold text-[#1f1610] group-hover:text-[#825425] transition-colors whitespace-nowrap flex items-center gap-1">
+              <span className="text-xs sm:text-sm font-bold text-[#1F1610] group-hover:text-[#825425] transition-colors whitespace-nowrap flex items-center gap-1">
                 <span>{cat.iconEmoji}</span>
                 <span>{cat.name}</span>
               </span>
@@ -528,32 +528,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 4. PREMIUM CATEGORY CARDS SECTION */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
-        <ScrollReveal delay={0.2}>
-          <CategorySection
-            selectedCategory="All"
-            onSelectCategory={(cat) => {
-              onSelectCategory(cat);
-              setActiveTab('products');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            products={products}
-            title="Explore Premium Categories"
-            subtitle="Explore handcrafted celebration cakes, fresh floral bouquets, chocolate arrangements, and luxury gift hampers."
-          />
-        </ScrollReveal>
-      </section>
-
-      {/* 5. TRENDING PRODUCTS */}
+      {/* 3. BEST SELLING CAKES */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-3.5 py-1 rounded-full border border-[#e8dec9] mb-2">
-              <Flame className="w-3.5 h-3.5 text-amber-600" /> Bakery Top Picks
+              <Crown className="w-3.5 h-3.5 text-amber-600" /> Bakery Best Sellers
             </span>
             <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
-              Trending Products This Week
+              Best Selling Cakes
             </h2>
           </div>
           <button
@@ -564,12 +547,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
             }}
             className="btn-secondary py-2.5 px-6 text-xs"
           >
-            See Whole Catalog
+            Explore All Cakes
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {trendingProducts.map((product) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {bestSellerCakes.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -581,60 +564,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 6. RECOMMEND FOR YOU */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
-        <div className="bg-[#f4ebe1]/60 border border-[#e8dec9] rounded-3xl p-6 sm:p-10 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <span className="font-label-caps text-xs text-[#825425] uppercase tracking-widest block font-bold mb-1">
-                Personalized Pairing
-              </span>
-              <h2 className="font-serif-display text-3xl font-bold text-[#1f1610]">
-                Recommended For You
-              </h2>
-            </div>
-            <p className="text-xs text-[#6e5d4f] max-w-sm">
-              Hand-picked pairings recommended by our head baker for morning breakfasts and afternoon tea pairings.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {recommendedProducts.map((product) => {
-              const formattedPrice = typeof product.price === 'number' ? `₹${product.price}` : String(product.price).startsWith('₹') ? product.price : `₹${product.price}`;
-              const img = product.imageUrl || product.image;
-              return (
-                <div
-                  key={product.id}
-                  className="bg-[#faf6f0] rounded-2xl border border-[#e8dec9] p-4 flex flex-col justify-between space-y-3 hover:border-[#c59b27] transition-all shadow-xs group"
-                >
-                  <div className="relative aspect-square rounded-xl overflow-hidden bg-[#f4ebe1]">
-                    <img src={img} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                    <span className="absolute top-2 left-2 bg-[#1f1610] text-[#c59b27] text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full border border-[#c59b27]/30">
-                      Baker's Choice
-                    </span>
-                  </div>
-
-                  <div>
-                    <h4 className="font-serif-display font-bold text-base text-[#1f1610] group-hover:text-[#825425] truncate">
-                      {product.name}
-                    </h4>
-                    <p className="text-xs font-bold text-[#825425] mt-0.5">{formattedPrice}</p>
-                  </div>
-
-                  <button
-                    onClick={() => handleQuickAdd(product)}
-                    className="w-full btn-primary py-2 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1"
-                  >
-                    <Plus className="w-3.5 h-3.5" /> Add to Order
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. MAKE EVERY OCCASION SPECIAL */}
+      {/* 4. MAKE EVERY OCCASION SPECIAL */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
         <div className="relative rounded-3xl overflow-hidden bg-[#16110d] text-[#faf6f0] p-8 sm:p-14 border border-[#c59b27]/30 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-6">
@@ -688,7 +618,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 8. GIFT PORTAL */}
+      {/* 5. GIFT PORTAL */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-4 py-1 rounded-full border border-[#e8dec9]">
@@ -760,94 +690,51 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 9. BALLOON DECORATION */}
+      {/* 6. TRENDING PRODUCTS */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-3.5 py-1 rounded-full border border-[#e8dec9] mb-2">
-              <PartyPopper className="w-3.5 h-3.5 text-[#c59b27]" /> Party Styling Add-Ons
+              <Flame className="w-3.5 h-3.5 text-amber-600" /> Bakery Top Picks
             </span>
             <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
-              Balloon & Table Styling Add-Ons
+              Trending Products This Week
             </h2>
           </div>
-          <p className="text-xs text-[#6e5d4f] max-w-sm">
-            Elevate your celebration setup with our paired event decor packages available for store pickup or venue styling.
-          </p>
+          <button
+            onClick={() => {
+              window.history.pushState(null, '', '/products');
+              setActiveTab('products');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="btn-secondary py-2.5 px-6 text-xs"
+          >
+            See Whole Catalog
+          </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {BALLOON_PACKAGES.map((pkg) => (
-            <div key={pkg.id} className="luxury-card overflow-hidden flex flex-col justify-between group">
-              <div className="relative h-44 bg-[#f4ebe1] overflow-hidden">
-                <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                <span className="absolute bottom-3 right-3 bg-[#1f1610] text-[#c59b27] text-xs font-bold px-3 py-1 rounded-full border border-[#c59b27]/30">
-                  {pkg.price}
-                </span>
-              </div>
-              <div className="p-5 space-y-2 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-serif-display font-bold text-base text-[#1f1610]">{pkg.title}</h3>
-                  <p className="font-body-md text-xs text-[#6e5d4f] leading-relaxed mt-1">{pkg.desc}</p>
-                </div>
-                <button
-                  onClick={onOpenOrderModal}
-                  className="w-full btn-secondary py-2.5 text-xs font-bold uppercase tracking-wider mt-3"
-                >
-                  Add to WhatsApp Inquiry
-                </button>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {trendingProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onOpenQuickView={onOpenQuickView}
+              onAddToCart={handleQuickAdd}
+              whatsappNumber={whatsappNumber}
+            />
           ))}
         </div>
       </section>
 
-      {/* 10. BIRTHDAY ACCESSORIES */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
-        <div className="luxury-card p-6 sm:p-10 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e8dec9] pb-4">
-            <div>
-              <span className="font-label-caps text-xs text-[#825425] uppercase tracking-widest block font-bold mb-1">
-                Celebration Essentials
-              </span>
-              <h2 className="font-serif-display text-3xl font-bold text-[#1f1610]">
-                Birthday Cake Accessories
-              </h2>
-            </div>
-            <p className="text-xs text-[#6e5d4f] max-w-sm">
-              Complete your cake order with beeswax candles, golden sparkler fountains, and custom toppers.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {BIRTHDAY_ACCESSORIES.map((acc) => (
-              <div key={acc.id} className="bg-[#faf6f0] p-4 rounded-2xl border border-[#e8dec9] flex flex-col justify-between space-y-3 hover:border-[#c59b27] transition-all">
-                <img src={acc.imageUrl} alt={acc.name} className="w-full h-32 object-cover rounded-xl border border-[#e8dec9]" />
-                <div>
-                  <h4 className="font-serif-display font-bold text-xs text-[#1f1610] line-clamp-1">{acc.name}</h4>
-                  <p className="text-xs font-bold text-[#825425] mt-0.5">₹{acc.price}</p>
-                </div>
-                <button
-                  onClick={() => handleQuickAdd(acc)}
-                  className="w-full btn-primary py-2 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1"
-                >
-                  <Plus className="w-3.5 h-3.5" /> Add to Order
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 11. TRUSTED BRANDS */}
+      {/* 7. WHY CHOOSE US - TRUSTED INGREDIENT PARTNERS */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
-        <div className="bg-[#1f1610] rounded-3xl p-6 sm:p-8 border border-[#c59b27]/30 text-[#faf6f0]">
-          <div className="text-center mb-6">
+        <div className="bg-[#1f1610] rounded-3xl p-8 sm:p-12 border border-[#c59b27]/30 text-[#faf6f0] space-y-8">
+          <div className="text-center max-w-xl mx-auto">
             <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#c59b27]">
               Quality Assurance & Artisanal Standards
             </span>
-            <h3 className="font-serif-display text-xl font-bold text-[#faf6f0] mt-1">
-              Trusted Ingredient Partners
+            <h3 className="font-serif-display text-2xl sm:text-3xl font-bold text-[#faf6f0] mt-1">
+              Why Choose Our Bakery
             </h3>
           </div>
 
@@ -881,61 +768,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 12. GALLERY */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
-        <div className="text-center max-w-xl mx-auto space-y-2">
-          <span className="font-label-caps text-[#825425] uppercase tracking-widest block font-bold text-xs">
-            Visual Storytelling
-          </span>
-          <h2 className="font-serif-display text-3xl font-bold text-[#1f1610]">
-            Craftsmanship Gallery
-          </h2>
-          <p className="font-body-md text-xs sm:text-sm text-[#6e5d4f]">
-            Behind the scenes at our bakery kitchen: chocolate truffle glazing, rasmalai cake layering, and bespoke cake styling.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {GALLERY_ITEMS.map((item) => (
-            <motion.div
-              key={item.id}
-              whileHover={{ y: -4 }}
-              onClick={() => setSelectedGalleryImage(item)}
-              className="luxury-card overflow-hidden cursor-pointer group relative aspect-[4/3]"
-            >
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end text-[#faf6f0]">
-                <h4 className="font-serif-display font-bold text-base text-[#faf6f0]">{item.title}</h4>
-                <p className="text-xs text-[#dccbbb] mt-1">{item.caption}</p>
-                <span className="text-[10px] uppercase tracking-widest font-bold text-[#c59b27] mt-2 block">
-                  Click to Expand 🔍
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Gallery Lightbox Modal */}
-        {selectedGalleryImage && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4" onClick={() => setSelectedGalleryImage(null)}>
-            <div className="relative max-w-3xl w-full bg-[#1f1610] rounded-3xl overflow-hidden border border-[#c59b27]/40 shadow-2xl p-4" onClick={(e) => e.stopPropagation()}>
-              <button
-                onClick={() => setSelectedGalleryImage(null)}
-                className="absolute top-4 right-4 bg-black/60 text-white p-2 rounded-full hover:bg-black/80 z-10"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              <img src={selectedGalleryImage.image} alt={selectedGalleryImage.title} className="w-full h-[400px] object-cover rounded-2xl mb-4" />
-              <div className="px-2 text-[#faf6f0]">
-                <h3 className="font-serif-display font-bold text-xl text-[#c59b27]">{selectedGalleryImage.title}</h3>
-                <p className="text-sm text-[#dccbbb] mt-1">{selectedGalleryImage.caption}</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* 13. TESTIMONIALS */}
+      {/* 8. CUSTOMER TESTIMONIALS */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
         <div className="text-center max-w-xl mx-auto space-y-2">
           <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block font-bold text-xs">
@@ -1021,7 +854,61 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 14. CONTACT */}
+      {/* 9. INSTAGRAM / CRAFTSMANSHIP GALLERY */}
+      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
+        <div className="text-center max-w-xl mx-auto space-y-2">
+          <span className="font-label-caps text-[#825425] uppercase tracking-widest block font-bold text-xs">
+            Visual Storytelling
+          </span>
+          <h2 className="font-serif-display text-3xl font-bold text-[#1f1610]">
+            Craftsmanship Gallery
+          </h2>
+          <p className="font-body-md text-xs sm:text-sm text-[#6e5d4f]">
+            Behind the scenes at our bakery kitchen: chocolate truffle glazing, rasmalai cake layering, and bespoke cake styling.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {GALLERY_ITEMS.map((item) => (
+            <motion.div
+              key={item.id}
+              whileHover={{ y: -4 }}
+              onClick={() => setSelectedGalleryImage(item)}
+              className="luxury-card overflow-hidden cursor-pointer group relative aspect-[4/3]"
+            >
+              <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end text-[#faf6f0]">
+                <h4 className="font-serif-display font-bold text-base text-[#faf6f0]">{item.title}</h4>
+                <p className="text-xs text-[#dccbbb] mt-1">{item.caption}</p>
+                <span className="text-[10px] uppercase tracking-widest font-bold text-[#c59b27] mt-2 block">
+                  Click to Expand 🔍
+                </span>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Gallery Lightbox Modal */}
+        {selectedGalleryImage && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4" onClick={() => setSelectedGalleryImage(null)}>
+            <div className="relative max-w-3xl w-full bg-[#1f1610] rounded-3xl overflow-hidden border border-[#c59b27]/40 shadow-2xl p-4" onClick={(e) => e.stopPropagation()}>
+              <button
+                onClick={() => setSelectedGalleryImage(null)}
+                className="absolute top-4 right-4 bg-black/60 text-white p-2 rounded-full hover:bg-black/80 z-10"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <img src={selectedGalleryImage.image} alt={selectedGalleryImage.title} className="w-full h-[400px] object-cover rounded-2xl mb-4" />
+              <div className="px-2 text-[#faf6f0]">
+                <h3 className="font-serif-display font-bold text-xl text-[#c59b27]">{selectedGalleryImage.title}</h3>
+                <p className="text-sm text-[#dccbbb] mt-1">{selectedGalleryImage.caption}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* 10. CONTACT & LOCATION */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
         <div className="luxury-card p-8 sm:p-12 space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
@@ -1045,7 +932,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 onClick={() => {
                   window.open('https://maps.google.com/?q=142+Artisan+Boulevard', '_blank');
                 }}
-                className="text-xs font-bold text-[#825425] uppercase tracking-wider underline block pt-1"
+                className="text-xs font-bold text-[#825425] uppercase tracking-wider underline block pt-1 cursor-pointer"
               >
                 Open Google Maps
               </button>
@@ -1064,7 +951,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <p className="text-xs text-[#6e5d4f]">Instant Pre-Orders & Custom Cake Inquiries</p>
               <button
                 onClick={onOpenOrderModal}
-                className="btn-gold py-2 px-4 text-xs font-bold uppercase tracking-wider mt-1"
+                className="btn-gold py-2 px-4 text-xs font-bold uppercase tracking-wider mt-1 cursor-pointer"
               >
                 Start WhatsApp Chat
               </button>

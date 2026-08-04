@@ -187,85 +187,40 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
         </div>
 
         {/* Category Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6">
           {filteredCategories.map((cat, idx) => {
             const isSelected = selectedCategory === cat.name;
-            const count = getCategoryCount(cat.name);
 
             return (
               <motion.div
                 key={cat.name}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: idx * 0.03 }}
-                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.3, delay: idx * 0.02 }}
+                whileHover={{ y: -4, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onSelectCategory(cat.name)}
-                className={`group relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-500 ease-out shadow-md hover:shadow-2xl border flex flex-col justify-between aspect-[3/4] ${
+                className={`group relative overflow-hidden rounded-2xl sm:rounded-3xl cursor-pointer transition-all duration-300 bg-white border flex flex-col items-center shadow-xs hover:shadow-xl ${
                   isSelected
-                    ? 'border-[#D97706] ring-4 ring-[#D97706]/30 shadow-2xl shadow-[#D97706]/20 scale-[1.02]'
-                    : 'border-[#F0E5DA] hover:border-[#D97706]/80 hover:shadow-xl hover:shadow-[#24140A]/15'
+                    ? 'border-[#D97706] ring-2 ring-[#D97706]/40 bg-[#FFFBF7]'
+                    : 'border-[#F0E5DA] hover:border-[#D97706]/80'
                 }`}
               >
-                {/* LARGE IMAGE BACKGROUND */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#24140A]">
+                {/* LARGE CATEGORY IMAGE CONTAINER */}
+                <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#F4EBE1]">
                   <img
                     src={cat.image}
                     alt={cat.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-90"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                   />
-                  {/* GRADIENT OVERLAY */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#24140A] via-[#24140A]/50 to-transparent group-hover:via-[#24140A]/40 transition-colors duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#24140A]/40 via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-40 group-hover:opacity-20 transition-opacity" />
                 </div>
 
-                {/* TOP HEADER IN CARD */}
-                <div className="relative z-10 p-4 flex items-center justify-between">
-                  {/* Category Icon Badge */}
-                  <div
-                    className={`w-9 h-9 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg ${
-                      isSelected
-                        ? 'bg-gradient-to-br from-[#D97706] to-[#B45309] text-white'
-                        : 'bg-[#24140A]/80 backdrop-blur-md text-[#D97706] border border-[#D97706]/30'
-                    }`}
-                  >
-                    {renderCategoryIcon(cat.icon, "w-4 h-4")}
-                  </div>
-
-                  {/* Active Indicator or Count Pill */}
-                  {isSelected ? (
-                    <span className="bg-[#D97706] text-white text-[10px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-                      <CheckCircle2 className="w-3 h-3" /> Active
-                    </span>
-                  ) : (
-                    <span className="bg-[#24140A]/80 backdrop-blur-md text-[#FAF6F0] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-white/10 group-hover:border-[#D97706]/50 group-hover:text-[#D97706] transition-colors">
-                      {count} {count === 1 ? 'Item' : 'Items'}
-                    </span>
-                  )}
-                </div>
-
-                {/* BOTTOM CONTENT IN CARD */}
-                <div className="relative z-10 p-4 pt-0 space-y-2">
-                  <span className="text-[10px] uppercase font-bold tracking-[0.18em] text-[#D97706] block">
-                    {cat.type === 'cake' ? 'Artisan Cake' : 'Gifting & Decor'}
-                  </span>
-
-                  <h3 className="font-serif-display font-bold text-base sm:text-lg text-white group-hover:text-[#D97706] transition-colors leading-snug drop-shadow-md">
+                {/* CENTERED CATEGORY TITLE */}
+                <div className="p-3.5 sm:p-4 w-full text-center flex items-center justify-center">
+                  <h3 className="font-serif-display font-bold text-sm sm:text-base text-[#24140A] group-hover:text-[#D97706] transition-colors leading-snug line-clamp-1">
                     {cat.name}
                   </h3>
-
-                  <p className="font-body-md text-[11px] text-[#FAF6F0]/80 leading-tight line-clamp-2 opacity-90 group-hover:opacity-100 transition-opacity">
-                    {cat.tagline}
-                  </p>
-
-                  <div className="pt-2 flex items-center justify-between text-xs font-bold text-[#D97706] border-t border-white/10 group-hover:border-[#D97706]/40 transition-colors">
-                    <span className="text-[11px] uppercase tracking-wider text-white group-hover:text-[#D97706] transition-colors">
-                      {isSelected ? 'Viewing Items' : 'Explore Menu'}
-                    </span>
-                    <div className="w-6 h-6 rounded-full bg-[#D97706]/10 group-hover:bg-[#D97706] group-hover:text-[#24140A] text-[#D97706] flex items-center justify-center transition-all duration-300 group-hover:translate-x-1">
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
                 </div>
               </motion.div>
             );
