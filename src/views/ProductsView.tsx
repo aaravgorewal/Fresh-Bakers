@@ -201,7 +201,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       {/* 1. LARGE PREMIUM HERO BANNER */}
       <section className="relative px-4 sm:px-6 lg:px-8 pt-2 max-w-[1340px] mx-auto">
         <ScrollReveal direction="down" duration={0.8}>
-          <div className="relative rounded-3xl overflow-hidden bg-[#18130e] text-[#faf6f0] shadow-2xl border border-[#c59b27]/40 min-h-[420px] sm:min-h-[500px] flex items-center">
+          <div className="relative rounded-3xl overflow-hidden bg-[#2C1A0E] text-[#FFF8F2] shadow-2xl border border-[#D97706]/40 min-h-[420px] sm:min-h-[500px] flex items-center">
             {/* Banner Background Image with Luxury Layered Gradient Overlay */}
             <div className="absolute inset-0 z-0">
               <motion.img
@@ -217,10 +217,10 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 className="w-full h-full object-cover object-center"
               />
               {/* Rich Warm Vignette & Gradient Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#18130e] via-[#18130e]/90 to-transparent lg:w-2/3" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#18130e] via-transparent to-[#18130e]/40" />
-              {/* Gold Glow Highlights */}
-              <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#c59b27]/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#2C1A0E] via-[#2C1A0E]/90 to-transparent lg:w-2/3" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#2C1A0E] via-transparent to-[#2C1A0E]/40" />
+              {/* Warm Amber Glow Highlights */}
+              <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#D97706]/20 rounded-full blur-3xl pointer-events-none" />
             </div>
 
             {/* Banner Main Grid */}
@@ -231,10 +231,10 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1, duration: 0.6 }}
-                  className="inline-flex items-center gap-2 bg-[#d4a373]/20 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#c59b27]/50 text-[#f3cb81] text-xs font-bold uppercase tracking-widest shadow-lg"
+                  className="inline-flex items-center gap-2 bg-[#D97706]/20 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#D97706]/50 text-[#F5E5D5] text-xs font-bold uppercase tracking-widest shadow-lg font-sans"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#c59b27] animate-pulse" />
-                  <span>Artisanal Bakery & Celebration Studio</span>
+                  <Sparkles className="w-3.5 h-3.5 text-[#D97706] animate-pulse" />
+                  <span>Royal Indian Bakery & Gifting Studio</span>
                 </motion.div>
 
                 {/* Main Heading */}
@@ -242,10 +242,10 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
-                  className="font-serif-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#faf6f0] leading-[1.12]"
+                  className="font-serif-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#FFF8F2] leading-[1.12]"
                 >
                   Fresh Cakes, <br className="hidden sm:inline" />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f3cb81] via-[#e5b98a] to-[#c59b27]">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F5E5D5] via-[#D97706] to-[#B45309]">
                     Flowers & Gifts
                   </span>
                 </motion.h1>
@@ -255,7 +255,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.6 }}
-                  className="font-body-md text-sm sm:text-lg text-[#e5d8c8] leading-relaxed max-w-xl"
+                  className="font-body-md text-sm sm:text-lg text-[#F5E5D5] leading-relaxed max-w-xl"
                 >
                   Celebrate every occasion with freshly baked cakes, beautiful flowers, balloons and gifts delivered with love.
                 </motion.p>
@@ -278,7 +278,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                     variant="primary"
                     className="py-3.5 px-6 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-xl hover:shadow-2xl flex items-center gap-2"
                   >
-                    <Cake className="w-4 h-4 text-[#c59b27]" />
+                    <Cake className="w-4 h-4 text-[#D97706]" />
                     <span>Explore Menu</span>
                   </RippleButton>
 
@@ -297,8 +297,8 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                   </RippleButton>
 
                   {/* Active Count Badge */}
-                  <span className="text-xs font-bold text-[#f3cb81] bg-black/60 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-[#c59b27]/30 shadow-inner flex items-center gap-1.5 ml-auto sm:ml-0">
-                    <Sparkles className="w-3.5 h-3.5 text-[#c59b27]" />
+                  <span className="text-xs font-bold text-[#D97706] bg-black/60 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-[#D97706]/40 shadow-inner flex items-center gap-1.5 ml-auto sm:ml-0 font-sans">
+                    <Sparkles className="w-3.5 h-3.5 text-[#D97706]" />
                     {sortedProducts.length} Delicacies Ready
                   </span>
                 </motion.div>
@@ -310,14 +310,14 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 <motion.div
                   animate={{ y: [0, -12, 0] }}
                   transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute top-2 right-4 bg-[#18130e]/90 backdrop-blur-xl p-4 rounded-2xl border border-[#c59b27]/50 shadow-2xl flex items-center gap-3.5 max-w-xs z-20"
+                  className="absolute top-2 right-4 bg-[#2C1A0E]/92 backdrop-blur-xl p-4 rounded-2xl border border-[#D97706]/50 shadow-2xl flex items-center gap-3.5 max-w-xs z-20"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#c59b27] to-[#825425] p-2.5 flex items-center justify-center shrink-0 shadow-md">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#D97706] to-[#7B3F00] p-2.5 flex items-center justify-center shrink-0 shadow-md">
                     <span className="text-2xl">🎂</span>
                   </div>
                   <div>
-                    <h4 className="font-serif-display text-sm font-bold text-[#f3cb81]">100% Eggless Cakes</h4>
-                    <p className="text-[11px] text-[#e5d8c8] font-body-md leading-tight">Freshly baked daily with pure butter & Belgian cacao.</p>
+                    <h4 className="font-serif-display text-sm font-bold text-[#F5E5D5]">100% Eggless Cakes</h4>
+                    <p className="text-[11px] text-[#EED4C0] font-body-md leading-tight">Baked with pure desi ghee, cardamom & gourmet cacao.</p>
                   </div>
                 </motion.div>
 
@@ -325,14 +325,14 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 <motion.div
                   animate={{ y: [0, 12, 0] }}
                   transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                  className="absolute top-36 left-2 bg-[#18130e]/90 backdrop-blur-xl p-4 rounded-2xl border border-[#c59b27]/50 shadow-2xl flex items-center gap-3.5 max-w-xs z-20"
+                  className="absolute top-36 left-2 bg-[#2C1A0E]/92 backdrop-blur-xl p-4 rounded-2xl border border-[#D97706]/50 shadow-2xl flex items-center gap-3.5 max-w-xs z-20"
                 >
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-600 to-rose-900 p-2.5 flex items-center justify-center shrink-0 shadow-md">
                     <span className="text-2xl">💐</span>
                   </div>
                   <div>
                     <h4 className="font-serif-display text-sm font-bold text-rose-200">Flowers & Gift Hampers</h4>
-                    <p className="text-[11px] text-[#e5d8c8] font-body-md leading-tight">Hand-picked roses, orchid sprays & birthday balloons.</p>
+                    <p className="text-[11px] text-[#EED4C0] font-body-md leading-tight">Marigold strands, fresh roses & mithai fusion hampers.</p>
                   </div>
                 </motion.div>
 
@@ -340,14 +340,14 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 <motion.div
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                  className="absolute bottom-4 right-8 bg-[#18130e]/90 backdrop-blur-xl px-4 py-3 rounded-2xl border border-amber-500/50 shadow-2xl flex items-center gap-3 z-20"
+                  className="absolute bottom-4 right-8 bg-[#2C1A0E]/92 backdrop-blur-xl px-4 py-3 rounded-2xl border border-[#22C55E]/50 shadow-2xl flex items-center gap-3 z-20"
                 >
-                  <div className="w-9 h-9 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shrink-0">
-                    <Zap className="w-5 h-5 text-amber-400 animate-bounce" />
+                  <div className="w-9 h-9 rounded-full bg-[#22C55E]/20 border border-[#22C55E]/40 flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5 text-[#22C55E] animate-bounce" />
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-bold text-amber-400 tracking-wider block">Express Delivery</span>
-                    <span className="text-xs font-bold text-white">Same-Day 2-3 Hr Slots</span>
+                    <span className="text-[10px] uppercase font-bold text-[#22C55E] tracking-wider block font-sans">Express Delivery</span>
+                    <span className="text-xs font-bold text-white font-sans">Same-Day 2-3 Hr Slots</span>
                   </div>
                 </motion.div>
               </div>
@@ -358,23 +358,23 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 
       {/* 2. STICKY SEARCH & FILTER TOOLBAR */}
       <div id="menu-products-toolbar" className="sticky top-16 sm:top-20 z-30 px-4 sm:px-6 lg:px-8 max-w-[1340px] mx-auto transition-all scroll-mt-24">
-        <div className="bg-white/90 backdrop-blur-xl p-3.5 sm:p-5 rounded-2xl sm:rounded-3xl border border-[#e8dec9] shadow-xl shadow-[#1f1610]/5 space-y-3">
-          {/* Main Top Controls Row */}
-          <div className="flex items-center justify-between gap-3">
+        <div className="bg-white/90 backdrop-blur-xl p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-[#e8dec9] shadow-xl shadow-[#1f1610]/5">
+          {/* Primary Controls Row */}
+          <div className="flex items-center justify-between gap-4 sm:gap-6">
             {/* Live Search Input */}
             <div className="relative flex-1">
               <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#825425]" />
               <input
                 type="text"
-                placeholder="Live search cakes, flowers, hampers, accessories..."
+                placeholder="Search cakes, flowers, hampers, accessories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 sm:py-3 text-xs sm:text-sm bg-[#faf6f0] border border-[#e8dec9] rounded-2xl text-[#1f1610] placeholder-[#a38f7d] focus:outline-none focus:ring-2 focus:ring-[#c59b27]/40 focus:border-[#c59b27] transition-all shadow-inner font-medium"
+                className="w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm bg-[#faf6f0] border border-[#e8dec9] rounded-2xl text-[#1f1610] placeholder-[#a38f7d] focus:outline-none focus:ring-2 focus:ring-[#c59b27]/40 focus:border-[#c59b27] transition-all shadow-inner font-medium"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#a38f7d] hover:text-[#1f1610] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#a38f7d] hover:text-[#1f1610] transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -382,14 +382,14 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             </div>
 
             {/* Desktop Filters Dropdowns */}
-            <div className="hidden lg:flex items-center gap-2.5 text-xs">
+            <div className="hidden lg:flex items-center gap-4 xl:gap-6 text-xs">
               {/* Category Dropdown */}
-              <div className="flex items-center gap-1.5 bg-[#faf6f0] px-3.5 py-2.5 rounded-2xl border border-[#e8dec9]">
-                <Cake className="w-3.5 h-3.5 text-[#825425]" />
+              <div className="flex items-center gap-2 bg-[#faf6f0] px-4 py-2.5 rounded-2xl border border-[#e8dec9] hover:border-[#c59b27]/60 transition-colors">
+                <Cake className="w-4 h-4 text-[#825425]" />
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value as any)}
-                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs"
+                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
                 >
                   <option value="All">All Categories ({CATEGORIES.length})</option>
                   {CATEGORIES.map((cat) => (
@@ -400,13 +400,13 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 </select>
               </div>
 
-              {/* Price Dropdown */}
-              <div className="flex items-center gap-1.5 bg-[#faf6f0] px-3.5 py-2.5 rounded-2xl border border-[#e8dec9]">
-                <Tag className="w-3.5 h-3.5 text-[#825425]" />
+              {/* Price Filter Dropdown */}
+              <div className="flex items-center gap-2 bg-[#faf6f0] px-4 py-2.5 rounded-2xl border border-[#e8dec9] hover:border-[#c59b27]/60 transition-colors">
+                <Tag className="w-4 h-4 text-[#825425]" />
                 <select
                   value={priceFilter}
                   onChange={(e) => setPriceFilter(e.target.value as any)}
-                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs"
+                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
                 >
                   <option value="all">All Prices</option>
                   <option value="under500">Under ₹500</option>
@@ -416,12 +416,12 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               </div>
 
               {/* Sort Dropdown */}
-              <div className="flex items-center gap-1.5 bg-[#faf6f0] px-3.5 py-2.5 rounded-2xl border border-[#e8dec9]">
-                <ArrowUpDown className="w-3.5 h-3.5 text-[#825425]" />
+              <div className="flex items-center gap-2 bg-[#faf6f0] px-4 py-2.5 rounded-2xl border border-[#e8dec9] hover:border-[#c59b27]/60 transition-colors">
+                <ArrowUpDown className="w-4 h-4 text-[#825425]" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs"
+                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
                 >
                   <option value="featured">Sort: Featured</option>
                   <option value="priceLow">Price: Low to High</option>
@@ -429,12 +429,24 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                   <option value="name">Name A-Z</option>
                 </select>
               </div>
+
+              {/* Clear / Reset if filters active */}
+              {hasActiveFilters && (
+                <button
+                  onClick={resetFilters}
+                  className="flex items-center gap-1.5 text-xs font-bold text-[#825425] hover:text-[#18130e] bg-[#f4ebe1] hover:bg-[#e8dec9] px-3.5 py-2.5 rounded-2xl border border-[#e8dec9] shrink-0 transition-colors cursor-pointer"
+                  title="Reset all filters"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Reset</span>
+                </button>
+              )}
             </div>
 
             {/* Mobile / Tablet Drawer Toggle Button */}
             <button
               onClick={() => setIsMobileFilterOpen(true)}
-              className="lg:hidden flex items-center gap-1.5 bg-[#18130e] text-[#faf6f0] px-3.5 py-2.5 rounded-2xl border border-[#c59b27]/50 text-xs font-bold shrink-0 shadow-md hover:bg-[#251d16] transition-all"
+              className="lg:hidden flex items-center gap-2 bg-[#18130e] text-[#faf6f0] px-4 py-2.5 rounded-2xl border border-[#c59b27]/50 text-xs font-bold shrink-0 shadow-md hover:bg-[#251d16] transition-all cursor-pointer"
             >
               <SlidersHorizontal className="w-4 h-4 text-[#c59b27]" />
               <span>Filters</span>
@@ -446,80 +458,11 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             </button>
           </div>
 
-          {/* Quick Filter Badges Toggle Row */}
-          <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#e8dec9]/60">
-            {/* Scrollable Quick Filter Chips */}
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5 w-full">
-              {/* Eggless Toggle */}
-              <button
-                onClick={() => setEgglessOnly(!egglessOnly)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
-                  egglessOnly
-                    ? 'bg-emerald-800 text-white shadow-md ring-2 ring-emerald-500/50'
-                    : 'bg-[#faf6f0] text-[#6e5d4f] border border-[#e8dec9] hover:bg-[#f4ebe1]'
-                }`}
-              >
-                <Sprout className="w-3.5 h-3.5 text-emerald-400" />
-                <span>100% Eggless</span>
-              </button>
-
-              {/* Featured Toggle */}
-              <button
-                onClick={() => setFeaturedOnly(!featuredOnly)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
-                  featuredOnly
-                    ? 'bg-[#825425] text-white shadow-md ring-2 ring-[#825425]/50'
-                    : 'bg-[#faf6f0] text-[#6e5d4f] border border-[#e8dec9] hover:bg-[#f4ebe1]'
-                }`}
-              >
-                <Star className="w-3.5 h-3.5 text-amber-400" />
-                <span>Featured</span>
-              </button>
-
-              {/* Trending Toggle */}
-              <button
-                onClick={() => setTrendingOnly(!trendingOnly)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
-                  trendingOnly
-                    ? 'bg-amber-600 text-white shadow-md ring-2 ring-amber-500/50'
-                    : 'bg-[#faf6f0] text-[#6e5d4f] border border-[#e8dec9] hover:bg-[#f4ebe1]'
-                }`}
-              >
-                <Flame className="w-3.5 h-3.5 text-amber-300" />
-                <span>Trending</span>
-              </button>
-
-              {/* Signature Range Toggle */}
-              <button
-                onClick={() => setSignatureOnly(!signatureOnly)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
-                  signatureOnly
-                    ? 'bg-[#18130e] text-[#f3cb81] shadow-md border border-[#c59b27]'
-                    : 'bg-[#faf6f0] text-[#6e5d4f] border border-[#e8dec9] hover:bg-[#f4ebe1]'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-[#c59b27]" />
-                <span>Signature</span>
-              </button>
-            </div>
-
-            {/* Clear All Reset button if filters active */}
-            {hasActiveFilters && (
-              <button
-                onClick={resetFilters}
-                className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-[#825425] hover:text-[#18130e] bg-[#f4ebe1] hover:bg-[#e8dec9] px-2.5 py-1.5 rounded-xl border border-[#e8dec9] shrink-0 transition-colors"
-              >
-                <RotateCcw className="w-3 h-3" />
-                <span>Reset</span>
-              </button>
-            )}
-          </div>
-
-          {/* Active Filter Chips Bar */}
+          {/* Compact Active Filter Badges (if any active non-default selection) */}
           {hasActiveFilters && (
-            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#e8dec9]/60">
+            <div className="flex flex-wrap items-center gap-2 pt-2.5 mt-2.5 border-t border-[#e8dec9]/60">
               <span className="text-[10px] font-bold uppercase tracking-wider text-[#a38f7d]">
-                Active Filters:
+                Active:
               </span>
 
               {selectedCategory !== 'All' && (
@@ -557,49 +500,9 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 </span>
               )}
 
-              {egglessOnly && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-emerald-950 text-emerald-300 px-2.5 py-0.5 rounded-lg border border-emerald-500/40">
-                  Eggless Only
-                  <X
-                    className="w-3 h-3 cursor-pointer hover:text-white"
-                    onClick={() => setEgglessOnly(false)}
-                  />
-                </span>
-              )}
-
-              {featuredOnly && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#825425] text-white px-2.5 py-0.5 rounded-lg">
-                  Featured
-                  <X
-                    className="w-3 h-3 cursor-pointer hover:text-white"
-                    onClick={() => setFeaturedOnly(false)}
-                  />
-                </span>
-              )}
-
-              {trendingOnly && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-amber-600 text-white px-2.5 py-0.5 rounded-lg">
-                  Trending
-                  <X
-                    className="w-3 h-3 cursor-pointer hover:text-white"
-                    onClick={() => setTrendingOnly(false)}
-                  />
-                </span>
-              )}
-
-              {signatureOnly && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#18130e] text-[#f3cb81] px-2.5 py-0.5 rounded-lg border border-[#c59b27]">
-                  Signature
-                  <X
-                    className="w-3 h-3 cursor-pointer hover:text-white"
-                    onClick={() => setSignatureOnly(false)}
-                  />
-                </span>
-              )}
-
               <button
                 onClick={resetFilters}
-                className="text-[10px] font-bold text-red-700 underline hover:text-red-900 ml-1"
+                className="text-[10px] font-bold text-red-700 underline hover:text-red-900 ml-1 cursor-pointer"
               >
                 Clear All
               </button>
@@ -826,70 +729,6 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                         {sortBy === s.id && <Check className="w-4 h-4 text-[#c59b27]" />}
                       </button>
                     ))}
-                  </div>
-                </div>
-
-                {/* Badges / Dietary */}
-                <div className="space-y-3">
-                  <label className="font-serif-display font-bold text-base text-[#1f1610] block border-b border-[#e8dec9] pb-1">
-                    Special Filters
-                  </label>
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => setEgglessOnly(!egglessOnly)}
-                      className={`w-full p-2.5 rounded-xl text-xs font-bold border flex items-center justify-between transition-colors ${
-                        egglessOnly
-                          ? 'bg-emerald-950 text-emerald-300 border-emerald-500'
-                          : 'bg-white text-[#6e5d4f] border-[#e8dec9]'
-                      }`}
-                    >
-                      <span className="flex items-center gap-1.5">
-                        <Sprout className="w-4 h-4 text-emerald-400" /> 100% Eggless Only
-                      </span>
-                      {egglessOnly ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4 opacity-40" />}
-                    </button>
-
-                    <button
-                      onClick={() => setFeaturedOnly(!featuredOnly)}
-                      className={`w-full p-2.5 rounded-xl text-xs font-bold border flex items-center justify-between transition-colors ${
-                        featuredOnly
-                          ? 'bg-[#825425] text-white border-[#825425]'
-                          : 'bg-white text-[#6e5d4f] border-[#e8dec9]'
-                      }`}
-                    >
-                      <span className="flex items-center gap-1.5">
-                        <Star className="w-4 h-4 text-amber-400" /> Featured Delights
-                      </span>
-                      {featuredOnly ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4 opacity-40" />}
-                    </button>
-
-                    <button
-                      onClick={() => setTrendingOnly(!trendingOnly)}
-                      className={`w-full p-2.5 rounded-xl text-xs font-bold border flex items-center justify-between transition-colors ${
-                        trendingOnly
-                          ? 'bg-amber-600 text-white border-amber-600'
-                          : 'bg-white text-[#6e5d4f] border-[#e8dec9]'
-                      }`}
-                    >
-                      <span className="flex items-center gap-1.5">
-                        <Flame className="w-4 h-4 text-amber-300" /> Trending Items
-                      </span>
-                      {trendingOnly ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4 opacity-40" />}
-                    </button>
-
-                    <button
-                      onClick={() => setSignatureOnly(!signatureOnly)}
-                      className={`w-full p-2.5 rounded-xl text-xs font-bold border flex items-center justify-between transition-colors ${
-                        signatureOnly
-                          ? 'bg-[#18130e] text-[#f3cb81] border-[#c59b27]'
-                          : 'bg-white text-[#6e5d4f] border-[#e8dec9]'
-                      }`}
-                    >
-                      <span className="flex items-center gap-1.5">
-                        <Sparkles className="w-4 h-4 text-[#c59b27]" /> Signature Range
-                      </span>
-                      {signatureOnly ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4 opacity-40" />}
-                    </button>
                   </div>
                 </div>
               </div>

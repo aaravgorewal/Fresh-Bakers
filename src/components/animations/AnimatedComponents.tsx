@@ -121,11 +121,11 @@ export const RippleButton: React.FC<RippleButtonProps> = ({
     'relative inline-flex items-center justify-center gap-2 font-bold transition-all overflow-hidden rounded-lg active:scale-95 cursor-pointer';
 
   const variantStyles = {
-    primary: 'bg-[#825425] hover:bg-[#6a421c] text-white shadow-md hover:shadow-lg',
-    secondary: 'bg-[#f7f2ec] hover:bg-[#ede3d8] text-[#825425] border border-[#e8d2bd]',
-    outline: 'border-2 border-[#825425] text-[#825425] hover:bg-[#825425] hover:text-white',
-    ghost: 'text-[#51443a] hover:bg-[#f7f2ec] hover:text-[#825425]',
-    whatsapp: 'bg-[#25D366] hover:bg-[#1eb956] text-white shadow-md hover:shadow-lg',
+    primary: 'bg-[#7B3F00] hover:bg-[#5B2E00] text-white shadow-md hover:shadow-lg',
+    secondary: 'bg-[#FFF8F2] hover:bg-[#FDF1E5] text-[#7B3F00] border border-[#F2E0D0]',
+    outline: 'border-2 border-[#7B3F00] text-[#7B3F00] hover:bg-[#7B3F00] hover:text-white',
+    ghost: 'text-[#2C1A0E] hover:bg-[#FDF1E5] hover:text-[#7B3F00]',
+    whatsapp: 'bg-[#22C55E] hover:bg-[#16a34a] text-white shadow-md hover:shadow-lg',
   };
 
   return (

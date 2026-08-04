@@ -173,25 +173,25 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
           className="relative z-10 bg-[#faf6f0] w-full max-w-4xl border border-[#c59b27]/30 shadow-2xl rounded-3xl overflow-hidden flex flex-col max-h-[90vh] my-auto"
         >
           {/* Header Bar */}
-          <div className="flex items-center justify-between px-6 py-4 bg-[#16110d] text-[#faf6f0] border-b border-[#c59b27]/30">
+          <div className="flex items-center justify-between px-6 py-4 bg-[#24140A] text-[#FAF6F0] border-b border-[#D97706]/30">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-[#c59b27] uppercase tracking-widest bg-[#c59b27]/20 px-3 py-1 rounded-full border border-[#c59b27]/40 flex items-center gap-1.5">
+              <span className="text-xs font-bold text-[#D97706] uppercase tracking-widest bg-[#D97706]/20 px-3 py-1 rounded-full border border-[#D97706]/40 flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" /> Quick Detail View
               </span>
-              <span className="text-xs text-[#dccbbb] hidden sm:inline">• Freshly Baked Daily</span>
+              <span className="text-xs text-[#E5D7C9] hidden sm:inline">• Freshly Baked Daily</span>
             </div>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={handleShare}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-[#faf6f0] transition-colors relative"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF6F0] transition-colors relative cursor-pointer"
                 title="Share product link"
               >
                 <Share2 className="w-4 h-4" />
               </button>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-[#faf6f0] transition-colors"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF6F0] transition-colors cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -201,7 +201,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
           {/* Toast Notification */}
           {copiedToast && (
-            <div className="bg-[#825425] text-white text-xs font-bold py-2 px-4 text-center shadow-md animate-fadeIn flex items-center justify-center gap-2">
+            <div className="bg-[#5C2E14] text-white text-xs font-bold py-2 px-4 text-center shadow-md animate-fadeIn flex items-center justify-center gap-2">
               <Check className="w-4 h-4 text-emerald-300" /> Link copied to clipboard! You can share it now.
             </div>
           )}
@@ -212,7 +212,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
               {/* LEFT COLUMN: LARGE PRODUCT IMAGE & GALLERY */}
               <div className="space-y-4">
                 {/* Large Display Image */}
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#f4ebe1] shadow-md border border-[#e8dec9]">
+                <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#F4EBE1] shadow-md border border-[#F0E5DA]">
                   <img
                     src={activeImage}
                     alt={product.name}
@@ -222,12 +222,12 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   {/* Badges */}
                   <div className="absolute top-3 left-3 flex flex-col gap-2">
                     {product.isSignature && (
-                      <span className="bg-[#1f1610]/90 text-[#c59b27] text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-[#c59b27]/40 shadow-md flex items-center gap-1 backdrop-blur-md">
+                      <span className="bg-[#24140A]/90 text-[#D97706] text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full border border-[#D97706]/40 shadow-md flex items-center gap-1 backdrop-blur-md">
                         <Sparkles className="w-3 h-3 text-amber-400" /> Signature Bake
                       </span>
                     )}
                     {product.fermentationHours && (
-                      <span className="bg-[#825425] text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full flex items-center gap-1 shadow-md">
+                      <span className="bg-[#5C2E14] text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full flex items-center gap-1 shadow-md">
                         <Clock className="w-3 h-3" /> {product.fermentationHours}-Hr Ferment
                       </span>
                     )}
@@ -236,7 +236,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   {/* Egg / Eggless Badge */}
                   <div className="absolute bottom-3 left-3">
                     {selectedEggOption === 'eggless' ? (
-                      <span className="bg-emerald-900/90 text-emerald-200 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-emerald-500/40 shadow-md flex items-center gap-1.5 backdrop-blur-md">
+                      <span className="bg-emerald-950/90 text-emerald-200 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-emerald-500/40 shadow-md flex items-center gap-1.5 backdrop-blur-md">
                         <Leaf className="w-3.5 h-3.5 text-emerald-400" /> 100% Eggless (Pure Veg)
                       </span>
                     ) : (
@@ -249,7 +249,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
                 {/* Gallery Thumbnails */}
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#825425] block mb-2">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#5C2E14] block mb-2">
                     Gallery Views ({gallery.length})
                   </span>
                   <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
@@ -257,10 +257,10 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                       <button
                         key={idx}
                         onClick={() => setActiveImage(imgUrl)}
-                        className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 ${
+                        className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
                           activeImage === imgUrl
-                            ? 'border-[#825425] shadow-md scale-105'
-                            : 'border-[#e8dec9] opacity-70 hover:opacity-100 hover:border-[#825425]/50'
+                            ? 'border-[#5C2E14] shadow-md scale-105'
+                            : 'border-[#F0E5DA] opacity-70 hover:opacity-100 hover:border-[#5C2E14]/50'
                         }`}
                       >
                         <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
@@ -274,7 +274,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
               <div className="space-y-6">
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="font-label-caps text-xs text-[#825425] uppercase tracking-widest font-bold">
+                    <span className="font-label-caps text-xs text-[#5C2E14] uppercase tracking-widest font-bold">
                       {product.category}
                     </span>
                     <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
@@ -282,38 +282,38 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                     </span>
                   </div>
 
-                  <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-[#1f1610] leading-tight mb-2">
+                  <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-[#24140A] leading-tight mb-2">
                     {product.name}
                   </h2>
 
                   {/* Price Display */}
                   <div className="flex items-baseline gap-3 my-3">
-                    <span className="font-serif-display text-3xl font-bold text-[#825425]">
+                    <span className="font-serif-display text-3xl font-bold text-[#5C2E14]">
                       {formattedPrice}
                     </span>
                     {currentMultiplier !== 1.0 && (
-                      <span className="text-xs text-[#a38f7d] line-through">
+                      <span className="text-xs text-[#6C584C]/70 line-through">
                         ₹{Math.round(rawBasePrice * currentMultiplier * 1.15)}
                       </span>
                     )}
-                    <span className="text-[11px] font-bold text-[#6e5d4f] bg-[#f4ebe1] px-2.5 py-0.5 rounded-full border border-[#e8dec9]">
+                    <span className="text-[11px] font-bold text-[#6C584C] bg-[#F4EBE1] px-2.5 py-0.5 rounded-full border border-[#F0E5DA]">
                       Taxes & Delivery Included
                     </span>
                   </div>
 
-                  <p className="font-body-md text-sm text-[#6e5d4f] leading-relaxed">
+                  <p className="font-body-md text-sm text-[#6C584C] leading-relaxed">
                     {product.description}
                   </p>
                 </div>
 
                 {/* WEIGHT / SIZE SELECTION */}
-                <div className="space-y-2 pt-4 border-t border-[#e8dec9]">
+                <div className="space-y-2 pt-4 border-t border-[#F0E5DA]">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-[#1f1610] uppercase tracking-wider flex items-center gap-1.5">
-                      <Tag className="w-3.5 h-3.5 text-[#825425]" />
+                    <label className="text-xs font-bold text-[#24140A] uppercase tracking-wider flex items-center gap-1.5">
+                      <Tag className="w-3.5 h-3.5 text-[#5C2E14]" />
                       {isCakeCategory ? 'Select Cake Weight:' : 'Select Portion / Size:'}
                     </label>
-                    <span className="text-xs font-semibold text-[#825425]">
+                    <span className="text-xs font-semibold text-[#5C2E14]">
                       {weightOptions[selectedWeightIndex]?.label}
                     </span>
                   </div>
@@ -324,10 +324,10 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                         key={idx}
                         type="button"
                         onClick={() => setSelectedWeightIndex(idx)}
-                        className={`p-2.5 text-xs font-bold rounded-xl border text-left transition-all flex items-center justify-between ${
+                        className={`p-2.5 text-xs font-bold rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer ${
                           selectedWeightIndex === idx
-                            ? 'bg-[#825425] text-white border-[#825425] shadow-md'
-                            : 'bg-white text-[#6e5d4f] border-[#e8dec9] hover:bg-[#f4ebe1]'
+                            ? 'bg-[#5C2E14] text-white border-[#5C2E14] shadow-md'
+                            : 'bg-white text-[#6C584C] border-[#F0E5DA] hover:bg-[#F4EBE1]'
                         }`}
                       >
                         <span>{opt.label}</span>
@@ -338,18 +338,18 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                 </div>
 
                 {/* EGG / EGGLESS OPTION TOGGLE */}
-                <div className="space-y-2 pt-4 border-t border-[#e8dec9]">
-                  <label className="text-xs font-bold text-[#1f1610] uppercase tracking-wider block">
+                <div className="space-y-2 pt-4 border-t border-[#F0E5DA]">
+                  <label className="text-xs font-bold text-[#24140A] uppercase tracking-wider block">
                     Dietary Preference:
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       type="button"
                       onClick={() => setSelectedEggOption('eggless')}
-                      className={`p-3 text-xs font-bold rounded-xl border flex items-center justify-center gap-2 transition-all ${
+                      className={`p-3 text-xs font-bold rounded-xl border flex items-center justify-center gap-2 transition-all cursor-pointer ${
                         selectedEggOption === 'eggless'
                           ? 'bg-emerald-800 text-white border-emerald-800 shadow-md ring-2 ring-emerald-600/30'
-                          : 'bg-white text-[#6e5d4f] border-[#e8dec9] hover:bg-[#f4ebe1]'
+                          : 'bg-white text-[#6C584C] border-[#F0E5DA] hover:bg-[#F4EBE1]'
                       }`}
                     >
                       <Leaf className={`w-4 h-4 ${selectedEggOption === 'eggless' ? 'text-emerald-300' : 'text-emerald-600'}`} />
@@ -359,10 +359,10 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setSelectedEggOption('egg')}
-                      className={`p-3 text-xs font-bold rounded-xl border flex items-center justify-center gap-2 transition-all ${
+                      className={`p-3 text-xs font-bold rounded-xl border flex items-center justify-center gap-2 transition-all cursor-pointer ${
                         selectedEggOption === 'egg'
-                          ? 'bg-[#1f1610] text-amber-200 border-[#1f1610] shadow-md ring-2 ring-amber-600/30'
-                          : 'bg-white text-[#6e5d4f] border-[#e8dec9] hover:bg-[#f4ebe1]'
+                          ? 'bg-[#24140A] text-amber-200 border-[#24140A] shadow-md ring-2 ring-amber-600/30'
+                          : 'bg-white text-[#6C584C] border-[#F0E5DA] hover:bg-[#F4EBE1]'
                       }`}
                     >
                       <Egg className={`w-4 h-4 ${selectedEggOption === 'egg' ? 'text-amber-400' : 'text-amber-700'}`} />
@@ -373,17 +373,17 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
                 {/* INGREDIENTS LIST CHIPS */}
                 {product.ingredients && product.ingredients.length > 0 && (
-                  <div className="space-y-2 pt-4 border-t border-[#e8dec9]">
-                    <span className="text-[11px] font-bold text-[#825425] uppercase tracking-widest block">
+                  <div className="space-y-2 pt-4 border-t border-[#F0E5DA]">
+                    <span className="text-[11px] font-bold text-[#5C2E14] uppercase tracking-widest block">
                       Stone-Ground Natural Ingredients:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {product.ingredients.map((ing, i) => (
                         <span
                           key={i}
-                          className="bg-white text-[#6e5d4f] text-xs font-medium px-3 py-1 rounded-full border border-[#e8dec9] flex items-center gap-1.5 shadow-xs"
+                          className="bg-white text-[#6C584C] text-xs font-medium px-3 py-1 rounded-full border border-[#F0E5DA] flex items-center gap-1.5 shadow-xs"
                         >
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#c59b27]" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#D97706]" />
                           {ing}
                         </span>
                       ))}
@@ -392,10 +392,10 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                 )}
 
                 {/* ACTION BUTTONS */}
-                <div className="pt-6 border-t border-[#e8dec9] space-y-3">
+                <div className="pt-6 border-t border-[#F0E5DA] space-y-3">
                   <button
                     onClick={handleWhatsAppDirectOrder}
-                    className="w-full btn-primary py-3.5 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:scale-[1.01] transition-transform"
+                    className="w-full btn-primary py-3.5 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:scale-[1.01] transition-transform cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4 text-emerald-400 fill-emerald-400/20" />
                     Instant Order on WhatsApp ({formattedPrice})
@@ -412,7 +412,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                       onOpenOrderModal();
                       onClose();
                     }}
-                    className="w-full btn-gold py-3 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md"
+                    className="w-full btn-gold py-3 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md cursor-pointer"
                   >
                     <ShoppingBag className="w-4 h-4" /> Add Selection to Cart
                   </button>
@@ -422,12 +422,12 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
             {/* RELATED PRODUCTS SECTION */}
             {relatedProducts.length > 0 && (
-              <div className="pt-8 border-t border-[#e8dec9] space-y-4">
+              <div className="pt-8 border-t border-[#F0E5DA] space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-serif-display text-xl font-bold text-[#1f1610] flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#c59b27]" /> You Might Also Love
+                  <h3 className="font-serif-display text-xl font-bold text-[#24140A] flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#D97706]" /> You Might Also Love
                   </h3>
-                  <span className="text-xs text-[#825425] font-semibold">
+                  <span className="text-xs text-[#5C2E14] font-semibold">
                     Explore similar bakes & gifts
                   </span>
                 </div>
@@ -435,30 +435,30 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {relatedProducts.map((rel) => {
                     const relPrice =
-                      typeof rel.price === 'number' ? `$${rel.price.toFixed(2)}` : rel.price;
+                      typeof rel.price === 'number' ? `₹${rel.price}` : rel.price;
                     return (
                       <div
                         key={rel.id}
                         onClick={() => onSelectProduct && onSelectProduct(rel)}
-                        className="luxury-card p-3 cursor-pointer group flex items-center gap-3 hover:border-[#825425] transition-all bg-white"
+                        className="luxury-card p-3 cursor-pointer group flex items-center gap-3 hover:border-[#5C2E14] transition-all bg-white"
                       >
                         <img
                           src={rel.imageUrl || rel.image}
                           alt={rel.name}
-                          className="w-16 h-16 rounded-xl object-cover bg-[#f4ebe1] flex-shrink-0 group-hover:scale-105 transition-transform"
+                          className="w-16 h-16 rounded-xl object-cover bg-[#F4EBE1] flex-shrink-0 group-hover:scale-105 transition-transform"
                         />
                         <div className="overflow-hidden flex-1">
-                          <span className="text-[9px] font-bold uppercase tracking-widest text-[#825425] block">
+                          <span className="text-[9px] font-bold uppercase tracking-widest text-[#5C2E14] block">
                             {rel.category}
                           </span>
-                          <h4 className="font-serif-display text-xs font-bold text-[#1f1610] truncate group-hover:text-[#825425] transition-colors">
+                          <h4 className="font-serif-display text-xs font-bold text-[#24140A] truncate group-hover:text-[#5C2E14] transition-colors">
                             {rel.name}
                           </h4>
-                          <span className="font-serif-display text-xs font-bold text-[#825425] block mt-0.5">
+                          <span className="font-serif-display text-xs font-bold text-[#5C2E14] block mt-0.5">
                             {relPrice}
                           </span>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-[#a38f7d] group-hover:text-[#825425] group-hover:translate-x-1 transition-transform" />
+                        <ChevronRight className="w-4 h-4 text-[#6C584C]/50 group-hover:text-[#5C2E14] group-hover:translate-x-1 transition-transform" />
                       </div>
                     );
                   })}

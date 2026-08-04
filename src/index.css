@@ -2,36 +2,39 @@
 
 @layer base {
   :root {
-    --color-primary: #825425;
-    --color-primary-hover: #673d10;
-    --color-primary-container: #c68e5a;
-    --color-on-primary-container: #4d2900;
-    --color-background: #faf6f0;
-    --color-surface: #faf6f0;
-    --color-surface-container-low: #f4ebe1;
-    --color-surface-container: #ede2d5;
-    --color-surface-container-high: #e5d8c8;
-    --color-surface-container-highest: #dccbbb;
-    --color-on-surface: #1f1610;
-    --color-on-surface-variant: #6e5d4f;
-    --color-outline: #a38f7d;
-    --color-outline-variant: #e8dec9;
+    --color-primary: #5C2E14;
+    --color-primary-hover: #4A2511;
+    --color-primary-container: #D97706;
+    --color-on-primary-container: #24140A;
+    --color-background: #FAF6F0;
+    --color-surface: #FFFFFF;
+    --color-surface-container-low: #FFFBF7;
+    --color-surface-container: #F4EBE1;
+    --color-surface-container-high: #E8DEC9;
+    --color-on-surface: #24140A;
+    --color-on-surface-variant: #6C584C;
+    --color-outline: #E0D3C3;
+    --color-outline-variant: #F0E5DA;
+    --color-success: #15803D;
   }
 
   html {
     scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    background-color: #faf6f0;
-    color: #1f1610;
-    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #FAF6F0;
+    color: #24140A;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, .font-serif-display {
     font-family: 'Playfair Display', Georgia, serif;
+    letter-spacing: -0.015em;
   }
 }
 
@@ -43,144 +46,151 @@
 
 /* Glassmorphism & Luxury Cards */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(232, 222, 201, 0.7);
+  background: rgba(255, 251, 247, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(217, 119, 6, 0.2);
 }
 
 .glass-panel-dark {
-  background: rgba(31, 22, 16, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(22, 17, 13, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(217, 119, 6, 0.28);
 }
 
 .luxury-card {
   background: #ffffff;
-  border: 1px solid #e8dec9;
+  border: 1px solid #F0E5DA;
   border-radius: 1.25rem;
-  box-shadow: 0 4px 20px -2px rgba(130, 84, 37, 0.05);
+  box-shadow: 0 4px 20px -2px rgba(60, 35, 15, 0.05);
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .luxury-card:hover {
   transform: translateY(-4px);
-  border-color: #c59b27;
-  box-shadow: 0 16px 32px -8px rgba(130, 84, 37, 0.12);
+  border-color: #D97706;
+  box-shadow: 0 20px 36px -10px rgba(60, 35, 15, 0.12);
 }
 
 /* Custom Typography Helpers */
 .font-display-lg {
   font-family: 'Playfair Display', serif;
-  font-size: 52px;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  font-size: 3.25rem;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   font-weight: 700;
 }
 
 .font-headline-md {
   font-family: 'Playfair Display', serif;
-  font-size: 34px;
-  line-height: 1.18;
+  font-size: 2.125rem;
+  line-height: 1.2;
   font-weight: 600;
 }
 
 .font-headline-sm {
   font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  line-height: 1.28;
+  font-size: 1.5rem;
+  line-height: 1.3;
   font-weight: 600;
 }
 
 .font-body-lg {
-  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.125rem;
   line-height: 1.65;
   font-weight: 400;
 }
 
 .font-body-md {
-  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9375rem;
   line-height: 1.6;
   font-weight: 400;
 }
 
 .font-label-caps {
-  font-size: 11px;
-  line-height: 1.0;
-  letter-spacing: 0.14em;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.15em;
   font-weight: 700;
   text-transform: uppercase;
 }
 
 /* Premium Buttons & Controls */
 .btn-primary {
-  background: linear-gradient(135deg, #825425 0%, #673d10 100%);
+  background: linear-gradient(135deg, #5C2E14 0%, #3D1C0A 100%);
   color: #ffffff;
   padding: 12px 28px;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 4px 14px rgba(130, 84, 37, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(92, 46, 20, 0.3);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
+  font-family: 'Poppins', sans-serif;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #673d10 0%, #4d2900 100%);
-  box-shadow: 0 6px 20px rgba(130, 84, 37, 0.38);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #4A2511 0%, #2A1306 100%);
+  box-shadow: 0 8px 24px rgba(92, 46, 20, 0.45);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.9);
-  color: #1f1610;
+  background: #ffffff;
+  color: #5C2E14;
   padding: 12px 28px;
   border-radius: 9999px;
-  border: 1px solid #e8dec9;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1px solid #F0E5DA;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
+  font-family: 'Poppins', sans-serif;
 }
 
 .btn-secondary:hover {
-  background: #f4ebe1;
-  border-color: #825425;
-  color: #825425;
-  transform: translateY(-1px);
+  background: #FFFBF7;
+  border-color: #5C2E14;
+  color: #5C2E14;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
 .btn-gold {
-  background: linear-gradient(135deg, #d4a373 0%, #c59b27 100%);
-  color: #1f1610;
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  color: #ffffff;
   padding: 12px 28px;
   border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 14px rgba(197, 155, 39, 0.3);
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.35);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
   font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
+  font-family: 'Poppins', sans-serif;
 }
 
 .btn-gold:hover {
-  background: linear-gradient(135deg, #c59b27 0%, #b3881c 100%);
-  box-shadow: 0 6px 20px rgba(197, 155, 39, 0.45);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #B45309 0%, #92400E 100%);
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.5);
+  transform: translateY(-2px);
 }
 
 .editorial-rule {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #e8dec9 15%, #e8dec9 85%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #F0E5DA 15%, #F0E5DA 85%, transparent 100%);
   width: 100%;
 }
 
@@ -191,16 +201,17 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #faf6f0;
+  background: #FAF6F0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #dccbbb;
+  background: #E0D3C3;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a38f7d;
+  background: #D97706;
 }
+
 
 

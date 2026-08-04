@@ -52,6 +52,58 @@ interface HomeViewProps {
   whatsappNumber?: string;
 }
 
+// Custom data for circular homepage categories
+const CIRCULAR_CATEGORIES: { name: string; category: Category; iconEmoji: string; image: string }[] = [
+  {
+    name: 'Birthday Cakes',
+    category: 'Birthday Cakes',
+    iconEmoji: '🎂',
+    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    name: 'Anniversary Cakes',
+    category: 'Anniversary Cakes',
+    iconEmoji: '❤️',
+    image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    name: 'Designer Cakes',
+    category: 'Designer Cakes',
+    iconEmoji: '🎨',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    name: 'Photo Cakes',
+    category: 'Photo Cakes',
+    iconEmoji: '📸',
+    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    name: 'Premium Cakes',
+    category: 'Premium Cakes',
+    iconEmoji: '👑',
+    image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    name: 'Flowers',
+    category: 'Flowers',
+    iconEmoji: '🌹',
+    image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    name: 'Gift Hampers',
+    category: 'Gift Hampers',
+    iconEmoji: '🎁',
+    image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=400',
+  },
+  {
+    name: 'All Categories',
+    category: 'All' as unknown as Category,
+    iconEmoji: '📂',
+    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=400',
+  },
+];
+
 // Custom data for popular cake categories
 const POPULAR_CAKE_CATEGORIES = [
   {
@@ -282,10 +334,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
 }) => {
   const currentProducts = products.length > 0 ? products : PRODUCTS;
 
-  // Search State
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchCategory, setSearchCategory] = useState<string>('All');
-
   // Gallery Modal State
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<typeof GALLERY_ITEMS[0] | null>(null);
 
@@ -298,58 +346,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
     setTimeout(() => {
       setAddedItemName(null);
     }, 2000);
-  };
-
-  // Filtered products for Search Section
-  const filteredSearchProducts = currentProducts.filter((p) => {
-    const matchesQuery =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCat = searchCategory === 'All' || p.category === searchCategory;
-    return matchesQuery && matchesCat;
-  });
-
-  // Distinct categories
-  const distinctCategories = Array.from(new Set(currentProducts.map((p) => p.category))).filter(Boolean) as Category[];
-  const categoriesToShow = distinctCategories.length > 0 ? distinctCategories : CATEGORIES.map((c) => c.name);
-
-  const renderLucideCategoryIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'Cake': return <Cake className="w-5 h-5" />;
-      case 'Heart': return <Heart className="w-5 h-5" />;
-      case 'Sparkles': return <Sparkles className="w-5 h-5" />;
-      case 'Camera': return <Camera className="w-5 h-5" />;
-      case 'Crown': return <Crown className="w-5 h-5" />;
-      case 'ShieldCheck': return <ShieldCheck className="w-5 h-5" />;
-      case 'Flame': return <Flame className="w-5 h-5" />;
-      case 'Smile': return <Smile className="w-5 h-5" />;
-      case 'Apple': return <Apple className="w-5 h-5" />;
-      case 'Gift': return <Gift className="w-5 h-5" />;
-      case 'Flower2': return <Flower2 className="w-5 h-5" />;
-      case 'Package': return <Package className="w-5 h-5" />;
-      case 'Box': return <Box className="w-5 h-5" />;
-      case 'PartyPopper': return <PartyPopper className="w-5 h-5" />;
-      case 'Sparkle': return <Sparkle className="w-5 h-5" />;
-      case 'ThumbsUp': return <ThumbsUp className="w-5 h-5" />;
-      case 'TrendingUp': return <TrendingUp className="w-5 h-5" />;
-      case 'Sprout': return <Sprout className="w-5 h-5" />;
-      default: return <Sparkles className="w-5 h-5" />;
-    }
-  };
-
-  const getCategoryMeta = (catName: Category) => {
-    const predefined = CATEGORIES.find((c) => c.name === catName);
-    const prodInCat = currentProducts.find((p) => p.category === catName);
-    const count = currentProducts.filter((p) => p.category === catName).length;
-    const image = predefined?.image || prodInCat?.imageUrl || prodInCat?.image || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80';
-    return {
-      image,
-      count,
-      icon: predefined?.icon || 'Cake',
-      tagline: predefined?.tagline || '',
-      type: predefined?.type || 'cake',
-    };
   };
 
   // Trending & Recommend sets
@@ -493,180 +489,42 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 2. SEARCH PRODUCTS */}
+      {/* 2. CIRCULAR SHOP BY CATEGORY NAVIGATION */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
-        <div className="luxury-card p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <span className="font-label-caps text-xs text-[#825425] uppercase tracking-widest block font-bold mb-1">
-                Instant Discovery
-              </span>
-              <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-[#1f1610]">
-                Search Our Bakery Catalog
-              </h2>
-            </div>
-            <span className="text-xs text-[#6e5d4f] font-medium">
-              Showing <strong className="text-[#825425]">{filteredSearchProducts.length}</strong> items
-            </span>
-          </div>
+        <div className="mb-6 text-center md:text-left">
+          <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block mb-1 font-bold text-xs">
+            Curated Collections
+          </span>
+          <h2 className="font-serif-display text-2xl sm:text-3xl md:text-4xl text-[#1f1610] font-bold">
+            Shop by Category
+          </h2>
+        </div>
 
-          {/* Search Input Bar */}
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#825425]" />
-            <input
-              type="text"
-              placeholder="Search chocolate truffle, black forest, rasmalai cake, bento cake, hampers..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#f4ebe1] border border-[#e8dec9] rounded-2xl pl-12 pr-10 py-3.5 text-sm text-[#1f1610] placeholder-[#a38f7d] focus:outline-none focus:border-[#825425] transition-all shadow-inner"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#a38f7d] hover:text-[#1f1610]"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-
-          {/* Category Filter Chips */}
-          <div className="flex flex-wrap items-center gap-2 pt-1">
+        <div className="flex items-center justify-start lg:justify-between gap-4 sm:gap-6 md:gap-8 overflow-x-auto scrollbar-none pb-3 pt-1 max-w-full">
+          {CIRCULAR_CATEGORIES.map((cat) => (
             <button
-              onClick={() => setSearchCategory('All')}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
-                searchCategory === 'All'
-                  ? 'bg-[#825425] text-white shadow-md'
-                  : 'bg-[#f4ebe1] text-[#6e5d4f] hover:bg-[#e8dec9]'
-              }`}
+              key={cat.name}
+              type="button"
+              onClick={() => {
+                onSelectCategory(cat.category);
+                setActiveTab('products');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex flex-col items-center gap-2.5 group cursor-pointer shrink-0 transition-transform duration-300"
             >
-              All Items
+              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-[#f4ebe1] border-2 border-[#e8dec9] group-hover:border-[#c59b27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500 ease-out"
+                />
+              </div>
+              <span className="text-xs sm:text-sm font-bold text-[#1f1610] group-hover:text-[#825425] transition-colors whitespace-nowrap flex items-center gap-1">
+                <span>{cat.iconEmoji}</span>
+                <span>{cat.name}</span>
+              </span>
             </button>
-            {categoriesToShow.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSearchCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
-                  searchCategory === cat
-                    ? 'bg-[#825425] text-white shadow-md'
-                    : 'bg-[#f4ebe1] text-[#6e5d4f] hover:bg-[#e8dec9]'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Live Search Results Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-[#e8dec9]">
-            {filteredSearchProducts.slice(0, 4).map((product) => {
-              const formattedPrice = typeof product.price === 'number' ? `₹${product.price}` : String(product.price).startsWith('₹') ? product.price : `₹${product.price}`;
-              const img = product.imageUrl || product.image;
-              return (
-                <div
-                  key={product.id}
-                  className="bg-[#faf6f0] p-3 rounded-2xl border border-[#e8dec9] flex gap-3 items-center hover:border-[#c59b27] transition-all group"
-                >
-                  <img
-                    src={img}
-                    alt={product.name}
-                    className="w-16 h-16 rounded-xl object-cover border border-[#e8dec9]"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[9px] uppercase tracking-widest font-bold text-[#825425] block truncate">
-                      {product.category}
-                    </span>
-                    <h4 className="font-serif-display font-bold text-xs text-[#1f1610] truncate group-hover:text-[#825425]">
-                      {product.name}
-                    </h4>
-                    <p className="text-xs font-bold text-[#825425] mt-0.5">{formattedPrice}</p>
-                  </div>
-                  <button
-                    onClick={() => handleQuickAdd(product)}
-                    className="p-2 rounded-xl bg-[#f4ebe1] hover:bg-[#825425] hover:text-white text-[#825425] transition-colors"
-                    title="Add to WhatsApp cart"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. SHOP BY CATEGORY */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-          <div>
-            <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block mb-1 font-bold text-xs">
-              Curated Collections
-            </span>
-            <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
-              Shop by Category
-            </h2>
-          </div>
-          <button
-            onClick={() => {
-              window.history.pushState(null, '', '/products');
-              setActiveTab('products');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            className="inline-flex items-center gap-2 text-xs font-bold text-[#825425] uppercase tracking-wider hover:text-[#673d10] transition-colors group"
-          >
-            <span>View All Categories</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {categoriesToShow.map((catName) => {
-            const { image, count, icon, tagline } = getCategoryMeta(catName);
-            return (
-              <motion.div
-                key={catName}
-                whileHover={{ y: -6, scale: 1.02 }}
-                onClick={() => {
-                  onSelectCategory(catName);
-                  setActiveTab('products');
-                }}
-                className="luxury-card overflow-hidden cursor-pointer group flex flex-col justify-between relative border border-[#e8dec9] hover:border-[#825425] transition-all shadow-xs"
-              >
-                <div className="relative aspect-[4/3] bg-[#f4ebe1] overflow-hidden">
-                  <img
-                    src={image}
-                    alt={catName}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-
-                  {/* Icon Badge */}
-                  <div className="absolute top-2.5 left-2.5 w-8 h-8 rounded-full bg-[#1f1610]/90 text-[#c59b27] flex items-center justify-center shadow-md border border-[#c59b27]/30">
-                    {renderLucideCategoryIcon(icon)}
-                  </div>
-
-                  {/* Product Count Pill */}
-                  <div className="absolute bottom-2.5 right-2.5 bg-black/70 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20">
-                    {count} {count === 1 ? 'item' : 'items'}
-                  </div>
-                </div>
-
-                <div className="p-3.5 space-y-1">
-                  <h3 className="font-serif-display font-bold text-sm text-[#1f1610] group-hover:text-[#825425] transition-colors leading-snug line-clamp-1">
-                    {catName}
-                  </h3>
-                  {tagline && (
-                    <p className="text-[10px] text-[#6e5d4f] line-clamp-1 leading-tight font-medium">
-                      {tagline}
-                    </p>
-                  )}
-                  <span className="text-[9px] uppercase tracking-widest font-bold text-[#825425] block pt-1 group-hover:translate-x-1 transition-transform">
-                    Shop Now →
-                  </span>
-                </div>
-              </motion.div>
-            );
-          })}
+          ))}
         </div>
       </section>
 

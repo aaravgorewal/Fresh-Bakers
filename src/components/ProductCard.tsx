@@ -67,13 +67,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <motion.div
-      whileHover={{ y: -8, scale: 1.015 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      className={`group relative bg-[#faf6f0] rounded-3xl border border-[#e8dec9] hover:border-[#c59b27] shadow-md hover:shadow-2xl hover:shadow-[#1f1610]/15 overflow-hidden flex flex-col justify-between transition-all duration-300 ${className}`}
+      whileHover={{ y: -6, scale: 1.01 }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className={`group relative bg-white rounded-3xl border border-[#F0E5DA] hover:border-[#D97706] shadow-sm hover:shadow-xl hover:shadow-[#24140A]/10 overflow-hidden flex flex-col justify-between transition-all duration-300 ${className}`}
     >
       <div>
         {/* LARGE IMAGE CONTAINER */}
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#18130e] cursor-pointer" onClick={() => onOpenQuickView(product)}>
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#24140A] cursor-pointer" onClick={() => onOpenQuickView(product)}>
           <img
             src={displayImage}
             alt={product.name}
@@ -86,27 +86,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           />
 
           {/* Dark Subtle Vignette Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#16110d]/80 via-transparent to-[#16110d]/40 opacity-70 group-hover:opacity-50 transition-opacity" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#24140A]/80 via-transparent to-[#24140A]/30 opacity-70 group-hover:opacity-50 transition-opacity" />
 
           {/* TOP BADGES STACK */}
           <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-1.5 pointer-events-none z-10">
             {/* Left Column Badges */}
             <div className="flex flex-col gap-1.5 items-start">
               {/* Category Badge */}
-              <span className="bg-[#18130e]/90 backdrop-blur-md text-[#d4a373] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border border-[#c59b27]/40 shadow-md">
+              <span className="bg-[#24140A]/90 backdrop-blur-md text-[#D97706] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border border-[#D97706]/40 shadow-md font-sans">
                 {product.category}
               </span>
 
               {/* Featured / Signature Badge */}
               {(product.isFeatured || product.isSignature) && (
-                <span className="bg-gradient-to-r from-[#18130e]/95 to-[#2a1d12]/95 backdrop-blur-md text-[#f3cb81] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border border-[#c59b27]/60 shadow-md flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-[#c59b27]" /> Featured
+                <span className="bg-gradient-to-r from-[#24140A]/95 to-[#3D1C0A]/95 backdrop-blur-md text-[#f3cb81] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border border-[#D97706]/60 shadow-md flex items-center gap-1 font-sans">
+                  <Sparkles className="w-3 h-3 text-[#D97706]" /> Featured
                 </span>
               )}
 
               {/* Trending Badge */}
               {product.isTrending && (
-                <span className="bg-amber-950/90 backdrop-blur-md text-amber-300 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border border-amber-500/50 shadow-md flex items-center gap-1">
+                <span className="bg-[#5C2E14]/90 backdrop-blur-md text-amber-300 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border border-amber-500/50 shadow-md flex items-center gap-1 font-sans">
                   <Flame className="w-3 h-3 text-amber-400" /> Trending
                 </span>
               )}
@@ -115,11 +115,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {/* Right Column: Egg / Eggless Badge */}
             <div className="pointer-events-auto">
               {isEggless ? (
-                <span className="bg-emerald-950/90 backdrop-blur-md text-emerald-300 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-emerald-500/50 shadow-md flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> 100% Eggless
+                <span className="bg-emerald-950/90 backdrop-blur-md text-emerald-300 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-[#15803D]/60 shadow-md flex items-center gap-1 font-sans">
+                  <span className="w-2 h-2 rounded-full bg-[#15803D] animate-pulse" /> 100% Eggless
                 </span>
               ) : (
-                <span className="bg-rose-950/90 backdrop-blur-md text-rose-300 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-rose-500/50 shadow-md flex items-center gap-1">
+                <span className="bg-rose-950/90 backdrop-blur-md text-rose-300 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-rose-500/50 shadow-md flex items-center gap-1 font-sans">
                   <span className="w-2 h-2 rounded-full bg-rose-500" /> Contains Egg
                 </span>
               )}
@@ -132,10 +132,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               e.stopPropagation();
               onOpenQuickView(product);
             }}
-            className="absolute bottom-3 right-3 z-20 bg-white/95 hover:bg-white text-[#1f1610] p-2.5 rounded-full shadow-2xl opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold"
+            className="absolute bottom-3 right-3 z-20 bg-white/95 hover:bg-white text-[#24140A] p-2.5 rounded-full shadow-2xl opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold font-sans cursor-pointer"
             title="Quick view product details"
           >
-            <Eye className="w-4 h-4 text-[#825425]" />
+            <Eye className="w-4 h-4 text-[#5C2E14]" />
             <span className="hidden sm:inline">Quick View</span>
           </button>
         </div>
@@ -143,35 +143,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* PRODUCT DETAILS BODY */}
         <div className="p-5 space-y-3">
           {/* Weight & Delivery Bar */}
-          <div className="flex items-center justify-between text-[11px] font-bold text-[#825425] bg-[#f4ebe1] px-3 py-1.5 rounded-xl border border-[#e8dec9]">
-            <span className="flex items-center gap-1 text-[#1f1610]">
-              <Scale className="w-3.5 h-3.5 text-[#825425]" /> {displayWeight}
+          <div className="flex items-center justify-between text-[11px] font-bold text-[#5C2E14] bg-[#F4EBE1] px-3 py-1.5 rounded-xl border border-[#F0E5DA] font-sans">
+            <span className="flex items-center gap-1 text-[#24140A]">
+              <Scale className="w-3.5 h-3.5 text-[#5C2E14]" /> {displayWeight}
             </span>
-            <span className="flex items-center gap-1 text-[#6e5d4f] text-[10px]">
-              <Zap className="w-3 h-3 text-amber-600" /> {displayDeliveryTime}
+            <span className="flex items-center gap-1 text-[#6C584C] text-[10px]">
+              <Zap className="w-3 h-3 text-[#D97706]" /> {displayDeliveryTime}
             </span>
           </div>
 
           {/* Title */}
           <h3
             onClick={() => onOpenQuickView(product)}
-            className="font-serif-display text-lg sm:text-xl font-bold text-[#1f1610] group-hover:text-[#825425] cursor-pointer transition-colors line-clamp-1 leading-snug"
+            className="font-serif-display text-lg sm:text-xl font-bold text-[#24140A] group-hover:text-[#5C2E14] cursor-pointer transition-colors line-clamp-1 leading-snug"
           >
             {product.name}
           </h3>
 
           {/* Description */}
-          <p className="font-body-md text-xs text-[#6e5d4f] leading-relaxed line-clamp-2">
+          <p className="font-body-md text-xs text-[#6C584C] leading-relaxed line-clamp-2">
             {product.description}
           </p>
 
           {/* Price & Delivery Badge */}
           <div className="flex items-baseline justify-between pt-1">
             <div className="flex items-baseline gap-1.5">
-              <span className="text-2xl font-bold font-serif-display text-[#1f1610]">
+              <span className="text-2xl font-bold font-serif-display text-[#24140A]">
                 {formattedPrice}
               </span>
-              <span className="text-[10px] text-[#a38f7d] uppercase font-bold tracking-wider">
+              <span className="text-[10px] text-[#D97706] uppercase font-bold tracking-wider font-sans">
                 inclusive of taxes
               </span>
             </div>
@@ -186,7 +186,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <RippleButton
             onClick={handleWhatsAppOrder}
             variant="whatsapp"
-            className="flex-1 py-3 text-xs font-bold tracking-wider uppercase shadow-md hover:shadow-lg flex items-center justify-center gap-2 rounded-2xl"
+            className="flex-1 py-3 text-xs font-bold tracking-wider uppercase shadow-sm hover:shadow-md flex items-center justify-center gap-2 rounded-2xl cursor-pointer"
           >
             <span className="material-symbols-outlined text-[18px]">chat</span>
             <span>Order on WhatsApp</span>
@@ -200,10 +200,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 onAddToCart(product);
               }}
               variant="secondary"
-              className="py-3 px-3.5 rounded-2xl bg-[#f4ebe1] hover:bg-[#e8dec9] text-[#1f1610] border border-[#e8dec9]"
+              className="py-3 px-3.5 rounded-2xl bg-[#F4EBE1] hover:bg-[#E8DEC9] text-[#24140A] border border-[#F0E5DA] cursor-pointer"
               title="Add to WhatsApp Order Cart"
             >
-              <ShoppingBag className="w-4.5 h-4.5 text-[#825425]" />
+              <ShoppingBag className="w-4.5 h-4.5 text-[#5C2E14]" />
             </RippleButton>
           )}
         </div>
