@@ -197,184 +197,79 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
   const hasActiveFilters = activeFilterCount > 0;
 
   return (
-    <div className="w-full space-y-10 pb-24">
-      {/* 1. LARGE PREMIUM HERO BANNER */}
+    <div className="w-full space-y-8 pb-20 bg-[#FFFBF7]">
+      {/* 1. REDUCED HEIGHT HERO */}
       <section className="relative px-4 sm:px-6 lg:px-8 pt-2 max-w-[1340px] mx-auto">
-        <ScrollReveal direction="down" duration={0.8}>
-          <div className="relative rounded-3xl overflow-hidden bg-[#2C1A0E] text-[#FFF8F2] shadow-2xl border border-[#D97706]/40 min-h-[420px] sm:min-h-[500px] flex items-center">
-            {/* Banner Background Image with Luxury Layered Gradient Overlay */}
-            <div className="absolute inset-0 z-0">
-              <motion.img
-                initial={{ scale: 1.15, opacity: 0.8 }}
-                animate={{ scale: 1, opacity: 0.55 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                src={
-                  selectedCategory === 'All'
-                    ? 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1800'
-                    : currentCategoryInfo?.bannerImage || currentCategoryInfo?.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=1800'
-                }
-                alt="Fresh Cakes Flowers & Gifts Banner"
-                className="w-full h-full object-cover object-center"
-              />
-              {/* Rich Warm Vignette & Gradient Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#2C1A0E] via-[#2C1A0E]/90 to-transparent lg:w-2/3" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#2C1A0E] via-transparent to-[#2C1A0E]/40" />
-              {/* Warm Amber Glow Highlights */}
-              <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#D97706]/20 rounded-full blur-3xl pointer-events-none" />
-            </div>
+        <div className="relative rounded-3xl overflow-hidden bg-[#1F1610] text-[#FFFBF7] p-6 sm:p-10 shadow-lg border border-[#3D2C20]">
+          {/* Subtle overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1F1610] via-[#1F1610]/90 to-transparent z-10" />
+          <div className="absolute top-0 right-0 w-1/2 h-full opacity-30 z-0 hidden sm:block">
+            <img
+              src={
+                selectedCategory === 'All'
+                  ? 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200'
+                  : currentCategoryInfo?.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=1200'
+              }
+              alt="Bakery Hero"
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
 
-            {/* Banner Main Grid */}
-            <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 px-6 sm:px-12 py-10 items-center">
-              {/* Left Column: Heading, Subheading & Action Buttons */}
-              <div className="lg:col-span-7 space-y-5">
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.6 }}
-                  className="inline-flex items-center gap-2 bg-[#D97706]/20 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#D97706]/50 text-[#F5E5D5] text-xs font-bold uppercase tracking-widest shadow-lg font-sans"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-[#D97706] animate-pulse" />
-                  <span>Royal Indian Bakery & Gifting Studio</span>
-                </motion.div>
+          <div className="relative z-20 max-w-2xl space-y-3">
+            {/* Breadcrumb */}
+            <nav className="text-xs font-semibold text-[#C59B27] flex items-center gap-1.5 font-sans">
+              <span>Home</span>
+              <span>/</span>
+              <span className="text-white">Menu & Catalog</span>
+            </nav>
 
-                {/* Main Heading */}
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.6 }}
-                  className="font-serif-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#FFF8F2] leading-[1.12]"
-                >
-                  Fresh Cakes, <br className="hidden sm:inline" />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F5E5D5] via-[#D97706] to-[#B45309]">
-                    Flowers & Gifts
-                  </span>
-                </motion.h1>
+            {/* Heading */}
+            <h1 className="font-serif-display text-2xl sm:text-4xl font-bold tracking-tight text-white leading-snug">
+              Artisanal Bakery & Celebration Catalog
+            </h1>
 
-                {/* Subheading */}
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                  className="font-body-md text-sm sm:text-lg text-[#F5E5D5] leading-relaxed max-w-xl"
-                >
-                  Celebrate every occasion with freshly baked cakes, beautiful flowers, balloons and gifts delivered with love.
-                </motion.p>
+            {/* Short Description */}
+            <p className="font-body-md text-xs sm:text-sm text-[#E5D8C8] leading-relaxed max-w-xl">
+              Explore handcrafted celebration cakes, fresh floral arrangements, and gourmet gift hampers baked fresh daily.
+            </p>
 
-                {/* Action Buttons */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4, duration: 0.6 }}
-                  className="flex flex-wrap items-center gap-3.5 pt-2"
-                >
-                  {/* Explore Menu Button */}
-                  <RippleButton
-                    onClick={() => {
-                      const menuElem = document.getElementById('menu-products-toolbar');
-                      if (menuElem) {
-                        menuElem.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                    variant="primary"
-                    className="py-3.5 px-6 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-xl hover:shadow-2xl flex items-center gap-2"
-                  >
-                    <Cake className="w-4 h-4 text-[#D97706]" />
-                    <span>Explore Menu</span>
-                  </RippleButton>
-
-                  {/* Order on WhatsApp Button */}
-                  <RippleButton
-                    onClick={() => {
-                      const cleanNum = (whatsappNumber || '15550192824').replace(/[\+\s]/g, '');
-                      const message = encodeURIComponent("Hello Fresh Bakers! 👋 I'm browsing your menu and would like to order fresh cakes, flowers & gifts!");
-                      window.open(`https://wa.me/${cleanNum}?text=${message}`, '_blank');
-                    }}
-                    variant="whatsapp"
-                    className="py-3.5 px-6 text-xs sm:text-sm font-bold tracking-wider uppercase shadow-xl hover:shadow-2xl flex items-center gap-2"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">chat</span>
-                    <span>Order on WhatsApp</span>
-                  </RippleButton>
-
-                  {/* Active Count Badge */}
-                  <span className="text-xs font-bold text-[#D97706] bg-black/60 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-[#D97706]/40 shadow-inner flex items-center gap-1.5 ml-auto sm:ml-0 font-sans">
-                    <Sparkles className="w-3.5 h-3.5 text-[#D97706]" />
-                    {sortedProducts.length} Delicacies Ready
-                  </span>
-                </motion.div>
-              </div>
-
-              {/* Right Column: Floating Bakery Illustrations & Interactive Feature Badges */}
-              <div className="hidden lg:block lg:col-span-5 relative min-h-[320px]">
-                {/* Floating Illustration Card 1: Fresh Cakes & Eggless */}
-                <motion.div
-                  animate={{ y: [0, -12, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute top-2 right-4 bg-[#2C1A0E]/92 backdrop-blur-xl p-4 rounded-2xl border border-[#D97706]/50 shadow-2xl flex items-center gap-3.5 max-w-xs z-20"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#D97706] to-[#7B3F00] p-2.5 flex items-center justify-center shrink-0 shadow-md">
-                    <span className="text-2xl">🎂</span>
-                  </div>
-                  <div>
-                    <h4 className="font-serif-display text-sm font-bold text-[#F5E5D5]">100% Eggless Cakes</h4>
-                    <p className="text-[11px] text-[#EED4C0] font-body-md leading-tight">Baked with pure desi ghee, cardamom & gourmet cacao.</p>
-                  </div>
-                </motion.div>
-
-                {/* Floating Illustration Card 2: Fresh Flowers & Hampers */}
-                <motion.div
-                  animate={{ y: [0, 12, 0] }}
-                  transition={{ duration: 5.2, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                  className="absolute top-36 left-2 bg-[#2C1A0E]/92 backdrop-blur-xl p-4 rounded-2xl border border-[#D97706]/50 shadow-2xl flex items-center gap-3.5 max-w-xs z-20"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-rose-600 to-rose-900 p-2.5 flex items-center justify-center shrink-0 shadow-md">
-                    <span className="text-2xl">💐</span>
-                  </div>
-                  <div>
-                    <h4 className="font-serif-display text-sm font-bold text-rose-200">Flowers & Gift Hampers</h4>
-                    <p className="text-[11px] text-[#EED4C0] font-body-md leading-tight">Marigold strands, fresh roses & mithai fusion hampers.</p>
-                  </div>
-                </motion.div>
-
-                {/* Floating Illustration Card 3: Express Delivery Badge */}
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                  className="absolute bottom-4 right-8 bg-[#2C1A0E]/92 backdrop-blur-xl px-4 py-3 rounded-2xl border border-[#22C55E]/50 shadow-2xl flex items-center gap-3 z-20"
-                >
-                  <div className="w-9 h-9 rounded-full bg-[#22C55E]/20 border border-[#22C55E]/40 flex items-center justify-center shrink-0">
-                    <Zap className="w-5 h-5 text-[#22C55E] animate-bounce" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-[#22C55E] tracking-wider block font-sans">Express Delivery</span>
-                    <span className="text-xs font-bold text-white font-sans">Same-Day 2-3 Hr Slots</span>
-                  </div>
-                </motion.div>
-              </div>
+            {/* Small CTA */}
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  const cleanNum = (whatsappNumber || '15550192824').replace(/[\+\s]/g, '');
+                  const message = encodeURIComponent("Hello Fresh Bakers! 👋 I'm browsing your menu and would like to place an order.");
+                  window.open(`https://wa.me/${cleanNum}?text=${message}`, '_blank');
+                }}
+                className="bg-[#5C2E14] hover:bg-[#3D1E0C] text-white px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md inline-flex items-center gap-2 cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[16px]">chat</span>
+                <span>Order via WhatsApp</span>
+              </button>
             </div>
           </div>
-        </ScrollReveal>
+        </div>
       </section>
 
-      {/* 2. STICKY SEARCH & FILTER TOOLBAR */}
+      {/* 2. STICKY FILTER BAR */}
       <div id="menu-products-toolbar" className="sticky top-16 sm:top-20 z-30 px-4 sm:px-6 lg:px-8 max-w-[1340px] mx-auto transition-all scroll-mt-24">
-        <div className="bg-white/90 backdrop-blur-xl p-3 sm:p-4 rounded-2xl sm:rounded-3xl border border-[#e8dec9] shadow-xl shadow-[#1f1610]/5">
+        <div className="bg-white/85 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-[#E8DEC9] shadow-sm">
           {/* Primary Controls Row */}
-          <div className="flex items-center justify-between gap-4 sm:gap-6">
+          <div className="flex items-center justify-between gap-3 sm:gap-4">
             {/* Live Search Input */}
             <div className="relative flex-1">
               <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#825425]" />
               <input
                 type="text"
-                placeholder="Search cakes, flowers, hampers, accessories..."
+                placeholder="Search cakes, flowers, hampers..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm bg-[#faf6f0] border border-[#e8dec9] rounded-2xl text-[#1f1610] placeholder-[#a38f7d] focus:outline-none focus:ring-2 focus:ring-[#c59b27]/40 focus:border-[#c59b27] transition-all shadow-inner font-medium"
+                className="w-full pl-10 pr-9 py-2 text-xs sm:text-sm bg-[#FAF6F0] border border-[#E8DEC9] rounded-xl text-[#1F1610] placeholder-[#825425]/60 focus:outline-none focus:ring-2 focus:ring-[#825425]/30 focus:border-[#825425] transition-all font-medium"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#a38f7d] hover:text-[#1f1610] transition-colors cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#825425]/60 hover:text-[#1F1610] transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -382,14 +277,14 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             </div>
 
             {/* Desktop Filters Dropdowns */}
-            <div className="hidden lg:flex items-center gap-4 xl:gap-6 text-xs">
+            <div className="hidden lg:flex items-center gap-3 text-xs">
               {/* Category Dropdown */}
-              <div className="flex items-center gap-2 bg-[#faf6f0] px-4 py-2.5 rounded-2xl border border-[#e8dec9] hover:border-[#c59b27]/60 transition-colors">
+              <div className="flex items-center gap-2 bg-[#FAF6F0] px-3 py-2 rounded-xl border border-[#E8DEC9] hover:border-[#825425]/50 transition-colors">
                 <Cake className="w-4 h-4 text-[#825425]" />
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value as any)}
-                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
+                  className="bg-transparent text-[#1F1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
                 >
                   <option value="All">All Categories ({CATEGORIES.length})</option>
                   {CATEGORIES.map((cat) => (
@@ -401,12 +296,12 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               </div>
 
               {/* Price Filter Dropdown */}
-              <div className="flex items-center gap-2 bg-[#faf6f0] px-4 py-2.5 rounded-2xl border border-[#e8dec9] hover:border-[#c59b27]/60 transition-colors">
+              <div className="flex items-center gap-2 bg-[#FAF6F0] px-3 py-2 rounded-xl border border-[#E8DEC9] hover:border-[#825425]/50 transition-colors">
                 <Tag className="w-4 h-4 text-[#825425]" />
                 <select
                   value={priceFilter}
                   onChange={(e) => setPriceFilter(e.target.value as any)}
-                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
+                  className="bg-transparent text-[#1F1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
                 >
                   <option value="all">All Prices</option>
                   <option value="under500">Under ₹500</option>
@@ -416,12 +311,12 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               </div>
 
               {/* Sort Dropdown */}
-              <div className="flex items-center gap-2 bg-[#faf6f0] px-4 py-2.5 rounded-2xl border border-[#e8dec9] hover:border-[#c59b27]/60 transition-colors">
+              <div className="flex items-center gap-2 bg-[#FAF6F0] px-3 py-2 rounded-xl border border-[#E8DEC9] hover:border-[#825425]/50 transition-colors">
                 <ArrowUpDown className="w-4 h-4 text-[#825425]" />
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-transparent text-[#1f1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
+                  className="bg-transparent text-[#1F1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
                 >
                   <option value="featured">Sort: Featured</option>
                   <option value="priceLow">Price: Low to High</option>
@@ -430,11 +325,11 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                 </select>
               </div>
 
-              {/* Clear / Reset if filters active */}
+              {/* Reset Filters */}
               {hasActiveFilters && (
                 <button
                   onClick={resetFilters}
-                  className="flex items-center gap-1.5 text-xs font-bold text-[#825425] hover:text-[#18130e] bg-[#f4ebe1] hover:bg-[#e8dec9] px-3.5 py-2.5 rounded-2xl border border-[#e8dec9] shrink-0 transition-colors cursor-pointer"
+                  className="flex items-center gap-1 text-xs font-bold text-[#825425] bg-[#F4EBE1] hover:bg-[#E8DEC9] px-3 py-2 rounded-xl border border-[#E8DEC9] shrink-0 transition-colors cursor-pointer"
                   title="Reset all filters"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
@@ -443,97 +338,42 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               )}
             </div>
 
-            {/* Mobile / Tablet Drawer Toggle Button */}
+            {/* Mobile Filter Toggle */}
             <button
               onClick={() => setIsMobileFilterOpen(true)}
-              className="lg:hidden flex items-center gap-2 bg-[#18130e] text-[#faf6f0] px-4 py-2.5 rounded-2xl border border-[#c59b27]/50 text-xs font-bold shrink-0 shadow-md hover:bg-[#251d16] transition-all cursor-pointer"
+              className="lg:hidden flex items-center gap-2 bg-[#1F1610] text-white px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 shadow-sm hover:bg-[#3D2C20] transition-all cursor-pointer"
             >
-              <SlidersHorizontal className="w-4 h-4 text-[#c59b27]" />
+              <SlidersHorizontal className="w-4 h-4 text-[#C59B27]" />
               <span>Filters</span>
               {activeFilterCount > 0 && (
-                <span className="bg-[#c59b27] text-[#18130e] w-5 h-5 rounded-full text-[10px] font-black flex items-center justify-center">
+                <span className="bg-[#C59B27] text-[#1F1610] w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center">
                   {activeFilterCount}
                 </span>
               )}
             </button>
           </div>
-
-          {/* Compact Active Filter Badges (if any active non-default selection) */}
-          {hasActiveFilters && (
-            <div className="flex flex-wrap items-center gap-2 pt-2.5 mt-2.5 border-t border-[#e8dec9]/60">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#a38f7d]">
-                Active:
-              </span>
-
-              {selectedCategory !== 'All' && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#18130e] text-[#f3cb81] px-2.5 py-0.5 rounded-lg border border-[#c59b27]/40">
-                  Category: {selectedCategory}
-                  <X
-                    className="w-3 h-3 cursor-pointer hover:text-white"
-                    onClick={() => setSelectedCategory('All')}
-                  />
-                </span>
-              )}
-
-              {searchQuery && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#f4ebe1] text-[#1f1610] px-2.5 py-0.5 rounded-lg border border-[#e8dec9]">
-                  Search: "{searchQuery}"
-                  <X
-                    className="w-3 h-3 cursor-pointer hover:text-red-600"
-                    onClick={() => setSearchQuery('')}
-                  />
-                </span>
-              )}
-
-              {priceFilter !== 'all' && (
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold bg-[#f4ebe1] text-[#1f1610] px-2.5 py-0.5 rounded-lg border border-[#e8dec9]">
-                  Price:{' '}
-                  {priceFilter === 'under500'
-                    ? 'Under ₹500'
-                    : priceFilter === '500to1000'
-                    ? '₹500 - ₹1000'
-                    : 'Above ₹1000'}
-                  <X
-                    className="w-3 h-3 cursor-pointer hover:text-red-600"
-                    onClick={() => setPriceFilter('all')}
-                  />
-                </span>
-              )}
-
-              <button
-                onClick={resetFilters}
-                className="text-[10px] font-bold text-red-700 underline hover:text-red-900 ml-1 cursor-pointer"
-              >
-                Clear All
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* 3. PREMIUM CATEGORY CARDS SECTION */}
+      {/* 3. CATEGORIES HORIZONTAL STRIP */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-[1340px] mx-auto">
-        <ScrollReveal delay={0.2}>
-          <CategorySection
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-            products={availableProducts}
-            title="Browse Our Premium Categories"
-            subtitle="Explore handcrafted celebration cakes, fresh floral arrangements, chocolate bouquets, and luxury gift hampers."
-          />
-        </ScrollReveal>
+        <CategorySection
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+          products={availableProducts}
+        />
       </section>
 
-      {/* 4. PRODUCTS GRID OR SKELETON / EMPTY STATE */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-[1340px] mx-auto space-y-6">
-        {/* Results Header */}
-        <div className="flex items-center justify-between border-b border-[#e8dec9] pb-4">
+      {/* 4. PRODUCT GRID (Desktop 4, Tablet 3, Mobile 2) */}
+      <section className="px-4 sm:px-6 lg:px-8 max-w-[1340px] mx-auto space-y-4">
+        {/* Results Info */}
+        <div className="flex items-center justify-between border-b border-[#E8DEC9] pb-3">
           <div>
-            <h2 className="font-serif-display text-2xl font-bold text-[#1f1610]">
-              {selectedCategory === 'All' ? 'All Delicacies & Gifts' : selectedCategory}
+            <h2 className="font-serif-display text-xl sm:text-2xl font-bold text-[#1F1610]">
+              {selectedCategory === 'All' ? 'All Items' : selectedCategory}
             </h2>
-            <p className="text-xs text-[#6e5d4f] font-body-md mt-0.5">
-              Showing {sortedProducts.length} of {availableProducts.length} items
+            <p className="text-xs text-[#825425] font-medium mt-0.5">
+              Showing {sortedProducts.length} items
             </p>
           </div>
 
@@ -542,7 +382,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-[#faf6f0] border border-[#e8dec9] text-[#1f1610] text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none cursor-pointer"
+              className="bg-[#FAF6F0] border border-[#E8DEC9] text-[#1F1610] text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none cursor-pointer"
             >
               <option value="featured">Featured First</option>
               <option value="priceLow">Price: Low to High</option>
@@ -552,40 +392,39 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
           </div>
         </div>
 
+        {/* Product Grid */}
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {[...Array(8)].map((_, i) => (
               <SkeletonCard key={i} />
             ))}
           </div>
         ) : sortedProducts.length === 0 ? (
-          <ScrollReveal>
-            <div className="py-20 text-center bg-white border border-[#e8dec9] rounded-3xl p-8 max-w-lg mx-auto space-y-5 shadow-xl">
-              <div className="w-20 h-20 rounded-full bg-[#f4ebe1] text-[#825425] flex items-center justify-center mx-auto shadow-inner">
-                <Sparkles className="w-10 h-10 text-[#825425]" />
-              </div>
-              <h2 className="font-serif-display text-2xl font-bold text-[#1f1610]">
-                No items found
-              </h2>
-              <p className="text-[#6e5d4f] font-body-md text-sm max-w-md mx-auto leading-relaxed">
-                {searchQuery
-                  ? `No items matched your search query "${searchQuery}".`
-                  : `No products available under the current active filter criteria.`}
-              </p>
-              <RippleButton
-                onClick={resetFilters}
-                variant="primary"
-                className="py-3 px-8 text-xs font-bold uppercase tracking-wider"
-              >
-                Reset All Filters
-              </RippleButton>
+          /* 8. EMPTY STATE */
+          <div className="py-16 text-center bg-white border border-[#E8DEC9] rounded-3xl p-8 max-w-md mx-auto space-y-4 shadow-sm">
+            <div className="w-16 h-16 rounded-full bg-[#F4EBE1] text-[#825425] flex items-center justify-center mx-auto">
+              <Cake className="w-8 h-8 text-[#825425]" />
             </div>
-          </ScrollReveal>
+            <h3 className="font-serif-display text-xl font-bold text-[#1F1610]">
+              No Delicacies Found
+            </h3>
+            <p className="text-[#825425] text-xs sm:text-sm max-w-sm mx-auto leading-relaxed">
+              {searchQuery
+                ? `No products match your search "${searchQuery}". Try browsing another category or resetting filters.`
+                : `No delicacies available under the selected filter criteria.`}
+            </p>
+            <button
+              onClick={resetFilters}
+              className="bg-[#5C2E14] hover:bg-[#3D1E0C] text-white py-2.5 px-6 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer"
+            >
+              Browse All Categories
+            </button>
+          </div>
         ) : (
           <AnimatePresence mode="wait">
             <motion.div
               layout
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
             >
               {sortedProducts.map((product) => (
                 <ProductCard
