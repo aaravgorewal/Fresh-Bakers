@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProductItem, Category, BakerySettings, Testimonial, GalleryItem } from '../types';
-import { CATEGORIES } from '../data/products';
+import { CATEGORIES, CategoryInfo } from '../data/products';
 import {
   auth,
   addProductToFirestore,
@@ -153,6 +153,15 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
   const [selectedAvailabilityFilter, setSelectedAvailabilityFilter] = useState<string>('all');
+
+  const [categories, setCategories] = useState<CategoryInfo[]>(CATEGORIES);
+  const [editingCategoryName, setEditingCategoryName] = useState<string | null>(null);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategoryType, setNewCategoryType] = useState<CategoryInfo['type']>('cake');
+  const [newCategoryIcon, setNewCategoryIcon] = useState('Cake');
+  const [newCategoryImage, setNewCategoryImage] = useState('');
+  const [newCategoryBannerImage, setNewCategoryBannerImage] = useState('');
+  const [newCategoryTagline, setNewCategoryTagline] = useState('');
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
@@ -355,6 +364,65 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
     }
   };
 
+  const resetCategoryForm = () => {
+    setEditingCategoryName(null);
+    setNewCategoryName('');
+    setNewCategoryType('cake');
+    setNewCategoryIcon('Cake');
+    setNewCategoryImage('');
+    setNewCategoryBannerImage('');
+    setNewCategoryTagline('');
+  };
+
+  const handleEditCategoryInit = (categoryInfo: CategoryInfo) => {
+    setEditingCategoryName(categoryInfo.name);
+    setNewCategoryName(categoryInfo.name);
+    setNewCategoryType(categoryInfo.type);
+    setNewCategoryIcon(categoryInfo.icon);
+    setNewCategoryImage(categoryInfo.image);
+    setNewCategoryBannerImage(categoryInfo.bannerImage);
+    setNewCategoryTagline(categoryInfo.tagline);
+    setActiveTab('categories');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSaveCategory = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const normalizedName = newCategoryName.trim();
+    if (!normalizedName) {
+      alert('Category name is required.');
+      return;
+    }
+
+    const newCategory: CategoryInfo = {
+      name: normalizedName as Category,
+      type: newCategoryType,
+      icon: newCategoryIcon || 'Cake',
+      image: newCategoryImage || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
+      bannerImage: newCategoryBannerImage || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200',
+      tagline: newCategoryTagline || 'Delicious bakery items for every celebration.',
+    };
+
+    setCategories((prev) => {
+      if (editingCategoryName) {
+        return prev.map((cat) => (cat.name === editingCategoryName ? newCategory : cat));
+      }
+      return [...prev, newCategory];
+    });
+
+    resetCategoryForm();
+    triggerSuccess(editingCategoryName ? 'Category updated!' : 'Category added!');
+  };
+
+  const handleDeleteCategory = (categoryName: string) => {
+    if (!window.confirm(`Delete category "${categoryName}"? This will not delete products.`)) {
+      return;
+    }
+    setCategories((prev) => prev.filter((cat) => cat.name !== categoryName));
+    triggerSuccess('Category deleted.');
+  };
+
   // Settings Save
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -469,14 +537,14 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
   const totalProducts = products.length;
   const availableProducts = products.filter((p) => p.available !== false).length;
   const soldOutProducts = totalProducts - availableProducts;
-  const totalCategories = CATEGORIES.length;
+  const totalCategories = categories.length;
   const currency = bakerySettings.currencySymbol || '₹';
 
   const totalPrice = products.reduce((acc, p) => acc + (typeof p.price === 'number' ? p.price : (p.priceNum || 0)), 0);
   const avgPrice = totalProducts > 0 ? (totalPrice / totalProducts).toFixed(0) : '0';
 
   // Category Distribution for Recharts
-  const categoryCounts = CATEGORIES.map((cat) => {
+  const categoryCounts = categories.map((cat) => {
     const count = products.filter((p) => p.category === cat.name).length;
     return { name: cat.name, count };
   }).filter((c) => c.count > 0);
@@ -925,15 +993,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
                     onChange={(e) => setCategory(e.target.value as Category)}
                     className="w-full px-3.5 py-2.5 border border-[#d5c3b6] rounded-lg text-sm bg-white focus:outline-none focus:border-[#825425]"
                   >
-                    {CATEGORIES.map((cat) => (
-                      <option key={cat.name} value={cat.name}>
-                        {cat.name} ({cat.type})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
+                      {categories.map((cat) => (
                   <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">
                     Price ({currency}) *
                   </label>
@@ -1135,7 +1195,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
                   className="px-3 py-1.5 border border-[#d5c3b6] rounded-lg text-xs bg-white focus:outline-none"
                 >
                   <option value="all">All Categories</option>
-                  {CATEGORIES.map((c) => (
+                  {categories.map((c) => (
                     <option key={c.name} value={c.name}>
                       {c.name}
                     </option>
@@ -1308,23 +1368,128 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
       {activeTab === 'categories' && (
         <div className="space-y-6 animate-fadeIn">
           <div className="bg-white p-6 border border-[#e8d8cb] rounded-xl shadow-sm">
-            <h3 className="text-base font-bold text-[#1b1c1a] mb-1">Bakery Categories Directory</h3>
-            <p className="text-xs text-[#635345] mb-6">
-              All 18 bakery & gift categories configured for instant customer browsing and search filters.
-            </p>
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+              <div>
+                <h3 className="text-base font-bold text-[#1b1c1a] mb-1">Bakery Categories Directory</h3>
+                <p className="text-xs text-[#635345]">
+                  Manage category labels used by products and collections. Add, edit, or delete categories here.
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  resetCategoryForm();
+                  setActiveTab('categories');
+                }}
+                className="bg-[#825425] text-white px-4 py-2 text-xs font-bold rounded-lg uppercase tracking-wider"
+              >
+                Add New Category
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveCategory} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div>
+                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Category Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  placeholder="e.g. Celebration Cakes"
+                  className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Category Type</label>
+                <select
+                  value={newCategoryType}
+                  onChange={(e) => setNewCategoryType(e.target.value as CategoryInfo['type'])}
+                  className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm bg-white"
+                >
+                  <option value="cake">cake</option>
+                  <option value="additional">additional</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Category Icon</label>
+                <input
+                  type="text"
+                  value={newCategoryIcon}
+                  onChange={(e) => setNewCategoryIcon(e.target.value)}
+                  placeholder="Cake"
+                  className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Banner Image URL</label>
+                <input
+                  type="url"
+                  value={newCategoryBannerImage}
+                  onChange={(e) => setNewCategoryBannerImage(e.target.value)}
+                  placeholder="https://images.unsplash.com/..."
+                  className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm"
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Tagline</label>
+                <input
+                  type="text"
+                  value={newCategoryTagline}
+                  onChange={(e) => setNewCategoryTagline(e.target.value)}
+                  placeholder="Short category tagline"
+                  className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm"
+                />
+              </div>
+
+              <div className="md:col-span-3 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={resetCategoryForm}
+                  className="px-4 py-2 border border-[#d5c3b6] text-xs font-bold rounded-lg hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#825425] text-white px-4 py-2 text-xs font-bold rounded-lg uppercase tracking-wider"
+                >
+                  {editingCategoryName ? 'Update Category' : 'Create Category'}
+                </button>
+              </div>
+            </form>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {CATEGORIES.map((cat) => {
+              {categories.map((cat) => {
                 const count = products.filter((p) => p.category === cat.name).length;
                 return (
-                  <div key={cat.name} className="p-4 border border-[#e8d8cb] rounded-lg bg-[#fbf6f0] flex items-center justify-between">
-                    <div>
-                      <p className="font-bold text-sm text-[#1b1c1a]">{cat.name}</p>
-                      <p className="text-[11px] text-[#825425] uppercase tracking-wider font-semibold">{cat.type}</p>
+                  <div key={cat.name} className="p-4 border border-[#e8d8cb] rounded-lg bg-[#fbf6f0]">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-bold text-sm text-[#1b1c1a]">{cat.name}</p>
+                        <p className="text-[11px] text-[#825425] uppercase tracking-wider font-semibold">{cat.type}</p>
+                        <p className="text-[11px] text-[#51443a] mt-2 line-clamp-2">{cat.tagline}</p>
+                      </div>
+                      <span className="bg-[#825425] text-white px-2.5 py-1 rounded-full text-xs font-bold">
+                        {count} Items
+                      </span>
                     </div>
-                    <span className="bg-[#825425] text-white px-2.5 py-1 rounded-full text-xs font-bold">
-                      {count} Items
-                    </span>
+                    <div className="mt-4 flex items-center gap-2">
+                      <button
+                        onClick={() => handleEditCategoryInit(cat)}
+                        className="text-[#825425] text-xs font-bold px-3 py-1 border border-[#d5c3b6] rounded-lg hover:bg-[#fbf6f0]"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCategory(cat.name)}
+                        className="text-red-600 text-xs font-bold px-3 py-1 border border-red-200 rounded-lg hover:bg-red-50"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 );
               })}
