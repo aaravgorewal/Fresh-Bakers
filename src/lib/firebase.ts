@@ -211,8 +211,21 @@ export const subscribeToSettings = (callback: (settings: BakerySettings) => void
 export const updateBakerySettings = async (settingsData: Partial<BakerySettings>) => {
   try {
     const docRef = doc(db, SETTINGS_COLLECTION, MAIN_SETTINGS_DOC);
+    const cleanedData: Record<string, any> = {};
+
+    Object.entries(settingsData).forEach(([key, value]) => {
+      if (value === undefined || key === 'id') return;
+      if (key === 'whatsappNumber' && typeof value === 'string') {
+        cleanedData[key] = value.replace(/[\+\s]/g, '');
+      } else if ((key === 'deliveryFee' || key === 'minOrder') && value !== null && value !== undefined) {
+        cleanedData[key] = Number(value);
+      } else {
+        cleanedData[key] = value;
+      }
+    });
+
     await setDoc(docRef, {
-      ...settingsData,
+      ...cleanedData,
       updatedAt: new Date().toISOString()
     }, { merge: true });
   } catch (error) {

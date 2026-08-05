@@ -428,7 +428,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
     e.preventDefault();
     setSavingSettings(true);
     try {
-      const cleanWhatsapp = bakerySettings.whatsappNumber.replace(/[\+\s]/g, '');
+      const cleanWhatsapp = bakerySettings.whatsappNumber?.replace(/[\+\s]/g, '') ?? '';
       const payload = {
         ...bakerySettings,
         whatsappNumber: cleanWhatsapp,
