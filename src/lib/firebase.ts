@@ -258,9 +258,11 @@ export const updateProductInFirestore = async (id: string, productData: Partial<
     if (productData.name !== undefined) updatePayload.name = productData.name;
     if (productData.category !== undefined) updatePayload.category = productData.category;
     if (productData.price !== undefined) updatePayload.price = Number(productData.price);
+    if (productData.priceNum !== undefined) updatePayload.priceNum = Number(productData.priceNum);
     if (productData.description !== undefined) updatePayload.description = productData.description;
     if (productData.imageUrl !== undefined) updatePayload.imageUrl = productData.imageUrl;
-    if (productData.image !== undefined && !productData.imageUrl) updatePayload.imageUrl = productData.image;
+    if (productData.image !== undefined && updatePayload.imageUrl === undefined) updatePayload.imageUrl = productData.image;
+    if (productData.imageAlt !== undefined) updatePayload.imageAlt = productData.imageAlt;
     if (productData.available !== undefined) updatePayload.available = productData.available;
     if (productData.isSignature !== undefined) updatePayload.isSignature = !!productData.isSignature;
     if (productData.isFeatured !== undefined) updatePayload.isFeatured = !!productData.isFeatured;
@@ -269,31 +271,10 @@ export const updateProductInFirestore = async (id: string, productData: Partial<
     if (productData.isEggless !== undefined) updatePayload.isEggless = !!productData.isEggless;
     if (productData.ingredients !== undefined) updatePayload.ingredients = productData.ingredients;
     if (productData.fermentationHours !== undefined) updatePayload.fermentationHours = productData.fermentationHours;
+    if (productData.gallery !== undefined) updatePayload.gallery = productData.gallery;
+    if (productData.weightOptions !== undefined) updatePayload.weightOptions = productData.weightOptions;
 
-    const docSnap = await getDoc(docRef);
-    if (!docSnap.exists()) {
-      const fallback = PRODUCTS.find((p) => p.id === id);
-      const fullDoc = {
-        name: productData.name || fallback?.name || 'Bakery Item',
-        category: productData.category || fallback?.category || 'Birthday Cakes',
-        price: productData.price !== undefined ? Number(productData.price) : (fallback?.priceNum ?? 499),
-        description: productData.description || fallback?.description || '',
-        imageUrl: productData.imageUrl || productData.image || fallback?.image || '',
-        available: productData.available !== undefined ? productData.available : (fallback?.available !== false),
-        fermentationHours: fallback?.fermentationHours || null,
-        ingredients: productData.ingredients || fallback?.ingredients || [],
-        isSignature: productData.isSignature !== undefined ? !!productData.isSignature : !!fallback?.isSignature,
-        isFeatured: productData.isFeatured !== undefined ? !!productData.isFeatured : !!fallback?.isFeatured,
-        isTrending: productData.isTrending !== undefined ? !!productData.isTrending : !!fallback?.isTrending,
-        isRecommended: productData.isRecommended !== undefined ? !!productData.isRecommended : !!fallback?.isRecommended,
-        isEggless: productData.isEggless !== undefined ? !!productData.isEggless : (fallback?.isEggless !== false),
-        createdAt: new Date().toISOString(),
-        ...updatePayload,
-      };
-      await setDoc(docRef, fullDoc);
-    } else {
-      await updateDoc(docRef, updatePayload);
-    }
+    await setDoc(docRef, updatePayload, { merge: true });
   } catch (error) {
     handleFirestoreError(error, OperationType.UPDATE, `${PRODUCTS_COLLECTION}/${id}`);
     throw error;
