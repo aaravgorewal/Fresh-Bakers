@@ -1,7 +1,7 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User, signInAnonymously } from 'firebase/auth';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import firebaseConfig from '../../firebase-applet-config.json';
 import { ProductItem, BakerySettings } from '../types';
 import { PRODUCTS } from '../data/products';
@@ -281,9 +281,41 @@ export const updateProductInFirestore = async (id: string, productData: Partial<
   }
 };
 
+const getStoragePathFromDownloadUrl = (downloadUrl: string): string | null => {
+  try {
+    const parsed = new URL(downloadUrl);
+    if (!parsed.hostname.includes('firebasestorage.googleapis.com')) {
+      return null;
+    }
+    const pathIndex = parsed.pathname.indexOf('/o/');
+    if (pathIndex === -1) {
+      return null;
+    }
+    const encodedPath = parsed.pathname.slice(pathIndex + 3);
+    return decodeURIComponent(encodedPath);
+  } catch {
+    return null;
+  }
+};
+
 export const deleteProductFromFirestore = async (id: string) => {
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
+    const productSnapshot = await getDoc(docRef);
+    if (productSnapshot.exists()) {
+      const productData = productSnapshot.data();
+      const imageUrl = productData?.imageUrl || productData?.image;
+      if (typeof imageUrl === 'string') {
+        const storagePath = getStoragePathFromDownloadUrl(imageUrl);
+        if (storagePath) {
+          try {
+            await deleteObject(ref(storage, storagePath));
+          } catch (storageError) {
+            console.warn('Failed to delete associated storage object:', storageError);
+          }
+        }
+      }
+    }
     await deleteDoc(docRef);
   } catch (error) {
     handleFirestoreError(error, OperationType.DELETE, `${PRODUCTS_COLLECTION}/${id}`);
@@ -293,8 +325,13 @@ export const deleteProductFromFirestore = async (id: string) => {
 
 // Image Upload to Firebase Storage
 export const uploadProductImage = async (file: File): Promise<string> => {
-  const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
-  const snapshot = await uploadBytes(storageRef, file);
-  const downloadUrl = await getDownloadURL(snapshot.ref);
-  return downloadUrl;
+  try {
+    const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadUrl = await getDownloadURL(snapshot.ref);
+    return downloadUrl;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, 'storage/products');
+    throw error;
+  }
 };

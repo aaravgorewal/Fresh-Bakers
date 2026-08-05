@@ -537,24 +537,35 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
   const totalProducts = products.length;
   const availableProducts = products.filter((p) => p.available !== false).length;
   const soldOutProducts = totalProducts - availableProducts;
+  const featuredCount = products.filter((p) => p.isFeatured).length;
+  const trendingCount = products.filter((p) => p.isTrending).length;
+  const recommendedCount = products.filter((p) => p.isRecommended).length;
+  const activeCategories = categories.filter((cat) => products.some((p) => p.category === cat.name)).length;
   const totalCategories = categories.length;
   const currency = bakerySettings.currencySymbol || '₹';
 
-  const totalPrice = products.reduce((acc, p) => acc + (typeof p.price === 'number' ? p.price : (p.priceNum || 0)), 0);
+  const normalizedPrices = products.map((p) => {
+    const rawPrice = typeof p.price === 'number' ? p.price : (p.priceNum || 0);
+    return Number.isFinite(rawPrice) ? rawPrice : 0;
+  });
+  const totalPrice = normalizedPrices.reduce((acc, price) => acc + price, 0);
   const avgPrice = totalProducts > 0 ? (totalPrice / totalProducts).toFixed(0) : '0';
 
   // Category Distribution for Recharts
-  const categoryCounts = categories.map((cat) => {
-    const count = products.filter((p) => p.category === cat.name).length;
-    return { name: cat.name, count };
-  }).filter((c) => c.count > 0);
+  const categoryCounts = categories
+    .map((cat) => ({
+      name: cat.name,
+      count: products.filter((p) => p.category === cat.name).length,
+    }))
+    .filter((c) => c.count > 0)
+    .sort((a, b) => b.count - a.count);
 
   // Price Ranges for Recharts
   const priceRanges = [
-    { name: 'Under ₹300', count: products.filter((p) => (p.price || 0) < 300).length },
-    { name: '₹300 - ₹600', count: products.filter((p) => (p.price || 0) >= 300 && (p.price || 0) <= 600).length },
-    { name: '₹600 - ₹1000', count: products.filter((p) => (p.price || 0) > 600 && (p.price || 0) <= 1000).length },
-    { name: 'Above ₹1000', count: products.filter((p) => (p.price || 0) > 1000).length },
+    { name: `Under ${currency}300`, count: normalizedPrices.filter((price) => price < 300).length },
+    { name: `${currency}300 - ${currency}600`, count: normalizedPrices.filter((price) => price >= 300 && price <= 600).length },
+    { name: `${currency}600 - ${currency}1000`, count: normalizedPrices.filter((price) => price > 600 && price <= 1000).length },
+    { name: `Above ${currency}1000`, count: normalizedPrices.filter((price) => price > 1000).length },
   ].filter((r) => r.count > 0);
 
   // Unauthenticated Login Screen
@@ -806,8 +817,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
                 <span className="text-xs font-bold uppercase tracking-wider text-[#635345]">Active Categories</span>
                 <FolderTree className="w-5 h-5" />
               </div>
-              <p className="text-3xl font-extrabold text-[#1b1c1a]">{totalCategories}</p>
-              <p className="text-[11px] text-[#825425] mt-1 font-medium">Cakes, Hampers & Gifts</p>
+              <p className="text-3xl font-extrabold text-[#1b1c1a]">{activeCategories}</p>
+              <p className="text-[11px] text-[#825425] mt-1 font-medium">Categories currently used by products</p>
             </div>
 
             <div className="bg-white p-5 border border-[#e8d8cb] rounded-xl shadow-sm">
