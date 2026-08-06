@@ -43,8 +43,6 @@ import {
   LogOut,
   CheckCircle2,
   AlertCircle,
-  ToggleLeft,
-  ToggleRight,
   Search,
   Star,
   Eye,
@@ -52,10 +50,8 @@ import {
   RefreshCw,
   DollarSign,
   TrendingUp,
-  ThumbsUp,
   Tag,
-  ShieldCheck,
-  Check
+  ShieldCheck
 } from 'lucide-react';
 
 interface AdminViewProps {
@@ -1004,7 +1000,15 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
                     onChange={(e) => setCategory(e.target.value as Category)}
                     className="w-full px-3.5 py-2.5 border border-[#d5c3b6] rounded-lg text-sm bg-white focus:outline-none focus:border-[#825425]"
                   >
-                      {categories.map((cat) => (
+                    {categories.map((cat) => (
+                      <option key={cat.name} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
                   <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">
                     Price ({currency}) *
                   </label>
