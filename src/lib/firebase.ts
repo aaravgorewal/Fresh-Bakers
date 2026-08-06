@@ -1,7 +1,7 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { getStorage, ref, deleteObject } from 'firebase/storage';
 import firebaseConfig from '../../firebase-applet-config.json';
 import { ProductItem, BakerySettings } from '../types';
 import { PRODUCTS } from '../data/products';
@@ -14,6 +14,10 @@ export const db = firebaseConfig.firestoreDatabaseId && firebaseConfig.firestore
 
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_UNSIGNED_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UNSIGNED_UPLOAD_PRESET;
+const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`;
 
 // Error handling helper per Firebase Integration guidelines
 export enum OperationType {
@@ -336,15 +340,35 @@ export const deleteProductFromFirestore = async (id: string) => {
   }
 };
 
-// Image Upload to Firebase Storage
+// Image Upload to Cloudinary
 export const uploadProductImage = async (file: File): Promise<string> => {
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UNSIGNED_UPLOAD_PRESET) {
+    throw new Error('Cloudinary configuration is missing. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UNSIGNED_UPLOAD_PRESET.');
+  }
+
   try {
-    const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
-    const snapshot = await uploadBytes(storageRef, file);
-    const downloadUrl = await getDownloadURL(snapshot.ref);
-    return downloadUrl;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UNSIGNED_UPLOAD_PRESET);
+
+    const response = await fetch(CLOUDINARY_UPLOAD_URL, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Cloudinary upload failed: ${errorText}`);
+    }
+
+    const data = await response.json();
+    if (!data?.secure_url) {
+      throw new Error('Cloudinary did not return a secure_url');
+    }
+
+    return data.secure_url;
   } catch (error) {
-    handleFirestoreError(error, OperationType.WRITE, 'storage/products');
+    handleFirestoreError(error, OperationType.WRITE, 'cloudinary/products');
     throw error;
   }
 };
