@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, MotionProps } from 'motion/react';
+import { motion } from 'motion/react';
 
 // 1. Scroll Reveal Component
 interface ScrollRevealProps {
@@ -101,13 +101,11 @@ export const ImageZoom: React.FC<ImageZoomProps> = ({
 };
 
 // 3. Motion Ripple Button
-interface RippleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+type RippleButtonProps = Omit<React.ComponentPropsWithoutRef<typeof motion.button>, 'children'> & {
+  children?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'whatsapp';
-  className?: string;
   icon?: React.ReactNode;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-}
+};
 
 export const RippleButton: React.FC<RippleButtonProps> = ({
   children,
@@ -135,7 +133,7 @@ export const RippleButton: React.FC<RippleButtonProps> = ({
       transition={{ type: 'spring', stiffness: 400, damping: 17 }}
       onClick={onClick}
       className={`${baseStyles} ${variantStyles[variant]} ${className}`}
-      {...(props as MotionProps)}
+      {...props}
     >
       {/* Shine sweep overlay */}
       <motion.span
