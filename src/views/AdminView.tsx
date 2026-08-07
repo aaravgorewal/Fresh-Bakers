@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { ProductItem, Category, BakerySettings, Testimonial, GalleryItem } from '../types';
 import { CATEGORIES, CategoryInfo } from '../data/products';
 import {
@@ -1308,7 +1308,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
 
                   {filteredProducts.length === 0 && (
                     <tr>
-                      <td colSpan={6} className="p-8 text-center text-slate-500">
+                      <td colSpan={7} className="p-8 text-center text-slate-500">
                         No products match the selected search or category filters.
                       </td>
                     </tr>
