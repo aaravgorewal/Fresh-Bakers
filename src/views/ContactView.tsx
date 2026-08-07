@@ -13,8 +13,8 @@ export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
   const bakeryName = settings?.bakeryName || 'Fresh Bakers';
   const whatsappNumber = settings?.whatsappNumber || '15550192824';
   const address = settings?.address || '142 Artisan Boulevard, Mill District';
-  const openingHours = settings?.openingHours || 'Tue – Sun: 7am – 4pm';
-  const instagramUrl = settings?.instagramUrl || 'https://instagram.com/freshbakers';
+  const openingHours = settings?.openHours || 'Tue – Sun: 7am – 4pm';
+  const instagramUrl = settings?.instagram || 'https://instagram.com/freshbakers';
 
   const cleanNum = whatsappNumber.replace(/[\+\s]/g, '');
 
