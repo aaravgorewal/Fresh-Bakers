@@ -149,6 +149,11 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
   const [selectedAvailabilityFilter, setSelectedAvailabilityFilter] = useState<string>('all');
+  const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
+  const [showBulkDeleteConfirm, setShowBulkDeleteConfirm] = useState(false);
+  const [bulkDeleteLoading, setBulkDeleteLoading] = useState(false);
+
+  const selectAllCheckboxRef = useRef<HTMLInputElement | null>(null);
 
   const [categories, setCategories] = useState<CategoryInfo[]>(CATEGORIES);
   const [editingCategoryName, setEditingCategoryName] = useState<string | null>(null);
@@ -360,6 +365,62 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
     }
   };
 
+  const handleToggleSelectProduct = (productId: string) => {
+    setSelectedProductIds((prev) =>
+      prev.includes(productId) ? prev.filter((id) => id !== productId) : [...prev, productId]
+    );
+  };
+
+  const handleToggleSelectAll = () => {
+    if (isAllVisibleSelected) {
+      setSelectedProductIds((prev) => prev.filter((id) => !filteredProducts.some((product) => product.id === id)));
+    } else {
+      setSelectedProductIds((prev) => [
+        ...new Set([
+          ...prev,
+          ...filteredProducts.map((product) => product.id),
+        ]),
+      ]);
+    }
+  };
+
+  const handleDeleteSelectedProducts = async () => {
+    if (selectedProductIds.length === 0) return;
+    setShowBulkDeleteConfirm(true);
+  };
+
+  const confirmBulkDelete = async () => {
+    setBulkDeleteLoading(true);
+    const deletedCount = { success: 0, failure: 0 };
+
+    await Promise.allSettled(
+      selectedProductIds.map(async (productId) => {
+        try {
+          await deleteProductFromFirestore(productId);
+          deletedCount.success += 1;
+          return { productId, status: 'fulfilled' } as const;
+        } catch (error) {
+          deletedCount.failure += 1;
+          return { productId, status: 'rejected', reason: error } as const;
+        }
+      })
+    );
+
+    setBulkDeleteLoading(false);
+    setShowBulkDeleteConfirm(false);
+    setSelectedProductIds([]);
+
+    if (deletedCount.failure > 0) {
+      triggerSuccess(`Deleted: ${deletedCount.success}, Failed: ${deletedCount.failure}`);
+    } else {
+      triggerSuccess(`Deleted: ${deletedCount.success}`);
+    }
+  };
+
+  const handleCancelSelection = () => {
+    setSelectedProductIds([]);
+  };
+
   const resetCategoryForm = () => {
     setEditingCategoryName(null);
     setNewCategoryName('');
@@ -528,6 +589,27 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
 
     return matchesSearch && matchesCategory && matchesAvailability;
   });
+
+  const isAllVisibleSelected = useMemo(() => {
+    if (filteredProducts.length === 0) return false;
+    return filteredProducts.every((product) => selectedProductIds.includes(product.id));
+  }, [filteredProducts, selectedProductIds]);
+
+  const isSomeVisibleSelected = useMemo(() => {
+    return filteredProducts.some((product) => selectedProductIds.includes(product.id));
+  }, [filteredProducts, selectedProductIds]);
+
+  useEffect(() => {
+    if (selectAllCheckboxRef.current) {
+      selectAllCheckboxRef.current.indeterminate = isSomeVisibleSelected && !isAllVisibleSelected;
+    }
+  }, [isSomeVisibleSelected, isAllVisibleSelected]);
+
+  useEffect(() => {
+    if (selectedProductIds.length === 0) return;
+    const visibleIds = new Set(filteredProducts.map((product) => product.id));
+    setSelectedProductIds((prev) => prev.filter((id) => visibleIds.has(id)));
+  }, [filteredProducts]);
 
   // Analytics Computation
   const totalProducts = products.length;
@@ -1232,11 +1314,48 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
               </div>
             </div>
 
-            {/* Table */}
+            {selectedProductIds.length > 0 && (
+              <div className="sticky top-0 z-20 mb-4 bg-[#faf3e9] border border-[#e8d8cb] rounded-3xl p-4 shadow-sm transition-all">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-[#4a341f]">
+                    <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[#d9c6b0] text-[#5c3714]">✓</span>
+                    {selectedProductIds.length} Products Selected
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={handleDeleteSelectedProducts}
+                      className="bg-[#825425] hover:bg-[#6a421c] text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
+                    >
+                      Delete Selected
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCancelSelection}
+                      className="bg-[#f4ebdf] hover:bg-[#e9dccb] text-[#5c3714] px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider border border-[#d5c3b6] transition-colors"
+                    >
+                      Cancel Selection
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="bg-[#fbf6f0] border-b border-[#e8d8cb] text-[#825425] uppercase tracking-wider font-bold">
+                    <th className="p-3 w-[1%]">
+                      <label className="inline-flex items-center justify-center w-5 h-5 rounded-lg border border-[#d5c3b6] bg-white text-[#5C2E14]">
+                        <input
+                          ref={selectAllCheckboxRef}
+                          type="checkbox"
+                          checked={isAllVisibleSelected}
+                          onChange={handleToggleSelectAll}
+                          className="peer sr-only"
+                        />
+                        <span aria-hidden="true" className="w-4 h-4 rounded-sm border border-[#d5c3b6] bg-white peer-checked:bg-[#825425] peer-checked:border-[#825425]"></span>
+                      </label>
+                    </th>
                     <th className="p-3">Product</th>
                     <th className="p-3">Category</th>
                     <th className="p-3">Price</th>
@@ -1248,6 +1367,17 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
                 <tbody className="divide-y divide-slate-100">
                   {filteredProducts.map((p) => (
                     <tr key={p.id} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="p-3">
+                        <label className="inline-flex items-center justify-center w-5 h-5 rounded-lg border border-[#d5c3b6] bg-white text-[#5C2E14]">
+                          <input
+                            type="checkbox"
+                            checked={selectedProductIds.includes(p.id)}
+                            onChange={() => handleToggleSelectProduct(p.id)}
+                            className="peer sr-only"
+                          />
+                          <span aria-hidden="true" className="w-4 h-4 rounded-sm border border-[#d5c3b6] bg-white peer-checked:bg-[#825425] peer-checked:border-[#825425]"></span>
+                        </label>
+                      </td>
                       <td className="p-3">
                         <div className="flex items-center gap-3">
                           <img
@@ -1316,6 +1446,36 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
                 </tbody>
               </table>
             </div>
+
+            {showBulkDeleteConfirm && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+                <div className="w-full max-w-md bg-[#FAF6F0] rounded-3xl border border-[#e8d8cb] p-6 shadow-2xl">
+                  <div className="mb-4">
+                    <h3 className="text-xl font-bold text-[#24140A]">Delete Selected Products</h3>
+                    <p className="text-sm text-[#5C2E14] mt-2">
+                      You are about to permanently delete {selectedProductIds.length} selected products. This action cannot be undone.
+                    </p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setShowBulkDeleteConfirm(false)}
+                      className="bg-[#F4EBE1] text-[#5C2E14] px-4 py-3 rounded-full text-xs font-bold uppercase tracking-wider border border-[#d5c3b6] hover:bg-[#e9dccb] transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={confirmBulkDelete}
+                      disabled={bulkDeleteLoading}
+                      className="bg-[#825425] text-white px-4 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#6a421c] transition-colors shadow-sm disabled:opacity-60"
+                    >
+                      {bulkDeleteLoading ? 'Deleting...' : 'Delete Permanently'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
