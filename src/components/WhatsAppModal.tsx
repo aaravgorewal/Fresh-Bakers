@@ -24,8 +24,27 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
   whatsappNumber = '15550192824',
 }) => {
   const [customerName, setCustomerName] = useState('');
-  const [pickupDate, setPickupDate] = useState('Tomorrow 9:00 AM');
+  const [pickupDate, setPickupDate] = useState('');
   const [notes, setNotes] = useState('');
+  const [dateError, setDateError] = useState(false);
+
+  const getTodayDateString = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const formatPickupDate = (dateValue: string) => {
+    if (!dateValue) return '';
+    return new Intl.DateTimeFormat('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(dateValue));
+  };
 
   if (!isOpen) return null;
 
@@ -45,7 +64,7 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
     }
 
     if (pickupDate) {
-      msg += `*Requested Pickup:* ${pickupDate}\n`;
+      msg += `*Requested Pickup Date:* ${formatPickupDate(pickupDate)}\n`;
     }
     if (customerName) {
       msg += `*Name:* ${customerName}\n`;
@@ -59,6 +78,11 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
   };
 
   const handleSendWhatsApp = () => {
+    if (!pickupDate) {
+      setDateError(true);
+      return;
+    }
+
     const rawMsg = generateWhatsAppMessage();
     const encoded = encodeURIComponent(rawMsg);
     const cleanNum = (whatsappNumber || '15550192824').replace(/[\+\s]/g, '');
@@ -179,18 +203,27 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
 
             <div>
               <label className="block text-xs font-bold text-[#6C584C] uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-[#5C2E14]" /> Preferred Pickup Slot
+                <Calendar className="w-3.5 h-3.5 text-[#5C2E14]" /> Preferred Pickup Date *
               </label>
-              <select
-                value={pickupDate}
-                onChange={(e) => setPickupDate(e.target.value)}
-                className="w-full bg-[#F4EBE1] border border-[#F0E5DA] rounded-xl px-3.5 py-2.5 text-sm text-[#24140A] focus:outline-none focus:border-[#5C2E14]"
-              >
-                <option value="Today 2:00 PM - 4:00 PM">Today (2:00 PM – 4:00 PM)</option>
-                <option value="Tomorrow 8:00 AM - 10:00 AM">Tomorrow Morning (8:00 AM – 10:00 AM)</option>
-                <option value="Tomorrow 11:00 AM - 1:00 PM">Tomorrow Midday (11:00 AM – 1:00 PM)</option>
-                <option value="Weekend Special Pre-Order">Weekend Bake Special</option>
-              </select>
+              <div className="relative">
+                <input
+                  type="date"
+                  value={pickupDate}
+                  min={getTodayDateString()}
+                  onChange={(e) => {
+                    setPickupDate(e.target.value);
+                    if (dateError) setDateError(false);
+                  }}
+                  className={`w-full bg-[#F4EBE1] border ${dateError ? 'border-rose-500' : 'border-[#F0E5DA]'} rounded-xl px-3.5 py-2.5 pr-11 text-sm text-[#24140A] focus:outline-none focus:border-[#5C2E14]`}
+                />
+                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C2E14] w-5 h-5" />
+              </div>
+              {pickupDate && (
+                <p className="mt-2 text-xs text-[#5C2E14]">{formatPickupDate(pickupDate)}</p>
+              )}
+              {dateError && (
+                <p className="mt-2 text-xs text-rose-600">Please choose a pickup date.</p>
+              )}
             </div>
           </div>
 
