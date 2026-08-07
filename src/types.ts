@@ -15,6 +15,7 @@ export type Category =
   | 'Flowers'
   | 'Chocolate Bouquets'
   | 'Gift Hampers'
+  | 'Seasonal Specials'
   | 'Balloon Decoration'
   | 'Birthday Accessories'
   | 'Recommend For You'
