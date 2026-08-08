@@ -16,6 +16,107 @@ export const storage = getStorage(app);
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_UNSIGNED_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UNSIGNED_UPLOAD_PRESET;
 const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+const SEED_STATUS_DOC = 'seed_status';
+
+const normalizeText = (value: unknown, fallback = ''): string =>
+  typeof value === 'string' ? value : fallback;
+
+const normalizeNumber = (value: unknown, fallback = 0): number => {
+  if (typeof value === 'number') return value;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+};
+
+const normalizeBoolean = (value: unknown, fallback = true): boolean =>
+  value === false ? false : fallback;
+
+const buildProductCreatePayload = (product: Partial<ProductItem>): Record<string, any> => ({
+  name: normalizeText(product.name),
+  category: product.category || 'Birthday Cakes',
+  price: normalizeNumber(product.price ?? product.priceNum, 499),
+  description: normalizeText(product.description),
+  imageUrl: normalizeText(product.imageUrl ?? product.image),
+  available: normalizeBoolean(product.available, true),
+  fermentationHours: product.fermentationHours ?? null,
+  ingredients: Array.isArray(product.ingredients) ? product.ingredients : [],
+  isSignature: !!product.isSignature,
+  isFeatured: !!product.isFeatured,
+  isTrending: !!product.isTrending,
+  isRecommended: !!product.isRecommended,
+  isEggless: product.isEggless !== false,
+  gallery: Array.isArray(product.gallery) ? product.gallery : [],
+  weightOptions: Array.isArray(product.weightOptions) ? product.weightOptions : [],
+  createdAt: new Date().toISOString(),
+});
+
+const buildProductUpdatePayload = (productData: Partial<ProductItem>): Record<string, any> => {
+  const payload: Record<string, any> = {};
+
+  if (productData.name !== undefined) payload.name = productData.name;
+  if (productData.category !== undefined) payload.category = productData.category;
+  if (productData.price !== undefined) payload.price = Number(productData.price);
+  if (productData.priceNum !== undefined) payload.priceNum = Number(productData.priceNum);
+  if (productData.description !== undefined) payload.description = productData.description;
+  if (productData.imageUrl !== undefined) payload.imageUrl = productData.imageUrl;
+  if (productData.image !== undefined && payload.imageUrl === undefined) payload.imageUrl = productData.image;
+  if (productData.imageAlt !== undefined) payload.imageAlt = productData.imageAlt;
+  if (productData.available !== undefined) payload.available = productData.available;
+  if (productData.isSignature !== undefined) payload.isSignature = !!productData.isSignature;
+  if (productData.isFeatured !== undefined) payload.isFeatured = !!productData.isFeatured;
+  if (productData.isTrending !== undefined) payload.isTrending = !!productData.isTrending;
+  if (productData.isRecommended !== undefined) payload.isRecommended = !!productData.isRecommended;
+  if (productData.isEggless !== undefined) payload.isEggless = !!productData.isEggless;
+  if (productData.ingredients !== undefined) payload.ingredients = productData.ingredients;
+  if (productData.fermentationHours !== undefined) payload.fermentationHours = productData.fermentationHours;
+  if (productData.gallery !== undefined) payload.gallery = productData.gallery;
+  if (productData.weightOptions !== undefined) payload.weightOptions = productData.weightOptions;
+
+  return payload;
+};
+
+const normalizeProductDocument = (docSnap: any): ProductItem => {
+  const data = docSnap.data() as Record<string, any>;
+  const imageUrl = normalizeText(data.imageUrl ?? data.image);
+  const priceVal = normalizeNumber(data.price ?? data.priceNum, 0);
+
+  return {
+    id: docSnap.id,
+    name: normalizeText(data.name),
+    category: normalizeText(data.category) || 'Birthday Cakes',
+    price: priceVal,
+    description: normalizeText(data.description),
+    imageUrl,
+    available: data.available !== false,
+    image: imageUrl,
+    priceNum: priceVal,
+    imageAlt: normalizeText(data.imageAlt) || normalizeText(data.name) || 'Bakery product photo',
+    fermentationHours:
+      typeof data.fermentationHours === 'number' ? data.fermentationHours : undefined,
+    ingredients: Array.isArray(data.ingredients) ? data.ingredients : [],
+    isSignature: !!data.isSignature,
+    isFeatured: !!data.isFeatured,
+    isTrending: !!data.isTrending,
+    isRecommended: !!data.isRecommended,
+    isEggless: data.isEggless !== false,
+  };
+};
+
+const cleanSettingsData = (settingsData: Partial<BakerySettings>): Record<string, any> => {
+  const cleanedData: Record<string, any> = {};
+
+  Object.entries(settingsData).forEach(([key, value]) => {
+    if (value === undefined || key === 'id') return;
+    if (key === 'whatsappNumber' && typeof value === 'string') {
+      cleanedData[key] = value.replace(/[\+\s]/g, '');
+    } else if ((key === 'deliveryFee' || key === 'minOrder') && value !== null && value !== undefined) {
+      cleanedData[key] = Number(value);
+    } else {
+      cleanedData[key] = value;
+    }
+  });
+
+  return cleanedData;
+};
 
 // Error handling helper per Firebase Integration guidelines
 export enum OperationType {
@@ -84,37 +185,24 @@ export const seedInitialProductsIfEmpty = async (): Promise<void> => {
       console.log('Firestore products collection seeding deferred until admin login.');
       return;
     }
-    const querySnapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
-    if (querySnapshot.empty) {
-      const seedSentinelRef = doc(db, SETTINGS_COLLECTION, 'seed_status');
-      const seedSnap = await getDoc(seedSentinelRef);
-      if (seedSnap.exists() && seedSnap.data()?.hasSeeded) {
-        console.log('Products collection is empty because products were deleted by admin. Skipping re-seed.');
-        return;
-      }
 
-      console.log('Seeding initial products to Firestore...');
-      for (const product of PRODUCTS) {
-        await setDoc(doc(db, PRODUCTS_COLLECTION, product.id), {
-          name: product.name,
-          category: product.category,
-          price: product.priceNum ?? product.price ?? 499,
-          description: product.description || '',
-          imageUrl: product.image || product.imageUrl || '',
-          available: product.available !== false,
-          fermentationHours: product.fermentationHours || null,
-          ingredients: product.ingredients || [],
-          isSignature: !!product.isSignature,
-          isFeatured: !!product.isFeatured,
-          isTrending: !!product.isTrending,
-          isRecommended: !!product.isRecommended,
-          isEggless: product.isEggless !== false,
-          createdAt: new Date().toISOString()
-        });
-      }
-      await setDoc(seedSentinelRef, { hasSeeded: true, seededAt: new Date().toISOString() });
-      console.log('Seeding products complete.');
+    const querySnapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
+    if (!querySnapshot.empty) return;
+
+    const seedSentinelRef = doc(db, SETTINGS_COLLECTION, SEED_STATUS_DOC);
+    const seedSnap = await getDoc(seedSentinelRef);
+    if (seedSnap.exists() && seedSnap.data()?.hasSeeded) {
+      console.log('Products collection is empty because products were deleted by admin. Skipping re-seed.');
+      return;
     }
+
+    console.log('Seeding initial products to Firestore...');
+    for (const product of PRODUCTS) {
+      await setDoc(doc(db, PRODUCTS_COLLECTION, product.id), buildProductCreatePayload(product));
+    }
+
+    await setDoc(seedSentinelRef, { hasSeeded: true, seededAt: new Date().toISOString() });
+    console.log('Seeding products complete.');
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, PRODUCTS_COLLECTION);
   }
@@ -218,40 +306,16 @@ export const deleteCategoryFromFirestore = async (id: string) => {
 // Listen to products real-time
 export const subscribeToProducts = (callback: (products: ProductItem[]) => void) => {
   const colRef = collection(db, PRODUCTS_COLLECTION);
-  return onSnapshot(colRef, (snapshot) => {
-    if (snapshot.empty) {
-      callback([]);
-      return;
+  return onSnapshot(
+    colRef,
+    (snapshot) => {
+      const list: ProductItem[] = snapshot.docs.map(normalizeProductDocument);
+      callback(list);
+    },
+    (err) => {
+      handleFirestoreError(err, OperationType.LIST, PRODUCTS_COLLECTION);
     }
-    const list: ProductItem[] = snapshot.docs.map((docSnap) => {
-      const data = docSnap.data();
-      const priceVal = typeof data.price === 'number' ? data.price : (Number(data.priceNum) || 0);
-      const imgVal = data.imageUrl || data.image || '';
-      return {
-        id: docSnap.id,
-        name: data.name || '',
-        category: data.category || 'Birthday Cakes',
-        price: priceVal,
-        description: data.description || '',
-        imageUrl: imgVal,
-        available: data.available !== false,
-        // UI compatibility properties
-        image: imgVal,
-        priceNum: priceVal,
-        imageAlt: data.imageAlt || data.name || 'Bakery product photo',
-        fermentationHours: data.fermentationHours || undefined,
-        ingredients: data.ingredients || [],
-        isSignature: !!data.isSignature,
-        isFeatured: !!data.isFeatured,
-        isTrending: !!data.isTrending,
-        isRecommended: !!data.isRecommended,
-        isEggless: data.isEggless !== false,
-      };
-    });
-    callback(list);
-  }, (err) => {
-    handleFirestoreError(err, OperationType.LIST, PRODUCTS_COLLECTION);
-  });
+  );
 };
 
 // Listen to settings real-time
@@ -290,22 +354,9 @@ export const subscribeToSettings = (callback: (settings: BakerySettings) => void
 export const updateBakerySettings = async (settingsData: Partial<BakerySettings>) => {
   try {
     const docRef = doc(db, SETTINGS_COLLECTION, MAIN_SETTINGS_DOC);
-    const cleanedData: Record<string, any> = {};
-
-    Object.entries(settingsData).forEach(([key, value]) => {
-      if (value === undefined || key === 'id') return;
-      if (key === 'whatsappNumber' && typeof value === 'string') {
-        cleanedData[key] = value.replace(/[\+\s]/g, '');
-      } else if ((key === 'deliveryFee' || key === 'minOrder') && value !== null && value !== undefined) {
-        cleanedData[key] = Number(value);
-      } else {
-        cleanedData[key] = value;
-      }
-    });
-
     await setDoc(docRef, {
-      ...cleanedData,
-      updatedAt: new Date().toISOString()
+      ...cleanSettingsData(settingsData),
+      updatedAt: new Date().toISOString(),
     }, { merge: true });
   } catch (error) {
     handleFirestoreError(error, OperationType.UPDATE, `${SETTINGS_COLLECTION}/${MAIN_SETTINGS_DOC}`);
@@ -317,24 +368,7 @@ export const updateBakerySettings = async (settingsData: Partial<BakerySettings>
 export const addProductToFirestore = async (productData: Omit<ProductItem, 'id'>) => {
   try {
     const colRef = collection(db, PRODUCTS_COLLECTION);
-    const docRef = await addDoc(colRef, {
-      name: productData.name,
-      price: Number(productData.price),
-      category: productData.category,
-      description: productData.description || '',
-      imageUrl: productData.imageUrl || productData.image || '',
-      available: productData.available !== false,
-      fermentationHours: productData.fermentationHours || null,
-      ingredients: productData.ingredients || [],
-      isSignature: !!productData.isSignature,
-      isFeatured: !!productData.isFeatured,
-      isTrending: !!productData.isTrending,
-      isRecommended: !!productData.isRecommended,
-      isEggless: productData.isEggless !== false,
-      gallery: productData.gallery || [],
-      weightOptions: productData.weightOptions || [],
-      createdAt: new Date().toISOString()
-    });
+    const docRef = await addDoc(colRef, buildProductCreatePayload(productData));
     return docRef.id;
   } catch (error) {
     handleFirestoreError(error, OperationType.CREATE, PRODUCTS_COLLECTION);
@@ -345,27 +379,7 @@ export const addProductToFirestore = async (productData: Omit<ProductItem, 'id'>
 export const updateProductInFirestore = async (id: string, productData: Partial<ProductItem>) => {
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
-    const updatePayload: Record<string, any> = {};
-
-    if (productData.name !== undefined) updatePayload.name = productData.name;
-    if (productData.category !== undefined) updatePayload.category = productData.category;
-    if (productData.price !== undefined) updatePayload.price = Number(productData.price);
-    if (productData.priceNum !== undefined) updatePayload.priceNum = Number(productData.priceNum);
-    if (productData.description !== undefined) updatePayload.description = productData.description;
-    if (productData.imageUrl !== undefined) updatePayload.imageUrl = productData.imageUrl;
-    if (productData.image !== undefined && updatePayload.imageUrl === undefined) updatePayload.imageUrl = productData.image;
-    if (productData.imageAlt !== undefined) updatePayload.imageAlt = productData.imageAlt;
-    if (productData.available !== undefined) updatePayload.available = productData.available;
-    if (productData.isSignature !== undefined) updatePayload.isSignature = !!productData.isSignature;
-    if (productData.isFeatured !== undefined) updatePayload.isFeatured = !!productData.isFeatured;
-    if (productData.isTrending !== undefined) updatePayload.isTrending = !!productData.isTrending;
-    if (productData.isRecommended !== undefined) updatePayload.isRecommended = !!productData.isRecommended;
-    if (productData.isEggless !== undefined) updatePayload.isEggless = !!productData.isEggless;
-    if (productData.ingredients !== undefined) updatePayload.ingredients = productData.ingredients;
-    if (productData.fermentationHours !== undefined) updatePayload.fermentationHours = productData.fermentationHours;
-    if (productData.gallery !== undefined) updatePayload.gallery = productData.gallery;
-    if (productData.weightOptions !== undefined) updatePayload.weightOptions = productData.weightOptions;
-
+    const updatePayload = buildProductUpdatePayload(productData);
     await setDoc(docRef, updatePayload, { merge: true });
   } catch (error) {
     handleFirestoreError(error, OperationType.UPDATE, `${PRODUCTS_COLLECTION}/${id}`);
