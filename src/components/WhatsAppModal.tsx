@@ -25,6 +25,7 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
 }) => {
   const [customerName, setCustomerName] = useState('');
   const [pickupDate, setPickupDate] = useState('');
+  const [pickupTime, setPickupTime] = useState('');
   const [notes, setNotes] = useState('');
   const [dateError, setDateError] = useState(false);
 
@@ -65,6 +66,9 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
 
     if (pickupDate) {
       msg += `*Requested Pickup Date:* ${formatPickupDate(pickupDate)}\n`;
+    }
+    if (pickupTime) {
+      msg += `*Preferred Pickup Time:* ${pickupTime}\n`;
     }
     if (customerName) {
       msg += `*Name:* ${customerName}\n`;
@@ -201,29 +205,43 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
               />
             </div>
 
-            <div>
-              <label className="block text-xs font-bold text-[#6C584C] uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-[#5C2E14]" /> Preferred Pickup Date *
-              </label>
-              <div className="relative">
-                <input
-                  type="date"
-                  value={pickupDate}
-                  min={getTodayDateString()}
-                  onChange={(e) => {
-                    setPickupDate(e.target.value);
-                    if (dateError) setDateError(false);
-                  }}
-                  className={`w-full bg-[#F4EBE1] border ${dateError ? 'border-rose-500' : 'border-[#F0E5DA]'} rounded-xl px-3.5 py-2.5 pr-11 text-sm text-[#24140A] focus:outline-none focus:border-[#5C2E14]`}
-                />
-                <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C2E14] w-5 h-5" />
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-[#6C584C] uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-[#5C2E14]" /> Preferred Pickup Date *
+                </label>
+                <div className="relative">
+                  <input
+                    type="date"
+                    value={pickupDate}
+                    min={getTodayDateString()}
+                    onChange={(e) => {
+                      setPickupDate(e.target.value);
+                      if (dateError) setDateError(false);
+                    }}
+                    className={`w-full bg-[#F4EBE1] border ${dateError ? 'border-rose-500' : 'border-[#F0E5DA]'} rounded-xl px-3.5 py-2.5 pr-11 text-sm text-[#24140A] focus:outline-none focus:border-[#5C2E14]`}
+                  />
+                  <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C2E14] w-5 h-5" />
+                </div>
+                {pickupDate && (
+                  <p className="mt-2 text-xs text-[#5C2E14]">{formatPickupDate(pickupDate)}</p>
+                )}
+                {dateError && (
+                  <p className="mt-2 text-xs text-rose-600">Please choose a pickup date.</p>
+                )}
               </div>
-              {pickupDate && (
-                <p className="mt-2 text-xs text-[#5C2E14]">{formatPickupDate(pickupDate)}</p>
-              )}
-              {dateError && (
-                <p className="mt-2 text-xs text-rose-600">Please choose a pickup date.</p>
-              )}
+
+              <div>
+                <label className="block text-xs font-bold text-[#6C584C] uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                  <Calendar className="w-3.5 h-3.5 text-[#5C2E14]" /> Preferred Pickup Time (Optional)
+                </label>
+                <input
+                  type="time"
+                  value={pickupTime}
+                  onChange={(e) => setPickupTime(e.target.value)}
+                  className="w-full bg-[#F4EBE1] border border-[#F0E5DA] rounded-xl px-3.5 py-2.5 text-sm text-[#24140A] focus:outline-none focus:border-[#5C2E14]"
+                />
+              </div>
             </div>
           </div>
 
