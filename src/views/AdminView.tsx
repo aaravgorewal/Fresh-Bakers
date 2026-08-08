@@ -481,6 +481,12 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
   };
 
   const handleDeleteCategory = async (categoryId: string | undefined, categoryName: string) => {
+    const categoryProductCount = products.filter((product) => product.category === categoryName).length;
+    if (categoryProductCount > 0) {
+      alert('This category contains products. Move or delete them first.');
+      return;
+    }
+
     if (!window.confirm(`Delete category "${categoryName}"? This will not delete products.`)) {
       return;
     }
