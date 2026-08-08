@@ -3,8 +3,8 @@ import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, 
 import { getAuth } from 'firebase/auth';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
 import firebaseConfig from '../../firebase-applet-config.json';
-import { ProductItem, BakerySettings } from '../types';
-import { PRODUCTS } from '../data/products';
+import { ProductItem, BakerySettings, CategoryInfo } from '../types';
+import { PRODUCTS, CATEGORIES } from '../data/products';
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
@@ -135,6 +135,83 @@ export const seedInitialSettingsIfEmpty = async (): Promise<void> => {
     }
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, `${SETTINGS_COLLECTION}/${MAIN_SETTINGS_DOC}`);
+  }
+};
+
+const CATEGORIES_COLLECTION = 'categories';
+
+export const seedInitialCategoriesIfEmpty = async (): Promise<void> => {
+  try {
+    if (!auth.currentUser) {
+      console.log('Firestore categories seeding deferred until admin login.');
+      return;
+    }
+
+    const querySnapshot = await getDocs(collection(db, CATEGORIES_COLLECTION));
+    if (querySnapshot.empty) {
+      console.log('Seeding initial categories to Firestore...');
+      for (const category of CATEGORIES) {
+        await addDoc(collection(db, CATEGORIES_COLLECTION), {
+          name: category.name,
+          image: category.image,
+          bannerImage: category.bannerImage,
+          icon: category.icon,
+          tagline: category.tagline,
+          type: category.type,
+        });
+      }
+      console.log('Seeding categories complete.');
+    }
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, CATEGORIES_COLLECTION);
+  }
+};
+
+export const subscribeToCategories = (callback: (categories: CategoryInfo[]) => void) => {
+  const colRef = collection(db, CATEGORIES_COLLECTION);
+  return onSnapshot(
+    colRef,
+    (snapshot) => {
+      const list: CategoryInfo[] = snapshot.docs.map((docSnap) => ({
+        id: docSnap.id,
+        ...(docSnap.data() as Omit<CategoryInfo, 'id'>),
+      }));
+      callback(list);
+    },
+    (err) => {
+      handleFirestoreError(err, OperationType.LIST, CATEGORIES_COLLECTION);
+    }
+  );
+};
+
+export const addCategoryToFirestore = async (categoryData: Omit<CategoryInfo, 'id'>) => {
+  try {
+    const colRef = collection(db, CATEGORIES_COLLECTION);
+    const docRef = await addDoc(colRef, categoryData);
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, CATEGORIES_COLLECTION);
+    throw error;
+  }
+};
+
+export const updateCategoryInFirestore = async (id: string, categoryData: Partial<Omit<CategoryInfo, 'id'>>) => {
+  try {
+    const docRef = doc(db, CATEGORIES_COLLECTION, id);
+    await setDoc(docRef, categoryData, { merge: true });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, `${CATEGORIES_COLLECTION}/${id}`);
+    throw error;
+  }
+};
+
+export const deleteCategoryFromFirestore = async (id: string) => {
+  try {
+    const docRef = doc(db, CATEGORIES_COLLECTION, id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, `${CATEGORIES_COLLECTION}/${id}`);
+    throw error;
   }
 };
 

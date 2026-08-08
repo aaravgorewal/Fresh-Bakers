@@ -1,26 +1,16 @@
 export type NavTab = 'home' | 'products' | 'about' | 'contact' | 'admin';
 
-export type Category =
-  | 'Birthday Cakes'
-  | 'Anniversary Cakes'
-  | 'Designer Cakes'
-  | 'Photo Cakes'
-  | 'Premium Cakes'
-  | 'Eggless Cakes'
-  | 'Chocolate Cakes'
-  | 'Kids Theme Cakes'
-  | 'Fruit Cakes'
-  | 'Bento Cakes'
-  | 'Gift Portal'
-  | 'Flowers'
-  | 'Chocolate Bouquets'
-  | 'Gift Hampers'
-  | 'Seasonal Specials'
-  | 'Balloon Decoration'
-  | 'Birthday Accessories'
-  | 'Recommend For You'
-  | 'Trending'
-  | 'Bamboo + Chocolate Gifts';
+export type Category = string;
+
+export interface CategoryInfo {
+  id?: string;
+  name: Category;
+  image: string;
+  icon: string;
+  tagline: string;
+  bannerImage: string;
+  type: 'cake' | 'additional';
+}
 
 export interface ProductItem {
   id: string;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ProductItem, Category, BakerySettings, Testimonial, GalleryItem } from '../types';
-import { CATEGORIES, CategoryInfo } from '../data/products';
+import { ProductItem, Category, BakerySettings, Testimonial, GalleryItem, CategoryInfo } from '../types';
 import {
   auth,
   addProductToFirestore,
@@ -11,6 +10,9 @@ import {
   updateBakerySettings,
   seedInitialProductsIfEmpty,
   seedInitialSettingsIfEmpty,
+  addCategoryToFirestore,
+  updateCategoryInFirestore,
+  deleteCategoryFromFirestore,
   DEFAULT_SETTINGS
 } from '../lib/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
@@ -56,6 +58,7 @@ import {
 
 interface AdminViewProps {
   products: ProductItem[];
+  categories: CategoryInfo[];
   settings?: BakerySettings;
 }
 
