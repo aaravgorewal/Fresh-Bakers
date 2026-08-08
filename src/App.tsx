@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavTab, Category, ProductItem, OrderCartItem, BakerySettings } from './types';
+import { NavTab, Category, ProductItem, OrderCartItem, BakerySettings, CategoryInfo } from './types';
 import { PRODUCTS } from './data/products';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -11,7 +11,7 @@ import { ProductsView } from './views/ProductsView';
 import { AboutView } from './views/AboutView';
 import { ContactView } from './views/ContactView';
 import { AdminView } from './views/AdminView';
-import { subscribeToProducts, subscribeToSettings, seedInitialProductsIfEmpty, seedInitialSettingsIfEmpty, DEFAULT_SETTINGS } from './lib/firebase';
+import { subscribeToProducts, subscribeToSettings, subscribeToCategories, seedInitialProductsIfEmpty, seedInitialSettingsIfEmpty, seedInitialCategoriesIfEmpty, DEFAULT_SETTINGS } from './lib/firebase';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTab>('home');
@@ -21,6 +21,7 @@ export default function App() {
   const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
   const [products, setProducts] = useState<ProductItem[]>(PRODUCTS);
+  const [categories, setCategories] = useState<CategoryInfo[]>([]);
   const [bakerySettings, setBakerySettings] = useState<BakerySettings>(DEFAULT_SETTINGS);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
 
@@ -28,6 +29,7 @@ export default function App() {
   useEffect(() => {
     seedInitialProductsIfEmpty();
     seedInitialSettingsIfEmpty();
+    seedInitialCategoriesIfEmpty();
 
     const timer = setTimeout(() => {
       setIsLoadingData(false);
@@ -40,6 +42,12 @@ export default function App() {
       setIsLoadingData(false);
     });
 
+    const unsubscribeCategories = subscribeToCategories((firestoreCategories) => {
+      if (firestoreCategories) {
+        setCategories(firestoreCategories);
+      }
+    });
+
     const unsubscribeSettings = subscribeToSettings((firestoreSettings) => {
       if (firestoreSettings) {
         setBakerySettings(firestoreSettings);
@@ -49,6 +57,7 @@ export default function App() {
     return () => {
       clearTimeout(timer);
       unsubscribeProducts();
+      unsubscribeCategories();
       unsubscribeSettings();
     };
   }, []);
@@ -173,6 +182,7 @@ export default function App() {
             {activeTab === 'home' && (
               <HomeView
                 products={products}
+                categories={categories}
                 setActiveTab={handleNavigate}
                 onSelectCategory={handleSelectCategory}
                 onOpenQuickView={(product) => setQuickViewProduct(product)}
@@ -185,6 +195,7 @@ export default function App() {
             {activeTab === 'products' && (
               <ProductsView
                 products={products}
+                categories={categories}
                 selectedCategory={selectedCategory}
                 setSelectedCategory={handleSetSelectedCategory}
                 onOpenQuickView={(product) => setQuickViewProduct(product)}
@@ -212,6 +223,7 @@ export default function App() {
             {activeTab === 'admin' && (
               <AdminView
                 products={products}
+                categories={categories}
                 settings={bakerySettings}
               />
             )}
@@ -254,6 +266,7 @@ export default function App() {
         isOpen={isAdminModalOpen}
         onClose={() => setIsAdminModalOpen(false)}
         products={products}
+        categories={categories}
         settings={bakerySettings}
       />
     </div>
