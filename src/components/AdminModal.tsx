@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProductItem, BakerySettings } from '../types';
+import { ProductItem, BakerySettings, CategoryInfo } from '../types';
 import { AdminView } from '../views/AdminView';
 import { X } from 'lucide-react';
 
@@ -7,10 +7,11 @@ interface AdminModalProps {
   isOpen: boolean;
   onClose: () => void;
   products: ProductItem[];
+  categories: CategoryInfo[];
   settings?: BakerySettings;
 }
 
-export const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, products, settings }) => {
+export const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, products, categories, settings }) => {
   if (!isOpen) return null;
 
   return (
@@ -34,7 +35,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, product
 
         {/* Admin Content */}
         <div className="p-2 sm:p-4">
-          <AdminView products={products} settings={settings} />
+          <AdminView products={products} categories={categories} settings={settings} />
         </div>
       </div>
     </div>

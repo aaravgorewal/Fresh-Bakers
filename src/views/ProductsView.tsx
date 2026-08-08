@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Category, ProductItem } from '../types';
-import { PRODUCTS, CATEGORIES, CategoryInfo } from '../data/products';
+import { Category, ProductItem, CategoryInfo } from '../types';
+import { PRODUCTS } from '../data/products';
 import { sendProductWhatsAppOrder } from '../utils/whatsapp';
 import { CategorySection } from '../components/CategorySection';
 import { ProductCard } from '../components/ProductCard';
@@ -47,6 +47,7 @@ import { ScrollReveal, RippleButton, SkeletonCard } from '../components/animatio
 
 interface ProductsViewProps {
   products?: ProductItem[];
+  categories: CategoryInfo[];
   selectedCategory: Category | 'All';
   setSelectedCategory: (cat: Category | 'All') => void;
   onOpenQuickView: (product: ProductItem) => void;
@@ -83,6 +84,7 @@ const renderCategoryIcon = (iconName: string, className = "w-4 h-4") => {
 
 export const ProductsView: React.FC<ProductsViewProps> = ({
   products = PRODUCTS,
+  categories,
   selectedCategory,
   setSelectedCategory,
   onOpenQuickView,
@@ -105,7 +107,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
   const availableProducts = products.length > 0 ? products : PRODUCTS;
 
   // Extract category info
-  const currentCategoryInfo: CategoryInfo | undefined = CATEGORIES.find(
+  const currentCategoryInfo: CategoryInfo | undefined = categories.find(
     (c) => c.name === selectedCategory
   );
 
@@ -114,7 +116,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
     const params = new URLSearchParams(window.location.search);
     const catParam = params.get('category');
     if (catParam) {
-      const matched = CATEGORIES.find(
+      const matched = categories.find(
         (c) => c.name.toLowerCase() === catParam.toLowerCase()
       );
       if (matched) {
@@ -208,9 +210,9 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               src={
                 selectedCategory === 'All'
                   ? 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200'
-                  : currentCategoryInfo?.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=1200'
+                  : currentCategoryInfo?.bannerImage || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200'
               }
-              alt="Bakery Hero"
+              alt={selectedCategory === 'All' ? 'Bakery Hero' : `${currentCategoryInfo?.name || 'Category'} Banner`}
               className="w-full h-full object-cover object-center"
             />
           </div>
@@ -225,12 +227,16 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 
             {/* Heading */}
             <h1 className="font-serif-display text-2xl sm:text-4xl font-bold tracking-tight text-white leading-snug">
-              Artisanal Bakery & Celebration Catalog
+              {selectedCategory === 'All'
+                ? 'Artisanal Bakery & Celebration Catalog'
+                : currentCategoryInfo?.name || 'Artisanal Bakery & Celebration Catalog'}
             </h1>
 
             {/* Short Description */}
             <p className="font-body-md text-xs sm:text-sm text-[#E5D8C8] leading-relaxed max-w-xl">
-              Explore handcrafted celebration cakes, fresh floral arrangements, and gourmet gift hampers baked fresh daily.
+              {selectedCategory === 'All'
+                ? 'Explore handcrafted celebration cakes, fresh floral arrangements, and gourmet gift hampers baked fresh daily.'
+                : currentCategoryInfo?.tagline || 'Explore handcrafted celebration cakes, fresh floral arrangements, and gourmet gift hampers baked fresh daily.'}
             </p>
 
             {/* Small CTA */}
@@ -286,8 +292,8 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                   onChange={(e) => setSelectedCategory(e.target.value as any)}
                   className="bg-transparent text-[#1F1610] font-bold focus:outline-none cursor-pointer text-xs pr-1"
                 >
-                  <option value="All">All Categories ({CATEGORIES.length})</option>
-                  {CATEGORIES.map((cat) => (
+                  <option value="All">All Categories ({categories.length})</option>
+                  {categories.map((cat) => (
                     <option key={cat.name} value={cat.name}>
                       {cat.name}
                     </option>
@@ -358,6 +364,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
       {/* 3. CATEGORIES HORIZONTAL STRIP */}
       <section className="px-4 sm:px-6 lg:px-8 max-w-[1340px] mx-auto">
         <CategorySection
+          categories={categories}
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
           products={availableProducts}
@@ -496,7 +503,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                       <span>All Categories</span>
                       <span>({availableProducts.length})</span>
                     </button>
-                    {CATEGORIES.map((cat) => {
+                    {categories.map((cat) => {
                       const count = availableProducts.filter((p) => p.category === cat.name).length;
                       return (
                         <button

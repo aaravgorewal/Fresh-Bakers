@@ -132,7 +132,7 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
 
 const CHART_COLORS = ['#825425', '#a06a30', '#c28646', '#e2a969', '#6a421c', '#b37d46', '#d99b58'];
 
-export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initialSettings }) => {
+export const AdminView: React.FC<AdminViewProps> = ({ products, categories, settings: initialSettings }) => {
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState('admin@freshbakers.com');
   const [password, setPassword] = useState('baker123');
@@ -158,7 +158,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
 
   const selectAllCheckboxRef = useRef<HTMLInputElement | null>(null);
 
-  const [categories, setCategories] = useState<CategoryInfo[]>(CATEGORIES);
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
   const [editingCategoryName, setEditingCategoryName] = useState<string | null>(null);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryType, setNewCategoryType] = useState<CategoryInfo['type']>('cake');
@@ -435,6 +435,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
   };
 
   const handleEditCategoryInit = (categoryInfo: CategoryInfo) => {
+    setEditingCategoryId(categoryInfo.id ?? null);
     setEditingCategoryName(categoryInfo.name);
     setNewCategoryName(categoryInfo.name);
     setNewCategoryType(categoryInfo.type);
@@ -446,7 +447,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSaveCategory = (e: React.FormEvent) => {
+  const handleSaveCategory = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const normalizedName = newCategoryName.trim();
@@ -455,7 +456,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
       return;
     }
 
-    const newCategory: CategoryInfo = {
+    const categoryPayload: Omit<CategoryInfo, 'id'> = {
       name: normalizedName as Category,
       type: newCategoryType,
       icon: newCategoryIcon || 'Cake',
@@ -464,23 +465,37 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
       tagline: newCategoryTagline || 'Delicious bakery items for every celebration.',
     };
 
-    setCategories((prev) => {
-      if (editingCategoryName) {
-        return prev.map((cat) => (cat.name === editingCategoryName ? newCategory : cat));
+    try {
+      if (editingCategoryId) {
+        await updateCategoryInFirestore(editingCategoryId, categoryPayload);
+        triggerSuccess('Category updated!');
+      } else {
+        await addCategoryToFirestore(categoryPayload);
+        triggerSuccess('Category added!');
       }
-      return [...prev, newCategory];
-    });
-
-    resetCategoryForm();
-    triggerSuccess(editingCategoryName ? 'Category updated!' : 'Category added!');
+    } catch (err: any) {
+      alert(`Error saving category: ${err.message}`);
+    } finally {
+      resetCategoryForm();
+    }
   };
 
-  const handleDeleteCategory = (categoryName: string) => {
+  const handleDeleteCategory = async (categoryId: string | undefined, categoryName: string) => {
     if (!window.confirm(`Delete category "${categoryName}"? This will not delete products.`)) {
       return;
     }
-    setCategories((prev) => prev.filter((cat) => cat.name !== categoryName));
-    triggerSuccess('Category deleted.');
+
+    if (!categoryId) {
+      triggerSuccess('Category removed from local list.');
+      return;
+    }
+
+    try {
+      await deleteCategoryFromFirestore(categoryId);
+      triggerSuccess('Category deleted.');
+    } catch (err: any) {
+      alert(`Error deleting category: ${err.message}`);
+    }
   };
 
   // Settings Save
@@ -1662,7 +1677,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, settings: initia
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDeleteCategory(cat.name)}
+                        onClick={() => handleDeleteCategory(cat.id, cat.name)}
                         className="text-red-600 text-xs font-bold px-3 py-1 border border-red-200 rounded-lg hover:bg-red-50"
                       >
                         Delete

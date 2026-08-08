@@ -1,9 +1,9 @@
 import React from 'react';
-import { Category, ProductItem } from '../types';
-import { CATEGORIES } from '../data/products';
+import { Category, ProductItem, CategoryInfo } from '../types';
 import { motion } from 'motion/react';
 
 interface CategorySectionProps {
+  categories: CategoryInfo[];
   selectedCategory: Category | 'All';
   onSelectCategory: (category: Category | 'All') => void;
   products?: ProductItem[];
@@ -13,6 +13,7 @@ interface CategorySectionProps {
 }
 
 export const CategorySection: React.FC<CategorySectionProps> = ({
+  categories,
   selectedCategory,
   onSelectCategory,
   className = ""
@@ -30,11 +31,11 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
               : 'bg-[#F4EBE1] hover:bg-[#E8DEC9] text-[#1F1610] border border-[#E8DEC9] hover:scale-102'
           }`}
         >
-          <span>🎂 All Categories ({CATEGORIES.length})</span>
+          <span>🎂 All Categories ({categories.length})</span>
         </button>
 
         {/* Circular / Rounded Category Cards */}
-        {CATEGORIES.map((cat) => {
+        {categories.map((cat) => {
           const isSelected = selectedCategory === cat.name;
 
           return (

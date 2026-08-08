@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { NavTab, ProductItem, Category } from '../types';
-import { CATEGORIES, PRODUCTS } from '../data/products';
+import { NavTab, ProductItem, Category, CategoryInfo } from '../types';
+import { PRODUCTS } from '../data/products';
 import { CategorySection } from '../components/CategorySection';
 import { ProductCard } from '../components/ProductCard';
 import { motion, AnimatePresence } from 'motion/react';
@@ -44,6 +44,7 @@ import {
 
 interface HomeViewProps {
   products?: ProductItem[];
+  categories: CategoryInfo[];
   setActiveTab: (tab: NavTab) => void;
   onSelectCategory: (cat: Category) => void;
   onOpenQuickView: (product: ProductItem) => void;
@@ -51,6 +52,27 @@ interface HomeViewProps {
   onOpenOrderModal: () => void;
   whatsappNumber?: string;
 }
+
+const CATEGORY_ICON_EMOJI_MAP: Record<string, string> = {
+  Cake: '🎂',
+  Heart: '❤️',
+  Sparkles: '✨',
+  Camera: '📸',
+  Crown: '👑',
+  ShieldCheck: '🛡️',
+  Flame: '🔥',
+  Smile: '😊',
+  Apple: '🍎',
+  Gift: '🎁',
+  Flower2: '🌸',
+  Package: '📦',
+  Box: '🧸',
+  PartyPopper: '🎉',
+  Sparkle: '✨',
+  ThumbsUp: '👍',
+  TrendingUp: '📈',
+  Sprout: '🌿',
+};
 
 // Custom data for circular homepage categories
 const CIRCULAR_CATEGORIES: { name: string; category: Category; iconEmoji: string; image: string }[] = [
