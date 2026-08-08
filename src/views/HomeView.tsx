@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { NavTab, ProductItem, Category, CategoryInfo } from '../types';
-import { PRODUCTS } from '../data/products';
 import { CategorySection } from '../components/CategorySection';
 import { ProductCard } from '../components/ProductCard';
 import { motion, AnimatePresence } from 'motion/react';
@@ -43,7 +42,7 @@ import {
 } from 'lucide-react';
 
 interface HomeViewProps {
-  products?: ProductItem[];
+  products: ProductItem[];
   categories: CategoryInfo[];
   setActiveTab: (tab: NavTab) => void;
   onSelectCategory: (cat: Category) => void;
@@ -346,7 +345,7 @@ const GALLERY_ITEMS = [
 ];
 
 export const HomeView: React.FC<HomeViewProps> = ({
-  products = PRODUCTS,
+  products,
   setActiveTab,
   onSelectCategory,
   onOpenQuickView,
@@ -354,7 +353,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onOpenOrderModal,
   whatsappNumber = '15550192824',
 }) => {
-  const currentProducts = products.length > 0 ? products : PRODUCTS;
+  const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 4);
+  const trendingProducts = products.filter((p) => p.isTrending).slice(0, 6);
+  const recommendedProducts = products.filter((p) => p.isRecommended).slice(0, 4);
+  const signatureProducts = products.filter((p) => p.isSignature).slice(0, 4);
 
   // Gallery Modal State
   const [selectedGalleryImage, setSelectedGalleryImage] = useState<typeof GALLERY_ITEMS[0] | null>(null);
@@ -369,10 +371,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
       setAddedItemName(null);
     }, 2000);
   };
-
-  // Best Seller & Trending sets
-  const bestSellerCakes = currentProducts.filter((p) => p.category.includes('Cake') || p.isFeatured || p.isSignature).slice(0, 4);
-  const trendingProducts = currentProducts.slice(0, 6);
 
   return (
     <div className="w-full space-y-24 md:space-y-32 pb-28 relative bg-[#FFFBF7]">
@@ -574,7 +572,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {bestSellerCakes.map((product) => (
+          {featuredProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
