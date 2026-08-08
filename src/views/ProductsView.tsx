@@ -125,6 +125,16 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
     }
   }, [setSelectedCategory]);
 
+  // Keep selected category valid when Firestore category list changes
+  useEffect(() => {
+    if (selectedCategory !== 'All' && categories.length > 0) {
+      const exists = categories.some((c) => c.name === selectedCategory);
+      if (!exists) {
+        setSelectedCategory('All');
+      }
+    }
+  }, [categories, selectedCategory, setSelectedCategory]);
+
   // Filter products by Category, Search Query, Price Range, Eggless, Featured, Trending, Signature Flags
   const filteredProducts = availableProducts.filter((item) => {
     const matchesCategory = selectedCategory === 'All' || item.category === selectedCategory;

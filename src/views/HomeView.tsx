@@ -746,6 +746,78 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
+      {/* 7. RECOMMENDED PICKS */}
+      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-3.5 py-1 rounded-full border border-[#e8dec9] mb-2">
+              <Sparkles className="w-3.5 h-3.5 text-amber-600" /> Recommended for You
+            </span>
+            <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
+              Curated Recommended Products
+            </h2>
+          </div>
+          <button
+            onClick={() => {
+              window.history.pushState(null, '', '/products');
+              setActiveTab('products');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="btn-secondary py-2.5 px-6 text-xs"
+          >
+            Browse All Products
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {recommendedProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onOpenQuickView={onOpenQuickView}
+              onAddToCart={handleQuickAdd}
+              whatsappNumber={whatsappNumber}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* 8. SIGNATURE COLLECTION */}
+      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-3.5 py-1 rounded-full border border-[#e8dec9] mb-2">
+              <Crown className="w-3.5 h-3.5 text-amber-600" /> Signature Selection
+            </span>
+            <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
+              Signature Creations
+            </h2>
+          </div>
+          <button
+            onClick={() => {
+              window.history.pushState(null, '', '/products');
+              setActiveTab('products');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            className="btn-secondary py-2.5 px-6 text-xs"
+          >
+            Explore Signature Line
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {signatureProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onOpenQuickView={onOpenQuickView}
+              onAddToCart={handleQuickAdd}
+              whatsappNumber={whatsappNumber}
+            />
+          ))}
+        </div>
+      </section>
+
       {/* 7. WHY CHOOSE US - TRUSTED INGREDIENT PARTNERS */}
       <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
         <div className="bg-[#1f1610] rounded-3xl p-8 sm:p-12 border border-[#c59b27]/30 text-[#faf6f0] space-y-8">
