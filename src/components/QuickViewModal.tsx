@@ -8,8 +8,6 @@ import {
   Sparkles,
   Share2,
   Check,
-  Leaf,
-  Egg,
   MessageCircle,
   ChevronRight,
   ShieldCheck,
@@ -70,19 +68,10 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
     product.weightOptions || (isCakeCategory ? DEFAULT_CAKE_WEIGHTS : DEFAULT_GIFT_SIZES);
 
   const [selectedWeightIndex, setSelectedWeightIndex] = useState(0);
-  const [selectedEggOption, setSelectedEggOption] = useState<'eggless' | 'egg'>(
-    product.category === 'Eggless Cakes' || product.isEggless ? 'eggless' : 'egg'
-  );
 
   // Gallery images set up
   const mainImg = product.imageUrl || product.image;
-  const fallbackGallery = [
-    mainImg,
-    'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&q=80&w=800',
-    'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=800',
-  ];
-  const gallery = product.gallery && product.gallery.length > 0 ? product.gallery : fallbackGallery;
+  const gallery = Array.isArray(product.gallery) && product.gallery.length > 0 ? product.gallery : [mainImg];
   const [activeImage, setActiveImage] = useState(mainImg);
 
   const [copiedToast, setCopiedToast] = useState(false);
@@ -91,9 +80,6 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
   useEffect(() => {
     setActiveImage(product.imageUrl || product.image);
     setSelectedWeightIndex(0);
-    setSelectedEggOption(
-      product.category === 'Eggless Cakes' || product.isEggless ? 'eggless' : 'egg'
-    );
   }, [product]);
 
   // Handle keypress ESC to close
@@ -233,18 +219,6 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                     )}
                   </div>
 
-                  {/* Egg / Eggless Badge */}
-                  <div className="absolute bottom-3 left-3">
-                    {selectedEggOption === 'eggless' ? (
-                      <span className="bg-emerald-950/90 text-emerald-200 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-emerald-500/40 shadow-md flex items-center gap-1.5 backdrop-blur-md">
-                        <Leaf className="w-3.5 h-3.5 text-emerald-400" /> 100% Eggless (Pure Veg)
-                      </span>
-                    ) : (
-                      <span className="bg-amber-950/90 text-amber-200 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-amber-600/40 shadow-md flex items-center gap-1.5 backdrop-blur-md">
-                        <Egg className="w-3.5 h-3.5 text-amber-400" /> Contains Egg
-                      </span>
-                    )}
-                  </div>
                 </div>
 
                 {/* Gallery Thumbnails */}
@@ -337,39 +311,6 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   </div>
                 </div>
 
-                {/* EGG / EGGLESS OPTION TOGGLE */}
-                <div className="space-y-2 pt-4 border-t border-[#F0E5DA]">
-                  <label className="text-xs font-bold text-[#24140A] uppercase tracking-wider block">
-                    Dietary Preference:
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedEggOption('eggless')}
-                      className={`p-3 text-xs font-bold rounded-xl border flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                        selectedEggOption === 'eggless'
-                          ? 'bg-emerald-800 text-white border-emerald-800 shadow-md ring-2 ring-emerald-600/30'
-                          : 'bg-white text-[#6C584C] border-[#F0E5DA] hover:bg-[#F4EBE1]'
-                      }`}
-                    >
-                      <Leaf className={`w-4 h-4 ${selectedEggOption === 'eggless' ? 'text-emerald-300' : 'text-emerald-600'}`} />
-                      100% Eggless (Veg)
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setSelectedEggOption('egg')}
-                      className={`p-3 text-xs font-bold rounded-xl border flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                        selectedEggOption === 'egg'
-                          ? 'bg-[#24140A] text-amber-200 border-[#24140A] shadow-md ring-2 ring-amber-600/30'
-                          : 'bg-white text-[#6C584C] border-[#F0E5DA] hover:bg-[#F4EBE1]'
-                      }`}
-                    >
-                      <Egg className={`w-4 h-4 ${selectedEggOption === 'egg' ? 'text-amber-400' : 'text-amber-700'}`} />
-                      Contains Egg
-                    </button>
-                  </div>
-                </div>
 
                 {/* INGREDIENTS LIST CHIPS */}
                 {product.ingredients && product.ingredients.length > 0 && (
