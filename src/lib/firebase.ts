@@ -93,6 +93,7 @@ const normalizeProductDocument = (docSnap: any): ProductItem => {
     fermentationHours:
       typeof data.fermentationHours === 'number' ? data.fermentationHours : undefined,
     ingredients: Array.isArray(data.ingredients) ? data.ingredients : [],
+    gallery: Array.isArray(data.gallery) ? data.gallery : [],
     isSignature: !!data.isSignature,
     isFeatured: !!data.isFeatured,
     isTrending: !!data.isTrending,
