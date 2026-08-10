@@ -1615,28 +1615,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Category Type</label>
-                <select
-                  value={newCategoryType}
-                  onChange={(e) => setNewCategoryType(e.target.value as CategoryInfo['type'])}
-                  className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm bg-white"
-                >
-                  <option value="cake">cake</option>
-                  <option value="additional">additional</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Category Icon</label>
-                <input
-                  type="text"
-                  value={newCategoryIcon}
-                  onChange={(e) => setNewCategoryIcon(e.target.value)}
-                  placeholder="Cake"
-                  className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm"
-                />
-              </div>
 
               <div>
                 <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Banner Image</label>
