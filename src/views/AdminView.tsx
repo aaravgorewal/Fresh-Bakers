@@ -1639,19 +1639,45 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Banner Image URL</label>
-                <label className="block text-xs text-[#635345] mb-2">Upload Banner Image (will be stored in Cloudinary)</label>
+                <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Banner Image</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
                     if (e.target.files && e.target.files[0]) {
-                      setNewCategoryBannerFile(e.target.files[0]);
+                      setCategoryBannerFile(e.target.files[0]);
                     }
                   }}
                   className="w-full text-xs text-[#51443a] file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#825425] file:text-white hover:file:bg-[#6a421c]"
                 />
-                <p className="text-[11px] text-[#6e5d4f] mt-2">If left empty, existing image (if any) will remain unchanged.</p>
+                {(categoryBannerFile || newCategoryBannerImage) && (
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className="text-[11px] font-bold text-[#1b1c1a]">Preview:</span>
+                    <div className="relative group inline-block">
+                      <img
+                        src={categoryBannerFile ? URL.createObjectURL(categoryBannerFile) : newCategoryBannerImage}
+                        alt="Category Banner Preview"
+                        className="w-24 h-12 object-cover rounded-md border border-[#d5c3b6]"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCategoryBannerFile(null);
+                          setNewCategoryBannerImage('');
+                        }}
+                        className="absolute -top-1.5 -right-1.5 bg-red-600 text-white rounded-full p-0.5 hover:bg-red-700 shadow"
+                        title="Remove Image"
+                      >
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="md:col-span-2">
@@ -1670,14 +1696,16 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                   type="button"
                   onClick={resetCategoryForm}
                   className="px-4 py-2 border border-[#d5c3b6] text-xs font-bold rounded-lg hover:bg-slate-50"
+                  disabled={uploadingCategoryBanner}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#825425] text-white px-4 py-2 text-xs font-bold rounded-lg uppercase tracking-wider"
+                  disabled={uploadingCategoryBanner}
+                  className="bg-[#825425] text-white px-4 py-2 text-xs font-bold rounded-lg uppercase tracking-wider disabled:opacity-50"
                 >
-                  {editingCategoryName ? 'Update Category' : 'Create Category'}
+                  {uploadingCategoryBanner ? 'Uploading Image...' : (editingCategoryName ? 'Update Category' : 'Create Category')}
                 </button>
               </div>
             </form>
