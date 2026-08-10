@@ -165,6 +165,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
   const [newCategoryIcon, setNewCategoryIcon] = useState('Cake');
   const [newCategoryImage, setNewCategoryImage] = useState('');
   const [newCategoryBannerImage, setNewCategoryBannerImage] = useState('');
+  const [newCategoryBannerFile, setNewCategoryBannerFile] = useState<File | null>(null);
   const [newCategoryTagline, setNewCategoryTagline] = useState('');
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -431,6 +432,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
     setNewCategoryIcon('Cake');
     setNewCategoryImage('');
     setNewCategoryBannerImage('');
+    setNewCategoryBannerFile(null);
     setNewCategoryTagline('');
   };
 
@@ -456,13 +458,25 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
       return;
     }
 
+    let finalBannerUrl = newCategoryBannerImage || '';
+
+    if (newCategoryBannerFile) {
+      try {
+        const uploaded = await uploadProductImage(newCategoryBannerFile);
+        finalBannerUrl = uploaded;
+      } catch (err: any) {
+        alert(`Failed to upload banner image: ${err.message || err}`);
+        return;
+      }
+    }
+
     const categoryPayload: Omit<CategoryInfo, 'id'> = {
       name: normalizedName as Category,
       type: newCategoryType,
       icon: newCategoryIcon || 'Cake',
-      image: newCategoryImage || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
-      bannerImage: newCategoryBannerImage || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200',
-      tagline: newCategoryTagline || 'Delicious bakery items for every celebration.',
+      image: newCategoryImage || '',
+      bannerImage: finalBannerUrl,
+      tagline: newCategoryTagline || '',
     };
 
     try {
@@ -1623,13 +1637,18 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
 
               <div>
                 <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">Banner Image URL</label>
+                <label className="block text-xs text-[#635345] mb-2">Upload Banner Image (will be stored in Cloudinary)</label>
                 <input
-                  type="url"
-                  value={newCategoryBannerImage}
-                  onChange={(e) => setNewCategoryBannerImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm"
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setNewCategoryBannerFile(e.target.files[0]);
+                    }
+                  }}
+                  className="w-full text-xs text-[#51443a] file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#825425] file:text-white hover:file:bg-[#6a421c]"
                 />
+                <p className="text-[11px] text-[#6e5d4f] mt-2">If left empty, existing image (if any) will remain unchanged.</p>
               </div>
 
               <div className="md:col-span-2">

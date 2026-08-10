@@ -346,6 +346,7 @@ const GALLERY_ITEMS = [
 
 export const HomeView: React.FC<HomeViewProps> = ({
   products,
+  categories = [],
   setActiveTab,
   onSelectCategory,
   onOpenQuickView,
@@ -521,30 +522,43 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
 
         <div className="flex items-center justify-start lg:justify-between gap-6 sm:gap-8 overflow-x-auto scrollbar-none pb-4 pt-2 max-w-full">
-          {CIRCULAR_CATEGORIES.map((cat) => (
-            <button
-              key={cat.name}
-              type="button"
-              onClick={() => {
-                onSelectCategory(cat.category);
-                setActiveTab('products');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className="flex flex-col items-center gap-3 group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105"
-            >
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-[#F4EBE1] border-2 border-[#E8DEC9] group-hover:border-[#C59B27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500 ease-out"
-                />
+          {categories && categories.length > 0 ? (
+            categories.map((cat) => (
+              <button
+                key={cat.id || cat.name}
+                type="button"
+                onClick={() => {
+                  onSelectCategory(cat.name);
+                  setActiveTab('products');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="flex flex-col items-center gap-3 group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105"
+              >
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-[#F4EBE1] border-2 border-[#E8DEC9] group-hover:border-[#C59B27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
+                  <img
+                    src={cat.bannerImage || cat.image}
+                    alt={cat.name}
+                    className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500 ease-out"
+                  />
+                </div>
+                <span className="text-xs sm:text-sm font-bold text-[#1F1610] group-hover:text-[#825425] transition-colors whitespace-nowrap flex items-center gap-1">
+                  <span>{cat.icon}</span>
+                  <span>{cat.name}</span>
+                </span>
+              </button>
+            ))
+          ) : (
+            <div className="w-full py-12 flex flex-col items-center justify-center text-center">
+              <div className="w-28 h-28 rounded-full bg-[#F4EBE1] border-2 border-[#E8DEC9] flex items-center justify-center mb-4">
+                <svg className="w-12 h-12 text-[#c59b27]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L15 8H9L12 2Z" stroke="#c59b27" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M4 22H20" stroke="#c59b27" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
-              <span className="text-xs sm:text-sm font-bold text-[#1F1610] group-hover:text-[#825425] transition-colors whitespace-nowrap flex items-center gap-1">
-                <span>{cat.iconEmoji}</span>
-                <span>{cat.name}</span>
-              </span>
-            </button>
-          ))}
+              <p className="text-sm font-bold text-[#1f1610]">No categories available</p>
+              <p className="text-xs text-[#6e5d4f]">Add categories in the Admin Panel to display them here.</p>
+            </div>
+          )}
         </div>
       </section>
 
