@@ -239,6 +239,7 @@ export const seedInitialCategoriesIfEmpty = async (): Promise<void> => {
     const querySnapshot = await getDocs(collection(db, CATEGORIES_COLLECTION));
     if (querySnapshot.empty) {
       console.log('Seeding initial categories to Firestore...');
+      let orderIndex = 0;
       for (const category of CATEGORIES) {
         await addDoc(collection(db, CATEGORIES_COLLECTION), {
           name: category.name,
@@ -247,6 +248,7 @@ export const seedInitialCategoriesIfEmpty = async (): Promise<void> => {
           icon: category.icon,
           tagline: category.tagline,
           type: category.type,
+          sortOrder: orderIndex++,
         });
       }
       console.log('Seeding categories complete.');
@@ -256,7 +258,10 @@ export const seedInitialCategoriesIfEmpty = async (): Promise<void> => {
   }
 };
 
-export const subscribeToCategories = (callback: (categories: CategoryInfo[]) => void) => {
+export const subscribeToCategories = (
+  callback: (categories: CategoryInfo[]) => void,
+  onError?: () => void
+) => {
   const colRef = collection(db, CATEGORIES_COLLECTION);
   return onSnapshot(
     colRef,
@@ -265,10 +270,12 @@ export const subscribeToCategories = (callback: (categories: CategoryInfo[]) => 
         id: docSnap.id,
         ...(docSnap.data() as Omit<CategoryInfo, 'id'>),
       }));
+      list.sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
       callback(list);
     },
     (err) => {
       handleFirestoreError(err, OperationType.LIST, CATEGORIES_COLLECTION);
+      onError?.();
     }
   );
 };
@@ -276,10 +283,30 @@ export const subscribeToCategories = (callback: (categories: CategoryInfo[]) => 
 export const addCategoryToFirestore = async (categoryData: Omit<CategoryInfo, 'id'>) => {
   try {
     const colRef = collection(db, CATEGORIES_COLLECTION);
-    const docRef = await addDoc(colRef, categoryData);
+    const snap = await getDocs(colRef);
+    let maxOrder = -1;
+    snap.forEach((d) => {
+      const s = d.data().sortOrder;
+      if (typeof s === 'number' && s > maxOrder) maxOrder = s;
+    });
+    const docRef = await addDoc(colRef, { ...categoryData, sortOrder: maxOrder + 1 });
     return docRef.id;
   } catch (error) {
     handleFirestoreError(error, OperationType.CREATE, CATEGORIES_COLLECTION);
+    throw error;
+  }
+};
+
+// Batch-write new sortOrder values after a drag-and-drop reorder
+export const updateCategorySortOrders = async (orderedIds: string[]): Promise<void> => {
+  try {
+    await Promise.all(
+      orderedIds.map((id, index) =>
+        setDoc(doc(db, CATEGORIES_COLLECTION, id), { sortOrder: index }, { merge: true })
+      )
+    );
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, CATEGORIES_COLLECTION);
     throw error;
   }
 };
@@ -305,7 +332,10 @@ export const deleteCategoryFromFirestore = async (id: string) => {
 };
 
 // Listen to products real-time
-export const subscribeToProducts = (callback: (products: ProductItem[]) => void) => {
+export const subscribeToProducts = (
+  callback: (products: ProductItem[]) => void,
+  onError?: () => void
+) => {
   const colRef = collection(db, PRODUCTS_COLLECTION);
   return onSnapshot(
     colRef,
@@ -315,12 +345,16 @@ export const subscribeToProducts = (callback: (products: ProductItem[]) => void)
     },
     (err) => {
       handleFirestoreError(err, OperationType.LIST, PRODUCTS_COLLECTION);
+      onError?.();
     }
   );
 };
 
 // Listen to settings real-time
-export const subscribeToSettings = (callback: (settings: BakerySettings) => void) => {
+export const subscribeToSettings = (
+  callback: (settings: BakerySettings) => void,
+  onError?: () => void
+) => {
   const docRef = doc(db, SETTINGS_COLLECTION, MAIN_SETTINGS_DOC);
   return onSnapshot(docRef, (docSnap) => {
     if (docSnap.exists()) {
@@ -348,6 +382,7 @@ export const subscribeToSettings = (callback: (settings: BakerySettings) => void
     }
   }, (err) => {
     handleFirestoreError(err, OperationType.GET, `${SETTINGS_COLLECTION}/${MAIN_SETTINGS_DOC}`);
+    onError?.();
   });
 };
 

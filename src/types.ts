@@ -10,6 +10,7 @@ export interface CategoryInfo {
   tagline: string;
   bannerImage: string;
   type: 'cake' | 'additional';
+  sortOrder?: number;
 }
 
 export interface ProductItem {
