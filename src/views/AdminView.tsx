@@ -461,28 +461,28 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
       return;
     }
 
-    let finalBannerUrl = newCategoryBannerImage || '';
-
-    if (newCategoryBannerFile) {
-      try {
-        const uploaded = await uploadProductImage(newCategoryBannerFile);
-        finalBannerUrl = uploaded;
-      } catch (err: any) {
-        alert(`Failed to upload banner image: ${err.message || err}`);
-        return;
-      }
-    }
-
-    const categoryPayload: Omit<CategoryInfo, 'id'> = {
-      name: normalizedName as Category,
-      type: newCategoryType,
-      icon: newCategoryIcon || 'Cake',
-      image: newCategoryImage || '',
-      bannerImage: finalBannerUrl,
-      tagline: newCategoryTagline || '',
-    };
-
     try {
+      let finalBannerUrl = newCategoryBannerImage;
+
+      if (categoryBannerFile) {
+        setUploadingCategoryBanner(true);
+        finalBannerUrl = await uploadProductImage(categoryBannerFile);
+        setUploadingCategoryBanner(false);
+      }
+
+      if (!finalBannerUrl) {
+        finalBannerUrl = 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200';
+      }
+
+      const categoryPayload: Omit<CategoryInfo, 'id'> = {
+        name: normalizedName as Category,
+        type: newCategoryType,
+        icon: newCategoryIcon || 'Cake',
+        image: newCategoryImage || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
+        bannerImage: finalBannerUrl,
+        tagline: newCategoryTagline || 'Delicious bakery items for every celebration.',
+      };
+
       if (editingCategoryId) {
         await updateCategoryInFirestore(editingCategoryId, categoryPayload);
         triggerSuccess('Category updated!');
@@ -490,10 +490,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         await addCategoryToFirestore(categoryPayload);
         triggerSuccess('Category added!');
       }
+      resetCategoryForm();
     } catch (err: any) {
       alert(`Error saving category: ${err.message}`);
-    } finally {
-      resetCategoryForm();
+      setUploadingCategoryBanner(false);
     }
   };
 
