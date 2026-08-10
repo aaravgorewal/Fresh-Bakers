@@ -83,7 +83,7 @@ const renderCategoryIcon = (iconName: string, className = "w-4 h-4") => {
 };
 
 export const ProductsView: React.FC<ProductsViewProps> = ({
-  products = PRODUCTS,
+  products = [],
   categories,
   selectedCategory,
   setSelectedCategory,
@@ -104,7 +104,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
-  const availableProducts = products.length > 0 ? products : PRODUCTS;
+  const availableProducts = products;
 
   // Extract category info
   const currentCategoryInfo: CategoryInfo | undefined = categories.find(

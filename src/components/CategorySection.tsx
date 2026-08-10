@@ -1,6 +1,6 @@
-import React from 'react';
 import { Category, ProductItem, CategoryInfo } from '../types';
 import { motion } from 'motion/react';
+import { getOptimizedImageUrl } from '../lib/imageUtils';
 
 interface CategorySectionProps {
   categories: CategoryInfo[];
@@ -51,7 +51,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
               }`}
             >
               <div className="w-7 h-7 rounded-full overflow-hidden bg-[#F4EBE1] shrink-0 border border-[#E8DEC9]">
-                <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
+                <img src={getOptimizedImageUrl(cat.image, 200)} alt={cat.name} className="w-full h-full object-cover" loading="lazy" />
               </div>
               <span>{cat.name}</span>
             </motion.button>

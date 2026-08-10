@@ -10,6 +10,8 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
+import { getOptimizedImageUrl } from '../lib/imageUtils';
+
 interface ProductCardProps {
   product: ProductItem;
   onOpenQuickView: (product: ProductItem) => void;
@@ -33,8 +35,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   const formattedPrice = `₹${rawPrice.toLocaleString('en-IN')}`;
 
-  // Image fallback
-  const displayImage = product.imageUrl || product.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600';
+  // Image fallback with dynamic Cloudinary & responsive sizing optimization
+  const rawDisplayImage = product.imageUrl || product.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=600';
+  const displayImage = getOptimizedImageUrl(rawDisplayImage, 600);
 
   // Egg / Eggless determination
   const isEggless = product.isEggless !== undefined ? product.isEggless : true;

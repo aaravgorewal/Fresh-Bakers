@@ -39,12 +39,14 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
 
   const formatPickupDate = (dateValue: string) => {
     if (!dateValue) return '';
+    const [year, month, day] = dateValue.split('-').map(Number);
+    if (!year || !month || !day) return '';
     return new Intl.DateTimeFormat('en-GB', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
       year: 'numeric',
-    }).format(new Date(dateValue));
+    }).format(new Date(year, month - 1, day));
   };
 
   if (!isOpen) return null;
@@ -82,7 +84,8 @@ export const WhatsAppModal: React.FC<WhatsAppModalProps> = ({
   };
 
   const handleSendWhatsApp = () => {
-    if (!pickupDate) {
+    // Only require pickup date when ordering items from cart
+    if (cart.length > 0 && !pickupDate) {
       setDateError(true);
       return;
     }

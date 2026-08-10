@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { NavTab, ProductItem, Category, CategoryInfo } from '../types';
+import { NavTab, ProductItem, Category, BakerySettings, CategoryInfo } from '../types';
 import { CategorySection } from '../components/CategorySection';
 import { ProductCard } from '../components/ProductCard';
+import { getOptimizedImageUrl } from '../lib/imageUtils';
 import { motion, AnimatePresence } from 'motion/react';
 import { ScrollReveal, ImageZoom, RippleButton, SkeletonCard } from '../components/animations/AnimatedComponents';
 import {
@@ -73,57 +74,7 @@ const CATEGORY_ICON_EMOJI_MAP: Record<string, string> = {
   Sprout: '🌿',
 };
 
-// Custom data for circular homepage categories
-const CIRCULAR_CATEGORIES: { name: string; category: Category; iconEmoji: string; image: string }[] = [
-  {
-    name: 'Birthday Cakes',
-    category: 'Birthday Cakes',
-    iconEmoji: '🎂',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Anniversary Cakes',
-    category: 'Anniversary Cakes',
-    iconEmoji: '❤️',
-    image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Designer Cakes',
-    category: 'Designer Cakes',
-    iconEmoji: '🎨',
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Photo Cakes',
-    category: 'Photo Cakes',
-    iconEmoji: '📸',
-    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Premium Cakes',
-    category: 'Premium Cakes',
-    iconEmoji: '👑',
-    image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Flowers',
-    category: 'Flowers',
-    iconEmoji: '🌹',
-    image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Gift Hampers',
-    category: 'Gift Hampers',
-    iconEmoji: '🎁',
-    image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'All Categories',
-    category: 'All' as unknown as Category,
-    iconEmoji: '📂',
-    image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=400',
-  },
-];
+
 
 // Custom data for popular cake categories
 const POPULAR_CAKE_CATEGORIES = [
@@ -536,9 +487,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
               >
                 <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-[#F4EBE1] border-2 border-[#E8DEC9] group-hover:border-[#C59B27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
                   <img
-                    src={cat.bannerImage || cat.image}
+                    src={getOptimizedImageUrl(cat.bannerImage || cat.image, 300)}
                     alt={cat.name}
                     className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500 ease-out"
+                    loading="lazy"
                   />
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-[#1F1610] group-hover:text-[#825425] transition-colors whitespace-nowrap flex items-center gap-1">

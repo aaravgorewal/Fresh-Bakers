@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { NavTab, Category, ProductItem, OrderCartItem, BakerySettings, CategoryInfo } from './types';
 import { PRODUCTS } from './data/products';
 import { Navbar } from './components/Navbar';
@@ -7,11 +7,12 @@ import { WhatsAppModal } from './components/WhatsAppModal';
 import { QuickViewModal } from './components/QuickViewModal';
 import { AdminModal } from './components/AdminModal';
 import { HomeView } from './views/HomeView';
-import { ProductsView } from './views/ProductsView';
-import { AboutView } from './views/AboutView';
-import { ContactView } from './views/ContactView';
-import { AdminView } from './views/AdminView';
 import { subscribeToProducts, subscribeToSettings, subscribeToCategories, seedInitialProductsIfEmpty, seedInitialSettingsIfEmpty, seedInitialCategoriesIfEmpty, DEFAULT_SETTINGS } from './lib/firebase';
+
+const ProductsView = lazy(() => import('./views/ProductsView').then((m) => ({ default: m.ProductsView })));
+const AboutView = lazy(() => import('./views/AboutView').then((m) => ({ default: m.AboutView })));
+const ContactView = lazy(() => import('./views/ContactView').then((m) => ({ default: m.ContactView })));
+const AdminView = lazy(() => import('./views/AdminView').then((m) => ({ default: m.AdminView })));
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTab>('home');
@@ -20,10 +21,11 @@ export default function App() {
   const [quickViewProduct, setQuickViewProduct] = useState<ProductItem | null>(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
   const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
-  const [products, setProducts] = useState<ProductItem[]>(PRODUCTS);
+  const [products, setProducts] = useState<ProductItem[]>([]);
   const [categories, setCategories] = useState<CategoryInfo[]>([]);
   const [bakerySettings, setBakerySettings] = useState<BakerySettings>(DEFAULT_SETTINGS);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
+  const [firestoreError, setFirestoreError] = useState<string | null>(null);
 
   // Initialize Firebase Firestore listeners & seed defaults if empty
   useEffect(() => {
@@ -35,24 +37,30 @@ export default function App() {
       setIsLoadingData(false);
     }, 600);
 
-    const unsubscribeProducts = subscribeToProducts((firestoreProducts) => {
-      if (firestoreProducts) {
-        setProducts(firestoreProducts);
+    const unsubscribeProducts = subscribeToProducts(
+      (firestoreProducts) => {
+        if (firestoreProducts) setProducts(firestoreProducts);
+        setIsLoadingData(false);
+      },
+      () => {
+        setFirestoreError('Unable to load products. Please refresh the page.');
+        setIsLoadingData(false);
       }
-      setIsLoadingData(false);
-    });
+    );
 
-    const unsubscribeCategories = subscribeToCategories((firestoreCategories) => {
-      if (firestoreCategories) {
-        setCategories(firestoreCategories);
-      }
-    });
+    const unsubscribeCategories = subscribeToCategories(
+      (firestoreCategories) => {
+        if (firestoreCategories) setCategories(firestoreCategories);
+      },
+      () => setFirestoreError('Unable to load categories. Please refresh the page.')
+    );
 
-    const unsubscribeSettings = subscribeToSettings((firestoreSettings) => {
-      if (firestoreSettings) {
-        setBakerySettings(firestoreSettings);
-      }
-    });
+    const unsubscribeSettings = subscribeToSettings(
+      (firestoreSettings) => {
+        if (firestoreSettings) setBakerySettings(firestoreSettings);
+      },
+      () => {} // Settings silently fall back to DEFAULT_SETTINGS
+    );
 
     return () => {
       clearTimeout(timer);
@@ -156,6 +164,31 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#fbf9f5] flex flex-col font-sans selection:bg-[#c68e5a] selection:text-[#4d2900]">
+      {/* Firestore connectivity error banner */}
+      {firestoreError && (
+        <div
+          role="alert"
+          style={{
+            background: '#7f1d1d',
+            color: '#fef2f2',
+            padding: '12px 20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontSize: '0.875rem',
+            gap: '12px',
+          }}
+        >
+          <span>⚠️ {firestoreError}</span>
+          <button
+            onClick={() => setFirestoreError(null)}
+            aria-label="Dismiss error"
+            style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', fontSize: '1.1rem', lineHeight: 1 }}
+          >
+            ×
+          </button>
+        </div>
+      )}
       {/* Top Sticky Navigation */}
       <Navbar
         activeTab={activeTab}
@@ -192,41 +225,48 @@ export default function App() {
               />
             )}
 
-            {activeTab === 'products' && (
-              <ProductsView
-                products={products}
-                categories={categories}
-                selectedCategory={selectedCategory}
-                setSelectedCategory={handleSetSelectedCategory}
-                onOpenQuickView={(product) => setQuickViewProduct(product)}
-                onAddToCart={handleAddToCart}
-                onOpenOrderModal={() => setIsOrderModalOpen(true)}
-                whatsappNumber={bakerySettings.whatsappNumber}
-              />
-            )}
+            <Suspense fallback={
+              <div className="min-h-[50vh] flex flex-col items-center justify-center py-20">
+                <div className="w-10 h-10 border-4 border-[#825425] border-t-transparent rounded-full animate-spin mb-4" />
+                <p className="text-xs font-bold uppercase tracking-wider text-[#825425]">Loading Page...</p>
+              </div>
+            }>
+              {activeTab === 'products' && (
+                <ProductsView
+                  products={products}
+                  categories={categories}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={handleSetSelectedCategory}
+                  onOpenQuickView={(product) => setQuickViewProduct(product)}
+                  onAddToCart={handleAddToCart}
+                  onOpenOrderModal={() => setIsOrderModalOpen(true)}
+                  whatsappNumber={bakerySettings.whatsappNumber}
+                />
+              )}
 
-            {activeTab === 'about' && (
-              <AboutView
-                setActiveTab={handleNavigate}
-                onOpenOrderModal={() => setIsOrderModalOpen(true)}
-                settings={bakerySettings}
-              />
-            )}
+              {activeTab === 'about' && (
+                <AboutView
+                  setActiveTab={handleNavigate}
+                  onOpenOrderModal={() => setIsOrderModalOpen(true)}
+                  settings={bakerySettings}
+                />
+              )}
 
-            {activeTab === 'contact' && (
-              <ContactView
-                onOpenOrderModal={() => setIsOrderModalOpen(true)}
-                settings={bakerySettings}
-              />
-            )}
+              {activeTab === 'contact' && (
+                <ContactView
+                  onOpenOrderModal={() => setIsOrderModalOpen(true)}
+                  settings={bakerySettings}
+                />
+              )}
 
-            {activeTab === 'admin' && (
-              <AdminView
-                products={products}
-                categories={categories}
-                settings={bakerySettings}
-              />
-            )}
+              {activeTab === 'admin' && (
+                <AdminView
+                  products={products}
+                  categories={categories}
+                  settings={bakerySettings}
+                />
+              )}
+            </Suspense>
           </>
         )}
       </main>
