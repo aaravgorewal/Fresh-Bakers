@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { ProductItem, BakerySettings, CategoryInfo } from '../types';
-import { AdminView } from '../views/AdminView';
 import { X } from 'lucide-react';
+
+const AdminView = lazy(() => import('../views/AdminView').then((m) => ({ default: m.AdminView })));
 
 interface AdminModalProps {
   isOpen: boolean;
@@ -35,7 +36,14 @@ export const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, product
 
         {/* Admin Content */}
         <div className="p-2 sm:p-4">
-          <AdminView products={products} categories={categories} settings={settings} />
+          <Suspense fallback={
+            <div className="min-h-[50vh] flex flex-col items-center justify-center py-12">
+              <div className="w-10 h-10 border-4 border-[#825425] border-t-transparent rounded-full animate-spin mb-4" />
+              <p className="text-xs font-bold uppercase tracking-wider text-[#825425]">Loading Admin Console...</p>
+            </div>
+          }>
+            <AdminView products={products} categories={categories} settings={settings} />
+          </Suspense>
         </div>
       </div>
     </div>

@@ -13,9 +13,10 @@ import {
   addCategoryToFirestore,
   updateCategoryInFirestore,
   deleteCategoryFromFirestore,
+  updateCategorySortOrders,
   DEFAULT_SETTINGS
 } from '../lib/firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import {
   BarChart,
   Bar,
@@ -53,7 +54,8 @@ import {
   DollarSign,
   TrendingUp,
   Tag,
-  ShieldCheck
+  ShieldCheck,
+  GripVertical
 } from 'lucide-react';
 
 interface AdminViewProps {
@@ -161,13 +163,13 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
   const [editingCategoryName, setEditingCategoryName] = useState<string | null>(null);
   const [newCategoryName, setNewCategoryName] = useState('');
-  const [newCategoryType, setNewCategoryType] = useState<CategoryInfo['type']>('cake');
-  const [newCategoryIcon, setNewCategoryIcon] = useState('Cake');
   const [newCategoryImage, setNewCategoryImage] = useState('');
   const [newCategoryBannerImage, setNewCategoryBannerImage] = useState('');
   const [newCategoryTagline, setNewCategoryTagline] = useState('');
   const [categoryBannerFile, setCategoryBannerFile] = useState<File | null>(null);
   const [uploadingCategoryBanner, setUploadingCategoryBanner] = useState(false);
+  const [draggedCatIndex, setDraggedCatIndex] = useState<number | null>(null);
+  const [dragOverCatIndex, setDragOverCatIndex] = useState<number | null>(null);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
@@ -235,16 +237,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
       await signInWithEmailAndPassword(auth, email, password);
       triggerSuccess('Successfully logged in as Admin!');
     } catch (err: any) {
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
-        try {
-          await createUserWithEmailAndPassword(auth, email, password);
-          triggerSuccess('Admin account created and logged in!');
-        } catch (createErr: any) {
-          setAuthError(createErr.message || 'Authentication failed. Please check credentials.');
-        }
-      } else {
-        setAuthError(err.message || 'Login failed.');
-      }
+      // Never auto-create accounts on login failure — display error only
+      setAuthError('Invalid email or password. Please check your admin credentials.');
     } finally {
       setAuthLoading(false);
     }
@@ -430,8 +424,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
     setEditingCategoryId(null);
     setEditingCategoryName(null);
     setNewCategoryName('');
-    setNewCategoryType('cake');
-    setNewCategoryIcon('Cake');
     setNewCategoryImage('');
     setNewCategoryBannerImage('');
     setNewCategoryTagline('');
@@ -442,8 +434,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
     setEditingCategoryId(categoryInfo.id ?? null);
     setEditingCategoryName(categoryInfo.name);
     setNewCategoryName(categoryInfo.name);
-    setNewCategoryType(categoryInfo.type);
-    setNewCategoryIcon(categoryInfo.icon);
     setNewCategoryImage(categoryInfo.image);
     setNewCategoryBannerImage(categoryInfo.bannerImage);
     setNewCategoryTagline(categoryInfo.tagline);
@@ -476,8 +466,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
 
       const categoryPayload: Omit<CategoryInfo, 'id'> = {
         name: normalizedName as Category,
-        type: newCategoryType,
-        icon: newCategoryIcon || 'Cake',
+        type: 'cake',
+        icon: 'Cake',
         image: newCategoryImage || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=600',
         bannerImage: finalBannerUrl,
         tagline: newCategoryTagline || 'Delicious bakery items for every celebration.',
@@ -819,99 +809,90 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
       <div className="flex items-center gap-1.5 overflow-x-auto pb-3 mb-8 border-b border-[#e8d8cb]">
         <button
           onClick={() => setActiveTab('dashboard')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'dashboard'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'dashboard'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <LayoutDashboard className="w-4 h-4" /> Overview & Charts
         </button>
 
         <button
           onClick={() => setActiveTab('products')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'products'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'products'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <Package className="w-4 h-4" /> Products ({totalProducts})
         </button>
 
         <button
           onClick={() => setActiveTab('curated')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'curated'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'curated'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <Tag className="w-4 h-4" /> Featured & Trending
         </button>
 
         <button
           onClick={() => setActiveTab('categories')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'categories'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'categories'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <FolderTree className="w-4 h-4" /> Categories ({totalCategories})
         </button>
 
         <button
           onClick={() => setActiveTab('gallery')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'gallery'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'gallery'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <ImageIcon className="w-4 h-4" /> Gallery ({galleryItems.length})
         </button>
 
         <button
           onClick={() => setActiveTab('testimonials')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'testimonials'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'testimonials'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <MessageSquareQuote className="w-4 h-4" /> Testimonials ({testimonials.length})
         </button>
 
         <button
           onClick={() => setActiveTab('hero')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'hero'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'hero'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <Sparkles className="w-4 h-4" /> Hero Highlights
         </button>
 
         <button
           onClick={() => setActiveTab('contact')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'contact'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'contact'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <PhoneCall className="w-4 h-4" /> Contact & WhatsApp
         </button>
 
         <button
           onClick={() => setActiveTab('settings')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-            activeTab === 'settings'
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'settings'
               ? 'bg-[#825425] text-white shadow-sm'
               : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
-          }`}
+            }`}
         >
           <SettingsIcon className="w-4 h-4" /> Store Settings
         </button>
@@ -1439,11 +1420,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                       <td className="p-3">
                         <button
                           onClick={() => handleToggleProductStatus(p, 'available')}
-                          className={`px-2.5 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1 transition-colors ${
-                            p.available !== false
+                          className={`px-2.5 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1 transition-colors ${p.available !== false
                               ? 'bg-green-100 text-green-800'
                               : 'bg-red-100 text-red-800'
-                          }`}
+                            }`}
                         >
                           {p.available !== false ? 'In Stock' : 'Sold Out'}
                         </button>
@@ -1548,27 +1528,24 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                   <div className="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100">
                     <button
                       onClick={() => handleToggleProductStatus(p, 'isFeatured')}
-                      className={`px-2 py-1 rounded text-[10px] font-bold transition-colors ${
-                        p.isFeatured ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                      }`}
+                      className={`px-2 py-1 rounded text-[10px] font-bold transition-colors ${p.isFeatured ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
                     >
                       Featured
                     </button>
 
                     <button
                       onClick={() => handleToggleProductStatus(p, 'isTrending')}
-                      className={`px-2 py-1 rounded text-[10px] font-bold transition-colors ${
-                        p.isTrending ? 'bg-purple-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                      }`}
+                      className={`px-2 py-1 rounded text-[10px] font-bold transition-colors ${p.isTrending ? 'bg-purple-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
                     >
                       Trending
                     </button>
 
                     <button
                       onClick={() => handleToggleProductStatus(p, 'isRecommended')}
-                      className={`px-2 py-1 rounded text-[10px] font-bold transition-colors ${
-                        p.isRecommended ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                      }`}
+                      className={`px-2 py-1 rounded text-[10px] font-bold transition-colors ${p.isRecommended ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
                     >
                       Recommend
                     </button>
@@ -1688,18 +1665,52 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
               </div>
             </form>
 
+            <p className="text-[11px] text-[#825425] mb-3 flex items-center gap-1">
+              <GripVertical className="w-3.5 h-3.5" /> Drag cards to reorder. Order is saved to Firestore instantly.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {categories.map((cat) => {
+              {categories.map((cat, index) => {
                 const count = products.filter((p) => p.category === cat.name).length;
+                const isDragging = draggedCatIndex === index;
+                const isDragOver = dragOverCatIndex === index;
                 return (
-                  <div key={cat.name} className="p-4 border border-[#e8d8cb] rounded-lg bg-[#fbf6f0]">
+                  <div
+                    key={cat.id || cat.name}
+                    draggable
+                    onDragStart={() => setDraggedCatIndex(index)}
+                    onDragEnter={() => setDragOverCatIndex(index)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={async () => {
+                      if (draggedCatIndex === null || draggedCatIndex === index) return;
+                      const reordered = [...categories];
+                      const [moved] = reordered.splice(draggedCatIndex, 1);
+                      reordered.splice(index, 0, moved);
+                      setDraggedCatIndex(null);
+                      setDragOverCatIndex(null);
+                      const ids = reordered.map((c) => c.id).filter((id): id is string => !!id);
+                      try {
+                        await updateCategorySortOrders(ids);
+                      } catch (err: any) {
+                        alert(`Failed to save order: ${err.message}`);
+                      }
+                    }}
+                    onDragEnd={() => { setDraggedCatIndex(null); setDragOverCatIndex(null); }}
+                    className={`p-4 border rounded-lg bg-[#fbf6f0] transition-all duration-150 ${
+                      isDragOver && !isDragging
+                        ? 'border-[#825425] ring-2 ring-[#825425]/30 scale-[1.02]'
+                        : 'border-[#e8d8cb]'
+                    } ${isDragging ? 'opacity-40' : 'opacity-100'}`}
+                  >
                     <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <p className="font-bold text-sm text-[#1b1c1a]">{cat.name}</p>
-                        <p className="text-[11px] text-[#825425] uppercase tracking-wider font-semibold">{cat.type}</p>
-                        <p className="text-[11px] text-[#51443a] mt-2 line-clamp-2">{cat.tagline}</p>
+                      <div className="flex items-start gap-2">
+                        <GripVertical className="w-4 h-4 text-[#c0a98f] mt-0.5 shrink-0 cursor-grab active:cursor-grabbing" />
+                        <div>
+                          <p className="font-bold text-sm text-[#1b1c1a]">{cat.name}</p>
+                          <p className="text-[11px] text-[#825425] uppercase tracking-wider font-semibold">{cat.type}</p>
+                          <p className="text-[11px] text-[#51443a] mt-2 line-clamp-2">{cat.tagline}</p>
+                        </div>
                       </div>
-                      <span className="bg-[#825425] text-white px-2.5 py-1 rounded-full text-xs font-bold">
+                      <span className="bg-[#825425] text-white px-2.5 py-1 rounded-full text-xs font-bold shrink-0">
                         {count} Items
                       </span>
                     </div>
