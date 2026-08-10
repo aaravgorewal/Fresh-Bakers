@@ -165,8 +165,9 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
   const [newCategoryIcon, setNewCategoryIcon] = useState('Cake');
   const [newCategoryImage, setNewCategoryImage] = useState('');
   const [newCategoryBannerImage, setNewCategoryBannerImage] = useState('');
-  const [newCategoryBannerFile, setNewCategoryBannerFile] = useState<File | null>(null);
   const [newCategoryTagline, setNewCategoryTagline] = useState('');
+  const [categoryBannerFile, setCategoryBannerFile] = useState<File | null>(null);
+  const [uploadingCategoryBanner, setUploadingCategoryBanner] = useState(false);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
@@ -426,14 +427,15 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
   };
 
   const resetCategoryForm = () => {
+    setEditingCategoryId(null);
     setEditingCategoryName(null);
     setNewCategoryName('');
     setNewCategoryType('cake');
     setNewCategoryIcon('Cake');
     setNewCategoryImage('');
     setNewCategoryBannerImage('');
-    setNewCategoryBannerFile(null);
     setNewCategoryTagline('');
+    setCategoryBannerFile(null);
   };
 
   const handleEditCategoryInit = (categoryInfo: CategoryInfo) => {
@@ -445,6 +447,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
     setNewCategoryImage(categoryInfo.image);
     setNewCategoryBannerImage(categoryInfo.bannerImage);
     setNewCategoryTagline(categoryInfo.tagline);
+    setCategoryBannerFile(null);
     setActiveTab('categories');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
