@@ -165,7 +165,7 @@ export const DEFAULT_SETTINGS: BakerySettings = {
   bakeryName: 'Fresh Bakers Co.',
   tagline: 'Artisan bakery & handcrafted Indian celebration cakes baked fresh daily.',
   whatsappNumber: '919876543210',
-  address: '142 MG Road, Indiranagar, Bengaluru, Karnataka 560038',
+  address: 'Jansath Road, Almaspur, Muzaffarnagar',
   email: 'hello@freshbakers.in',
   phone: '+91 98765 43210',
   instagram: '@freshbakers_india',

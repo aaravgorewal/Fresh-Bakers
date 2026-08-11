@@ -95,9 +95,9 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal, 
           <h4 className="font-label-caps text-xs text-[#D97706] tracking-[0.2em] uppercase mb-5 font-bold flex items-center gap-2">
             <MapPin className="w-3.5 h-3.5 text-[#D97706]" /> Bakery Location
           </h4>
-          <p className="font-body-md text-sm text-[#FAF6F0] font-medium mb-1">142 Artisan Boulevard</p>
-          <p className="font-body-md text-sm text-[#E5D7C9] mb-4">MG Road, Main Market</p>
-          
+          <p className="font-body-md text-sm text-[#FAF6F0] font-medium mb-1">Jansath Road</p>
+          <p className="font-body-md text-sm text-[#E5D7C9] mb-4">Almaspur, Muzaffarnagar District</p>
+
           <div className="pt-3 border-t border-white/10">
             <p className="text-[11px] text-[#D97706] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
               <Clock className="w-3 h-3" /> Bakery Hours
@@ -126,7 +126,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal, 
       </div>
 
       <div className="max-w-[1280px] mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-[#E5D7C9] gap-4 relative z-10">
-        <p>© 2026 Fresh Bakers Co. Indian Bakery & Gifting Platform.</p>
+        <p>© 2026 Fresh Bakers Co. Powered By <a href="https://www.linkedin.com/in/aaravgorewal/" target="_blank" rel="noopener noreferrer" className="hover:text-[#D97706] transition-colors font-semibold flex items-center gap-1 cursor-pointer" >AaravSaini</a></p>
         <div className="flex flex-wrap gap-6 items-center">
           {onOpenAdminModal && (
             <button

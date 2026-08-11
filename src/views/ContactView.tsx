@@ -11,8 +11,8 @@ interface ContactViewProps {
 
 export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
   const bakeryName = settings?.bakeryName || 'Fresh Bakers';
-  const whatsappNumber = settings?.whatsappNumber || '15550192824';
-  const address = settings?.address || '142 Artisan Boulevard, Mill District';
+  const whatsappNumber = settings?.whatsappNumber || '+919876543210';
+  const address = settings?.address || 'Almaspur, Muzaffarnagar District';
   const openingHours = settings?.openHours || 'Tue – Sun: 7am – 4pm';
   const instagramUrl = settings?.instagram || 'https://instagram.com/freshbakers';
 
@@ -26,7 +26,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
 
   const handleOpenGoogleMaps = () => {
     const encodedAddress = encodeURIComponent(address);
-    window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
+    window.open(`https://maps.app.goo.gl/hEppQZFbYoqfbgyC7`, '_blank');
   };
 
   return (
