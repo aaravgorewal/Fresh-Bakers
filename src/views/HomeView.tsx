@@ -891,7 +891,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               Get in Touch & Pre-Order
             </h2>
             <p className="font-body-md text-xs sm:text-sm text-[#6e5d4f]">
-              142 Artisan Boulevard, MG Road • Mon – Sun: 8:00 AM – 10:00 PM
+              Jansath Road, Almaspur, Muzaffarnagar • Mon – Sun: 8:00 AM – 10:00 PM
             </p>
           </div>
 
@@ -899,10 +899,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <div className="bg-[#f4ebe1] p-6 rounded-2xl border border-[#e8dec9] text-center space-y-2">
               <MapPin className="w-6 h-6 text-[#825425] mx-auto" />
               <h4 className="font-serif-display font-bold text-base text-[#1f1610]">Bakery Storefront</h4>
-              <p className="text-xs text-[#6e5d4f]">142 Artisan Boulevard, MG Road</p>
+              <p className="text-xs text-[#6e5d4f]">Jansath Road, Almaspur, Muzaffarnagar</p>
               <button
                 onClick={() => {
-                  window.open('https://maps.google.com/?q=142+Artisan+Boulevard', '_blank');
+                  window.open('https://maps.app.goo.gl/YfCPdTmJg3K1xV7T7', '_blank');
                 }}
                 className="text-xs font-bold text-[#825425] uppercase tracking-wider underline block pt-1 cursor-pointer"
               >
