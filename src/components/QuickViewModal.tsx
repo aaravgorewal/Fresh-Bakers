@@ -17,6 +17,7 @@ import {
   Info
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { getOptimizedImageUrl } from '../lib/imageUtils';
 
 interface QuickViewModalProps {
   product: ProductItem | null;
@@ -200,9 +201,12 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                 {/* Large Display Image */}
                 <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#F4EBE1] shadow-md border border-[#F0E5DA]">
                   <img
-                    src={activeImage}
+                    src={getOptimizedImageUrl(activeImage, 800)}
                     alt={product.name}
                     className="w-full h-full object-cover transition-all duration-500 hover:scale-105"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800';
+                    }}
                   />
 
                   {/* Badges */}
@@ -237,7 +241,15 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                             : 'border-[#F0E5DA] opacity-70 hover:opacity-100 hover:border-[#5C2E14]/50'
                         }`}
                       >
-                        <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                        <img 
+                          src={getOptimizedImageUrl(imgUrl, 200)} 
+                          alt={`Thumbnail ${idx + 1}`} 
+                          className="w-full h-full object-cover" 
+                          loading="lazy"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=200';
+                          }}
+                        />
                       </button>
                     ))}
                   </div>

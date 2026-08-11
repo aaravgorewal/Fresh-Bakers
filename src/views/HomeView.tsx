@@ -476,6 +476,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
                     alt={cat.name}
                     className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500 ease-out"
                     loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=300';
+                    }}
                   />
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-[#1F1610] group-hover:text-[#825425] transition-colors whitespace-nowrap flex items-center gap-1">
