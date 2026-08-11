@@ -87,15 +87,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               </span>
             )}
 
-            {/* Egg / Eggless Badge */}
-            <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md shadow-xs border flex items-center gap-1 font-sans ${
-              isEggless
-                ? 'bg-emerald-900/80 text-emerald-200 border-emerald-500/40'
-                : 'bg-rose-900/80 text-rose-200 border-rose-500/40'
-            }`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${isEggless ? 'bg-emerald-400' : 'bg-rose-400'}`} />
-              {isEggless ? 'Eggless' : 'Egg'}
-            </span>
+            {/* Egg / Eggless Badge (Only for Cake categories) */}
+            {product.category.toLowerCase().includes('cake') && (
+              <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md shadow-xs border flex items-center gap-1 font-sans ${
+                isEggless
+                  ? 'bg-emerald-900/80 text-emerald-200 border-emerald-500/40'
+                  : 'bg-rose-900/80 text-rose-200 border-rose-500/40'
+              }`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${isEggless ? 'bg-emerald-400' : 'bg-rose-400'}`} />
+                {isEggless ? 'Eggless' : 'Egg'}
+              </span>
+            )}
           </div>
         </div>
 
