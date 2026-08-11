@@ -517,8 +517,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
         };
 
         return (
-          <section key={section.id} className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-6 sm:space-y-8 relative">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
+          <section key={section.id} className="w-full space-y-6 sm:space-y-8 relative">
+            {/* Header stays inside max-width container */}
+            <div className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
               <div>
                 <h2 className="font-serif-display text-2xl sm:text-3xl md:text-4xl text-[#1f1610] font-bold">
                   {section.heading}
@@ -555,11 +556,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </div>
             </div>
 
-            {/* Carousel Container */}
+            {/* Carousel Container — Full width, padding inside the scroll track so it doesn't clip at the section boundary */}
             <div className="relative group">
               <div
                 ref={carouselRef}
-                className="flex gap-6 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth pb-4"
+                className="flex gap-6 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth pb-8 pt-2 px-4 sm:px-8 xl:px-0 xl:pl-[calc((100vw-1400px)/2)] xl:pr-[calc((100vw-1400px)/2)]"
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
                 {section.products.map((product) => (
