@@ -305,7 +305,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   };
 
   return (
-    <div className="w-full space-y-12 md:space-y-24 pb-16 md:pb-28 relative bg-[#FFFBF7]">
+    <div className="w-full space-y-10 md:space-y-16 pb-12 md:pb-20 relative bg-[#FFFBF7]">
       {/* Toast Feedback */}
       <AnimatePresence>
         {addedItemName && (
