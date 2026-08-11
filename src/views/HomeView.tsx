@@ -534,41 +534,86 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* 3. DYNAMIC HOMEPAGE SECTIONS (from Firestore) */}
-      {resolvedSections.map((section) => (
-        <section key={section.id} className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
-                {section.heading}
-              </h2>
-            </div>
-            <button
-              onClick={() => {
-                window.history.pushState(null, '', '/products');
-                setActiveTab('products');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              className="btn-secondary py-2.5 px-6 text-xs"
-            >
-              View All Products
-            </button>
-          </div>
+      {resolvedSections.map((section) => {
+        // Create a ref specifically for this section's carousel container to support scroll buttons
+        const carouselRef = React.createRef<HTMLDivElement>();
 
-          <div className={`grid grid-cols-1 sm:grid-cols-2 ${
-            section.products.length <= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'
-          } gap-6`}>
-            {section.products.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onOpenQuickView={onOpenQuickView}
-                onAddToCart={handleQuickAdd}
-                whatsappNumber={whatsappNumber}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+        const scrollLeft = () => {
+          if (carouselRef.current) {
+            carouselRef.current.scrollBy({ left: -320, behavior: 'smooth' });
+          }
+        };
+
+        const scrollRight = () => {
+          if (carouselRef.current) {
+            carouselRef.current.scrollBy({ left: 320, behavior: 'smooth' });
+          }
+        };
+
+        return (
+          <section key={section.id} className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8 relative">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
+                  {section.heading}
+                </h2>
+              </div>
+              <div className="flex items-center gap-3">
+                {/* Subtle navigation buttons */}
+                <div className="hidden sm:flex items-center gap-2 mr-2">
+                  <button
+                    onClick={scrollLeft}
+                    className="p-2 rounded-full border border-[#E8DEC9] bg-white hover:bg-[#F4EBE1] text-[#5C2E14] transition-all cursor-pointer"
+                    aria-label="Previous products"
+                  >
+                    <ArrowRight className="w-4 h-4 rotate-180" />
+                  </button>
+                  <button
+                    onClick={scrollRight}
+                    className="p-2 rounded-full border border-[#E8DEC9] bg-white hover:bg-[#F4EBE1] text-[#5C2E14] transition-all cursor-pointer"
+                    aria-label="Next products"
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+                <button
+                  onClick={() => {
+                    window.history.pushState(null, '', '/products');
+                    setActiveTab('products');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="btn-secondary py-2.5 px-6 text-xs"
+                >
+                  View All Products
+                </button>
+              </div>
+            </div>
+
+            {/* Carousel Container */}
+            <div className="relative group">
+              <div
+                ref={carouselRef}
+                className="flex gap-6 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth pb-4"
+                style={{ WebkitOverflowScrolling: 'touch' }}
+              >
+                {section.products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="snap-start shrink-0 w-[80%] sm:w-[45%] lg:w-[calc(25%-18px)]"
+                  >
+                    <ProductCard
+                      product={product}
+                      onOpenQuickView={onOpenQuickView}
+                      onAddToCart={handleQuickAdd}
+                      whatsappNumber={whatsappNumber}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      })}
 
       {/* Legacy fallback: Best Selling Cakes (shown only when no dynamic sections exist) */}
       {showLegacyFeatured && (
