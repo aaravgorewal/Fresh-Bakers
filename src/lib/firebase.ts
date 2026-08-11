@@ -3,7 +3,7 @@ import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, 
 import { getAuth } from 'firebase/auth';
 import { getStorage, ref, deleteObject } from 'firebase/storage';
 import firebaseConfig from '../../firebase-applet-config.json';
-import { ProductItem, BakerySettings, CategoryInfo } from '../types';
+import { ProductItem, BakerySettings, CategoryInfo, HomepageSection } from '../types';
 import { PRODUCTS, CATEGORIES } from '../data/products';
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
@@ -496,6 +496,98 @@ export const uploadProductImage = async (file: File): Promise<string> => {
     return data.secure_url;
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, 'cloudinary/products');
+    throw error;
+  }
+};
+
+// ── Homepage Sections CRUD ──────────────────────────────────────────────
+
+const HOMEPAGE_SECTIONS_COLLECTION = 'homepageSections';
+
+export const subscribeToHomepageSections = (
+  callback: (sections: HomepageSection[]) => void,
+  onError?: () => void
+) => {
+  const colRef = collection(db, HOMEPAGE_SECTIONS_COLLECTION);
+  return onSnapshot(
+    colRef,
+    (snapshot) => {
+      const list: HomepageSection[] = snapshot.docs.map((docSnap) => ({
+        id: docSnap.id,
+        ...(docSnap.data() as Omit<HomepageSection, 'id'>),
+      }));
+      list.sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999));
+      callback(list);
+    },
+    (err) => {
+      handleFirestoreError(err, OperationType.LIST, HOMEPAGE_SECTIONS_COLLECTION);
+      onError?.();
+    }
+  );
+};
+
+export const addHomepageSectionToFirestore = async (
+  data: Omit<HomepageSection, 'id'>
+): Promise<string> => {
+  try {
+    const colRef = collection(db, HOMEPAGE_SECTIONS_COLLECTION);
+    const snap = await getDocs(colRef);
+    let maxOrder = -1;
+    snap.forEach((d) => {
+      const s = d.data().sortOrder;
+      if (typeof s === 'number' && s > maxOrder) maxOrder = s;
+    });
+    const cleanData = {
+      heading: data.heading || '',
+      source: data.source || 'category',
+      categoryId: data.categoryId || '',
+      categoryName: data.categoryName || '',
+      productIds: Array.isArray(data.productIds) ? data.productIds : [],
+      productLimit: typeof data.productLimit === 'number' ? data.productLimit : 4,
+      sortOrder: typeof data.sortOrder === 'number' ? data.sortOrder : maxOrder + 1,
+      isActive: data.isActive !== false,
+    };
+    const docRef = await addDoc(colRef, cleanData);
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, HOMEPAGE_SECTIONS_COLLECTION);
+    throw error;
+  }
+};
+
+export const updateHomepageSectionInFirestore = async (
+  id: string,
+  data: Partial<Omit<HomepageSection, 'id'>>
+): Promise<void> => {
+  try {
+    const docRef = doc(db, HOMEPAGE_SECTIONS_COLLECTION, id);
+    const cleanData = JSON.parse(JSON.stringify(data));
+    await setDoc(docRef, cleanData, { merge: true });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, `${HOMEPAGE_SECTIONS_COLLECTION}/${id}`);
+    throw error;
+  }
+};
+
+export const deleteHomepageSectionFromFirestore = async (id: string): Promise<void> => {
+  try {
+    const docRef = doc(db, HOMEPAGE_SECTIONS_COLLECTION, id);
+    await deleteDoc(docRef);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, `${HOMEPAGE_SECTIONS_COLLECTION}/${id}`);
+    throw error;
+  }
+};
+
+export const updateHomepageSectionSortOrders = async (orderedIds: string[]): Promise<void> => {
+  try {
+    await Promise.all(
+      orderedIds.map((id, index) =>
+        setDoc(doc(db, HOMEPAGE_SECTIONS_COLLECTION, id), { sortOrder: index }, { merge: true })
+      )
+    );
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, HOMEPAGE_SECTIONS_COLLECTION);
     throw error;
   }
 };

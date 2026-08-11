@@ -76,3 +76,15 @@ export interface OrderCartItem {
   product: ProductItem;
   quantity: number;
 }
+
+export interface HomepageSection {
+  id?: string;
+  heading: string;
+  categoryId?: string;    // Firestore category doc ID
+  categoryName?: string;  // Denormalized for product filtering (products use p.category === cat.name)
+  productIds?: string[];  // For "manual" source
+  source: 'category' | 'manual';
+  productLimit: number;
+  sortOrder: number;
+  isActive: boolean;
+}

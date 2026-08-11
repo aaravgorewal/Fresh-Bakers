@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { ProductItem, Category, BakerySettings, Testimonial, GalleryItem, CategoryInfo } from '../types';
+import { ProductItem, Category, BakerySettings, Testimonial, GalleryItem, CategoryInfo, HomepageSection } from '../types';
 import {
   auth,
   addProductToFirestore,
@@ -14,6 +14,11 @@ import {
   updateCategoryInFirestore,
   deleteCategoryFromFirestore,
   updateCategorySortOrders,
+  subscribeToHomepageSections,
+  addHomepageSectionToFirestore,
+  updateHomepageSectionInFirestore,
+  deleteHomepageSectionFromFirestore,
+  updateHomepageSectionSortOrders,
   DEFAULT_SETTINGS
 } from '../lib/firebase';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
@@ -55,7 +60,8 @@ import {
   TrendingUp,
   Tag,
   ShieldCheck,
-  GripVertical
+  GripVertical,
+  LayoutGrid
 } from 'lucide-react';
 
 interface AdminViewProps {
@@ -73,7 +79,8 @@ type AdminTab =
   | 'hero'
   | 'contact'
   | 'settings'
-  | 'curated';
+  | 'curated'
+  | 'homepageSections';
 
 const DEFAULT_GALLERY_ITEMS: GalleryItem[] = [
   {
@@ -136,8 +143,8 @@ const CHART_COLORS = ['#825425', '#a06a30', '#c28646', '#e2a969', '#6a421c', '#b
 
 export const AdminView: React.FC<AdminViewProps> = ({ products, categories, settings: initialSettings }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [email, setEmail] = useState('admin@freshbakers.com');
-  const [password, setPassword] = useState('baker123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
 
@@ -170,6 +177,19 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
   const [uploadingCategoryBanner, setUploadingCategoryBanner] = useState(false);
   const [draggedCatIndex, setDraggedCatIndex] = useState<number | null>(null);
   const [dragOverCatIndex, setDragOverCatIndex] = useState<number | null>(null);
+
+  // Homepage Sections state
+  const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
+  const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
+  const [sectionHeading, setSectionHeading] = useState('');
+  const [sectionSource, setSectionSource] = useState<'category' | 'manual'>('category');
+  const [sectionCategoryId, setSectionCategoryId] = useState('');
+  const [sectionProductIds, setSectionProductIds] = useState<string[]>([]);
+  const [sectionProductLimit, setSectionProductLimit] = useState<number>(4);
+  const [sectionIsActive, setSectionIsActive] = useState<boolean>(true);
+  const [savingSection, setSavingSection] = useState(false);
+  const [draggedSectionIndex, setDraggedSectionIndex] = useState<number | null>(null);
+  const [dragOverSectionIndex, setDragOverSectionIndex] = useState<number | null>(null);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
@@ -217,9 +237,14 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
       setBakerySettings(s);
     });
 
+    const unsubscribeSections = subscribeToHomepageSections((secs) => {
+      setHomepageSections(secs);
+    });
+
     return () => {
       unsubscribeAuth();
       unsubscribeSettings();
+      unsubscribeSections();
     };
   }, []);
 
@@ -835,6 +860,16 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
             }`}
         >
           <Tag className="w-4 h-4" /> Featured & Trending
+        </button>
+
+        <button
+          onClick={() => setActiveTab('homepageSections')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'homepageSections'
+              ? 'bg-[#825425] text-white shadow-sm'
+              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            }`}
+        >
+          <LayoutGrid className="w-4 h-4" /> Homepage Sections ({homepageSections.length})
         </button>
 
         <button
@@ -1552,6 +1587,351 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB: HOMEPAGE SECTIONS */}
+      {activeTab === 'homepageSections' && (
+        <div className="space-y-6 animate-fadeIn">
+          <div className="bg-white p-6 border border-[#e8d8cb] rounded-xl shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+              <div>
+                <h3 className="text-base font-bold text-[#1b1c1a] mb-1">Homepage Dynamic Sections Manager</h3>
+                <p className="text-xs text-[#635345]">
+                  Create, edit, toggle, or drag-and-drop reorder custom product sections for the main storefront page.
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setEditingSectionId(null);
+                  setSectionHeading('');
+                  setSectionSource('category');
+                  setSectionCategoryId('');
+                  setSectionProductIds([]);
+                  setSectionProductLimit(4);
+                  setSectionIsActive(true);
+                }}
+                className="bg-[#825425] text-white px-4 py-2 text-xs font-bold rounded-lg uppercase tracking-wider shrink-0"
+              >
+                + Create New Section
+              </button>
+            </div>
+
+            {/* Form */}
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                if (!sectionHeading.trim()) return alert('Heading is required.');
+                setSavingSection(true);
+                try {
+                  const selectedCategoryObj = categories.find((c) => c.id === sectionCategoryId);
+                  const rawPayload: Omit<HomepageSection, 'id'> = {
+                    heading: sectionHeading.trim(),
+                    source: sectionSource,
+                    categoryId: sectionSource === 'category' ? sectionCategoryId || '' : '',
+                    categoryName: sectionSource === 'category' ? selectedCategoryObj?.name || '' : '',
+                    productIds: sectionSource === 'manual' ? sectionProductIds : [],
+                    productLimit: Number(sectionProductLimit) || 4,
+                    sortOrder: editingSectionId
+                      ? (homepageSections.find((s) => s.id === editingSectionId)?.sortOrder ?? 0)
+                      : homepageSections.length,
+                    isActive: sectionIsActive,
+                  };
+
+                  // Sanitize payload so no keys contain undefined values (Firestore rejects undefined)
+                  const payload = JSON.parse(JSON.stringify(rawPayload));
+
+                  if (editingSectionId) {
+                    await updateHomepageSectionInFirestore(editingSectionId, payload);
+                    triggerSuccess('Homepage section updated successfully!');
+                  } else {
+                    await addHomepageSectionToFirestore(payload);
+                    triggerSuccess('Homepage section created successfully!');
+                  }
+
+                  setEditingSectionId(null);
+                  setSectionHeading('');
+                  setSectionSource('category');
+                  setSectionCategoryId('');
+                  setSectionProductIds([]);
+                  setSectionProductLimit(4);
+                  setSectionIsActive(true);
+                } catch (err: any) {
+                  alert(`Failed to save section: ${err.message}`);
+                } finally {
+                  setSavingSection(false);
+                }
+              }}
+              className="p-5 border border-[#e8d8cb] rounded-xl bg-[#fbf6f0] space-y-4 mb-8"
+            >
+              <h4 className="font-bold text-xs uppercase tracking-wider text-[#825425]">
+                {editingSectionId ? 'Edit Section' : 'Add New Section'}
+              </h4>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">
+                    Section Heading *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={sectionHeading}
+                    onChange={(e) => setSectionHeading(e.target.value)}
+                    placeholder="e.g. Bestselling Gateaux & Pastries"
+                    className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">
+                    Product Limit
+                  </label>
+                  <select
+                    value={sectionProductLimit}
+                    onChange={(e) => setSectionProductLimit(Number(e.target.value))}
+                    className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm bg-white"
+                  >
+                    <option value={4}>4 Products</option>
+                    <option value={6}>6 Products</option>
+                    <option value={8}>8 Products</option>
+                    <option value={12}>12 Products</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">
+                    Data Source
+                  </label>
+                  <select
+                    value={sectionSource}
+                    onChange={(e) => setSectionSource(e.target.value as 'category' | 'manual')}
+                    className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm bg-white"
+                  >
+                    <option value="category">Category (Auto-load products by category)</option>
+                    <option value="manual">Manual Selection (Pick specific products)</option>
+                  </select>
+                </div>
+
+                {sectionSource === 'category' ? (
+                  <div>
+                    <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">
+                      Select Category
+                    </label>
+                    <select
+                      value={sectionCategoryId}
+                      onChange={(e) => setSectionCategoryId(e.target.value)}
+                      className="w-full px-3.5 py-2 border border-[#d5c3b6] rounded-lg text-sm bg-white"
+                    >
+                      <option value="">-- Choose a Category --</option>
+                      {categories.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name} ({products.filter((p) => p.category === c.name).length} items)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-bold text-[#1b1c1a] uppercase tracking-wider mb-1">
+                      Select Products ({sectionProductIds.length} selected)
+                    </label>
+                    <div className="max-h-48 overflow-y-auto border border-[#d5c3b6] rounded-lg p-3 bg-white grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {products.map((p) => {
+                        const checked = sectionProductIds.includes(p.id);
+                        return (
+                          <label
+                            key={p.id}
+                            className={`flex items-center gap-2 p-2 rounded text-xs cursor-pointer border transition-colors ${
+                              checked ? 'bg-[#f8f1ea] border-[#825425] font-bold' : 'border-transparent hover:bg-slate-50'
+                            }`}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={checked}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSectionProductIds([...sectionProductIds, p.id]);
+                                } else {
+                                  setSectionProductIds(sectionProductIds.filter((id) => id !== p.id));
+                                }
+                              }}
+                              className="rounded accent-[#825425]"
+                            />
+                            <span className="truncate">{p.name} ({currency}{p.price})</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center gap-3 pt-2">
+                <label className="flex items-center gap-2 text-xs font-bold text-[#1b1c1a] cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={sectionIsActive}
+                    onChange={(e) => setSectionIsActive(e.target.checked)}
+                    className="accent-[#825425] rounded w-4 h-4"
+                  />
+                  Active (Show on homepage)
+                </label>
+              </div>
+
+              <div className="flex items-center gap-2 pt-3 border-t border-[#e8d8cb]">
+                <button
+                  type="submit"
+                  disabled={savingSection}
+                  className="bg-[#825425] hover:bg-[#6a421c] text-white px-5 py-2 text-xs font-bold rounded-lg uppercase tracking-wider transition-colors"
+                >
+                  {savingSection ? 'Saving...' : editingSectionId ? 'Update Section' : 'Create Section'}
+                </button>
+                {editingSectionId && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingSectionId(null);
+                      setSectionHeading('');
+                      setSectionSource('category');
+                      setSectionCategoryId('');
+                      setSectionProductIds([]);
+                      setSectionProductLimit(4);
+                      setSectionIsActive(true);
+                    }}
+                    className="bg-slate-200 text-slate-700 px-4 py-2 text-xs font-bold rounded-lg uppercase tracking-wider hover:bg-slate-300"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            </form>
+
+            {/* List with Drag-and-Drop */}
+            <p className="text-[11px] text-[#825425] mb-3 flex items-center gap-1">
+              <GripVertical className="w-3.5 h-3.5" /> Drag sections to reorder how they appear on the homepage.
+            </p>
+
+            <div className="space-y-3">
+              {homepageSections.map((sec, index) => {
+                const isDragging = draggedSectionIndex === index;
+                const isDragOver = dragOverSectionIndex === index;
+
+                // Preview count calculation
+                let previewCount = 0;
+                if (sec.source === 'category' && sec.categoryName) {
+                  previewCount = products.filter((p) => p.category === sec.categoryName).length;
+                } else if (sec.source === 'manual' && sec.productIds) {
+                  const idSet = new Set(sec.productIds);
+                  previewCount = products.filter((p) => idSet.has(p.id)).length;
+                }
+                const effectiveCount = Math.min(previewCount, sec.productLimit || 8);
+
+                return (
+                  <div
+                    key={sec.id}
+                    draggable
+                    onDragStart={() => setDraggedSectionIndex(index)}
+                    onDragEnter={() => setDragOverSectionIndex(index)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={async () => {
+                      if (draggedSectionIndex === null || draggedSectionIndex === index) return;
+                      const reordered = [...homepageSections];
+                      const [moved] = reordered.splice(draggedSectionIndex, 1);
+                      reordered.splice(index, 0, moved);
+                      setDraggedSectionIndex(null);
+                      setDragOverSectionIndex(null);
+                      const ids = reordered.map((s) => s.id).filter((id): id is string => !!id);
+                      try {
+                        await updateHomepageSectionSortOrders(ids);
+                      } catch (err: any) {
+                        alert(`Failed to save order: ${err.message}`);
+                      }
+                    }}
+                    onDragEnd={() => { setDraggedSectionIndex(null); setDragOverSectionIndex(null); }}
+                    className={`p-4 border rounded-xl bg-[#fbf6f0] flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${
+                      isDragOver && !isDragging
+                        ? 'border-[#825425] ring-2 ring-[#825425]/30 scale-[1.01]'
+                        : 'border-[#e8d8cb]'
+                    } ${isDragging ? 'opacity-40' : 'opacity-100'}`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <GripVertical className="w-5 h-5 text-[#c0a98f] mt-0.5 shrink-0 cursor-grab active:cursor-grabbing" />
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h4 className="font-bold text-sm text-[#1b1c1a]">{sec.heading}</h4>
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                            sec.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                          }`}>
+                            {sec.isActive ? 'Active' : 'Disabled'}
+                          </span>
+                          <span className="bg-[#825425] text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
+                            Source: {sec.source === 'category' ? `Category (${sec.categoryName || 'Unset'})` : 'Manual Selection'}
+                          </span>
+                        </div>
+                        <p className="text-xs text-[#51443a] mt-1">
+                          Limit: {sec.productLimit} products • Available matching items: {previewCount} (Will show: {effectiveCount})
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                      <button
+                        onClick={async () => {
+                          if (sec.id) {
+                            await updateHomepageSectionInFirestore(sec.id, { isActive: !sec.isActive });
+                          }
+                        }}
+                        className={`px-2.5 py-1 rounded text-xs font-bold ${
+                          sec.isActive ? 'bg-amber-100 text-amber-900 hover:bg-amber-200' : 'bg-emerald-100 text-emerald-900 hover:bg-emerald-200'
+                        }`}
+                      >
+                        {sec.isActive ? 'Disable' : 'Enable'}
+                      </button>
+                      <button
+                        onClick={() => {
+                          if (sec.id) {
+                            setEditingSectionId(sec.id);
+                            setSectionHeading(sec.heading);
+                            setSectionSource(sec.source);
+                            setSectionCategoryId(sec.categoryId || '');
+                            setSectionProductIds(sec.productIds || []);
+                            setSectionProductLimit(sec.productLimit || 4);
+                            setSectionIsActive(sec.isActive);
+                          }
+                        }}
+                        className="p-1.5 text-blue-700 hover:bg-blue-50 rounded"
+                        title="Edit Section"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={async () => {
+                          if (sec.id && window.confirm(`Are you sure you want to delete section "${sec.heading}"?`)) {
+                            try {
+                              await deleteHomepageSectionFromFirestore(sec.id);
+                              triggerSuccess('Section deleted successfully.');
+                            } catch (err: any) {
+                              alert(`Failed to delete: ${err.message}`);
+                            }
+                          }
+                        }}
+                        className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+                        title="Delete Section"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+              {homepageSections.length === 0 && (
+                <div className="p-8 text-center border border-dashed border-[#d5c3b6] rounded-xl text-xs text-[#51443a]">
+                  No dynamic homepage sections created yet. Click "+ Create New Section" above to add one!
+                </div>
+              )}
             </div>
           </div>
         </div>

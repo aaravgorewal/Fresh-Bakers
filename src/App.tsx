@@ -1,13 +1,12 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
-import { NavTab, Category, ProductItem, OrderCartItem, BakerySettings, CategoryInfo } from './types';
-import { PRODUCTS } from './data/products';
+import { NavTab, Category, ProductItem, OrderCartItem, BakerySettings, CategoryInfo, HomepageSection } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { WhatsAppModal } from './components/WhatsAppModal';
 import { QuickViewModal } from './components/QuickViewModal';
 import { AdminModal } from './components/AdminModal';
 import { HomeView } from './views/HomeView';
-import { subscribeToProducts, subscribeToSettings, subscribeToCategories, seedInitialProductsIfEmpty, seedInitialSettingsIfEmpty, seedInitialCategoriesIfEmpty, DEFAULT_SETTINGS } from './lib/firebase';
+import { subscribeToProducts, subscribeToSettings, subscribeToCategories, subscribeToHomepageSections, seedInitialProductsIfEmpty, seedInitialSettingsIfEmpty, seedInitialCategoriesIfEmpty, DEFAULT_SETTINGS } from './lib/firebase';
 
 const ProductsView = lazy(() => import('./views/ProductsView').then((m) => ({ default: m.ProductsView })));
 const AboutView = lazy(() => import('./views/AboutView').then((m) => ({ default: m.AboutView })));
@@ -26,6 +25,7 @@ export default function App() {
   const [bakerySettings, setBakerySettings] = useState<BakerySettings>(DEFAULT_SETTINGS);
   const [isLoadingData, setIsLoadingData] = useState<boolean>(true);
   const [firestoreError, setFirestoreError] = useState<string | null>(null);
+  const [homepageSections, setHomepageSections] = useState<HomepageSection[]>([]);
 
   // Initialize Firebase Firestore listeners & seed defaults if empty
   useEffect(() => {
@@ -62,11 +62,18 @@ export default function App() {
       () => {} // Settings silently fall back to DEFAULT_SETTINGS
     );
 
+    const unsubscribeHomepageSections = subscribeToHomepageSections(
+      (firestoreSections) => {
+        if (firestoreSections) setHomepageSections(firestoreSections);
+      }
+    );
+
     return () => {
       clearTimeout(timer);
       unsubscribeProducts();
       unsubscribeCategories();
       unsubscribeSettings();
+      unsubscribeHomepageSections();
     };
   }, []);
 
@@ -97,6 +104,39 @@ export default function App() {
     window.addEventListener('popstate', syncUrlState);
     return () => window.removeEventListener('popstate', syncUrlState);
   }, []);
+
+  // Update document.title and description meta tag based on active tab & selected category
+  useEffect(() => {
+    let title = 'Fresh Bakers Co. | Handcrafted Birthday Cakes & Artisan Bakery';
+    let description =
+      'Artisan bakery & handcrafted celebration cakes baked fresh daily. Order 100% pure eggless birthday cakes, rasmalai fusion gateaux, bento box cakes, and gift hampers.';
+
+    if (activeTab === 'products') {
+      if (selectedCategory && selectedCategory !== 'All') {
+        title = `${selectedCategory} | Fresh Bakers Co.`;
+        description = `Browse handcrafted ${selectedCategory.toLowerCase()} baked fresh daily at Fresh Bakers Co. 100% pure eggless options with direct WhatsApp ordering.`;
+      } else {
+        title = 'Artisan Bakery Menu & Celebration Cakes | Fresh Bakers Co.';
+        description = 'Explore our full menu of handcrafted birthday cakes, rasmalai gateaux, custom bento box cakes, desserts, and luxury gift hampers.';
+      }
+    } else if (activeTab === 'about') {
+      title = 'About Our Bakery Kitchen & Artisanal Craft | Fresh Bakers Co.';
+      description = 'Learn about our passion for 100% stone-ground heirloom flour, 36-hour wild fermentation, and Normandy butter in crafting Bengaluru’s finest cakes.';
+    } else if (activeTab === 'contact') {
+      title = 'Contact Us & WhatsApp Pre-Orders | Fresh Bakers Co.';
+      description = 'Get in touch with Fresh Bakers Co. Visit our bakery storefront or send an instant WhatsApp pre-order for custom event cakes.';
+    } else if (activeTab === 'admin') {
+      title = 'Admin Portal | Fresh Bakers Co.';
+      description = 'Fresh Bakers Co. Admin Store Management Portal.';
+    }
+
+    document.title = title;
+
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', description);
+    }
+  }, [activeTab, selectedCategory]);
 
   const handleNavigate = (tab: NavTab) => {
     setActiveTab(tab);
@@ -216,6 +256,7 @@ export default function App() {
               <HomeView
                 products={products}
                 categories={categories}
+                homepageSections={homepageSections}
                 setActiveTab={handleNavigate}
                 onSelectCategory={handleSelectCategory}
                 onOpenQuickView={(product) => setQuickViewProduct(product)}

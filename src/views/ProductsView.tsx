@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Category, ProductItem, CategoryInfo } from '../types';
-import { PRODUCTS } from '../data/products';
 import { sendProductWhatsAppOrder } from '../utils/whatsapp';
 import { CategorySection } from '../components/CategorySection';
 import { ProductCard } from '../components/ProductCard';
