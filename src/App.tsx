@@ -84,7 +84,9 @@ export default function App() {
       const categoryParam = params.get('category');
       const pathname = window.location.pathname;
 
-      if (pathname.includes('/admin')) {
+      // Only enter admin view if the route explicitly requests it.
+      // If the path is '/' or anything else, we always default to the storefront view.
+      if (pathname === '/admin' || pathname.startsWith('/admin/')) {
         setActiveTab('admin');
       } else if (pathname.includes('/products') || categoryParam) {
         setActiveTab('products');
