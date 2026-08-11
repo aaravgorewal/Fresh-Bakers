@@ -442,8 +442,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* 2. CIRCULAR SHOP BY CATEGORY NAVIGATION */}
-      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto">
-        <div className="mb-8 text-center">
+      <section className="w-full">
+        {/* Heading stays inside the max-width container */}
+        <div className="mb-8 text-center px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto">
           <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block mb-1 font-bold text-xs">
             Curated Collections
           </span>
@@ -452,7 +453,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </h2>
         </div>
 
-        <div className="flex items-center justify-start lg:justify-between gap-5 sm:gap-8 overflow-x-auto scrollbar-none pb-4 pt-2 max-w-full px-1">
+        {/* Full-width scroll track — padding-x gives first/last items breathing room; no parent overflow:hidden to clip them */}
+        <div
+          className="flex items-start gap-6 sm:gap-10 overflow-x-auto scrollbar-none pb-6 pt-2 px-6 sm:px-10 md:px-14 lg:px-24"
+          style={{ WebkitOverflowScrolling: 'touch' }}
+        >
           {categories && categories.length > 0 ? (
             categories.map((cat) => (
               <button
@@ -463,9 +468,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   setActiveTab('products');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="flex flex-col items-center gap-3 group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105"
+                className="flex flex-col items-center gap-3 group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105 focus:outline-none"
               >
-                <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full p-1 bg-[#F4EBE1] border-2 border-[#E8DEC9] group-hover:border-[#C59B27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full p-1 bg-[#F4EBE1] border-2 border-[#E8DEC9] group-hover:border-[#C59B27] shadow-sm group-hover:shadow-xl transition-all duration-300 overflow-hidden flex items-center justify-center">
                   <img
                     src={getOptimizedImageUrl(cat.bannerImage || cat.image, 300)}
                     alt={cat.name}
