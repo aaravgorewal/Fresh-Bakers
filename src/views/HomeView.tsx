@@ -513,7 +513,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   />
                 </div>
                 <span className="text-xs sm:text-sm font-bold text-[#1F1610] group-hover:text-[#825425] transition-colors whitespace-nowrap flex items-center gap-1">
-                  <span>{cat.icon}</span>
+                  <span>{CATEGORY_ICON_EMOJI_MAP[cat.icon] || '🎂'}</span>
                   <span>{cat.name}</span>
                 </span>
               </button>
