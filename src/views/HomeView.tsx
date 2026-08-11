@@ -256,45 +256,7 @@ const BIRTHDAY_ACCESSORIES: ProductItem[] = [
   },
 ];
 
-// Gallery Images
-const GALLERY_ITEMS = [
-  {
-    id: 'gal-1',
-    title: 'Chocolate Truffle Cake Decorating',
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800',
-    caption: 'Rich 70% dark Belgian couverture truffle glaze poured over fresh cocoa sponge.',
-  },
-  {
-    id: 'gal-2',
-    title: 'Fresh Rasmalai Fusion Cake Layering',
-    image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&q=80&w=800',
-    caption: 'Authentic saffron milk soaked sponges infused with cardamom and pistachios.',
-  },
-  {
-    id: 'gal-3',
-    title: 'Celebration Dessert Table Styling',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=800',
-    caption: 'Bespoke birthday dessert spreads designed for luxury venues.',
-  },
-  {
-    id: 'gal-4',
-    title: 'Fresh Berry Gateaux Assembly',
-    image: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=800',
-    caption: 'Organic local berries layered with vanilla diplomat cream.',
-  },
-  {
-    id: 'gal-5',
-    title: 'Artisan Gifting Hamper Boxes',
-    image: 'https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&q=80&w=800',
-    caption: 'Handcrafted luxury hamper chests for holidays and corporate events.',
-  },
-  {
-    id: 'gal-6',
-    title: 'Stone-Ground Flour & Dough Kneading',
-    image: 'https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&q=80&w=800',
-    caption: 'Traditional stone milling preserves natural vitamins and grain germ.',
-  },
-];
+
 
 export const HomeView: React.FC<HomeViewProps> = ({
   products,
@@ -329,8 +291,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const featuredProducts = products.filter((p) => p.isFeatured).slice(0, 4);
   const showLegacyFeatured = resolvedSections.length === 0 && featuredProducts.length > 0;
 
-  // Gallery Modal State
-  const [selectedGalleryImage, setSelectedGalleryImage] = useState<typeof GALLERY_ITEMS[0] | null>(null);
+
 
   // Added To Cart Toast Feedback
   const [addedItemName, setAddedItemName] = useState<string | null>(null);
@@ -909,59 +870,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
       </section>
 
-      {/* 9. INSTAGRAM / CRAFTSMANSHIP GALLERY */}
-      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-8">
-        <div className="text-center max-w-xl mx-auto space-y-2">
-          <span className="font-label-caps text-[#825425] uppercase tracking-widest block font-bold text-xs">
-            Visual Storytelling
-          </span>
-          <h2 className="font-serif-display text-3xl font-bold text-[#1f1610]">
-            Craftsmanship Gallery
-          </h2>
-          <p className="font-body-md text-xs sm:text-sm text-[#6e5d4f]">
-            Behind the scenes at our bakery kitchen: chocolate truffle glazing, rasmalai cake layering, and bespoke cake styling.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {GALLERY_ITEMS.map((item) => (
-            <motion.div
-              key={item.id}
-              whileHover={{ y: -4 }}
-              onClick={() => setSelectedGalleryImage(item)}
-              className="luxury-card overflow-hidden cursor-pointer group relative aspect-[4/3]"
-            >
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end text-[#faf6f0]">
-                <h4 className="font-serif-display font-bold text-base text-[#faf6f0]">{item.title}</h4>
-                <p className="text-xs text-[#dccbbb] mt-1">{item.caption}</p>
-                <span className="text-[10px] uppercase tracking-widest font-bold text-[#c59b27] mt-2 block">
-                  Click to Expand 🔍
-                </span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Gallery Lightbox Modal */}
-        {selectedGalleryImage && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4" onClick={() => setSelectedGalleryImage(null)}>
-            <div className="relative max-w-3xl w-full bg-[#1f1610] rounded-3xl overflow-hidden border border-[#c59b27]/40 shadow-2xl p-4" onClick={(e) => e.stopPropagation()}>
-              <button
-                onClick={() => setSelectedGalleryImage(null)}
-                className="absolute top-4 right-4 bg-black/60 text-white p-2 rounded-full hover:bg-black/80 z-10"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              <img src={selectedGalleryImage.image} alt={selectedGalleryImage.title} className="w-full h-[400px] object-cover rounded-2xl mb-4" />
-              <div className="px-2 text-[#faf6f0]">
-                <h3 className="font-serif-display font-bold text-xl text-[#c59b27]">{selectedGalleryImage.title}</h3>
-                <p className="text-sm text-[#dccbbb] mt-1">{selectedGalleryImage.caption}</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </section>
 
       {/* 10. CONTACT & LOCATION */}
       <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto">
