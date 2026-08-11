@@ -1,0 +1,18 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Only the verified admin account may write or delete any file.
+    // All reads are public so storefront images load without authentication.
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'admin@freshbakers.com'
+        && request.auth.token.email_verified == true;
+    }
+
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write, delete: if isAdmin();
+    }
+  }
+}

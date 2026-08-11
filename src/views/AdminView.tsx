@@ -226,10 +226,14 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
+      // Security: only grant dashboard access to the verified admin account.
+      // Any other authenticated Firebase user is treated as unauthenticated.
+      if (currentUser && currentUser.email === 'admin@freshbakers.com') {
+        setUser(currentUser);
         seedInitialProductsIfEmpty();
         seedInitialSettingsIfEmpty();
+      } else {
+        setUser(null);
       }
     });
 
