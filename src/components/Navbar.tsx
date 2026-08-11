@@ -35,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#FAF6F0]/90 backdrop-blur-md border-b border-[#F0E5DA] transition-all duration-300">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 xl:px-0 py-3.5 flex justify-between items-center">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 xl:px-0 py-3.5 flex justify-between items-center gap-2">
         {/* Brand Logo */}
         <button
           onClick={() => handleNavClick('home')}
@@ -112,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-[#24140A] hover:text-[#5C2E14] rounded-full hover:bg-[#F4EBE1] transition-colors cursor-pointer"
+            className="md:hidden p-2.5 text-[#24140A] hover:text-[#5C2E14] rounded-full hover:bg-[#F4EBE1] transition-colors cursor-pointer touch-target"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

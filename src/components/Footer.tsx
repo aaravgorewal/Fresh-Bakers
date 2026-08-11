@@ -10,11 +10,11 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal, onOpenAdminModal }) => {
   return (
-    <footer className="bg-[#24140A] text-[#FAF6F0] pt-20 pb-12 px-6 md:px-16 border-t border-[#D97706]/30 relative overflow-hidden font-sans">
+    <footer className="bg-[#24140A] text-[#FAF6F0] pt-12 md:pt-20 pb-10 md:pb-12 px-5 md:px-16 border-t border-[#D97706]/30 relative overflow-hidden font-sans">
       {/* Subtle Background Glow Accent */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#5C2E14]/30 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 relative z-10">
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-12 md:mb-16 relative z-10">
         {/* Col 1: Brand Info */}
         <div className="md:col-span-1">
           <div className="flex items-center gap-3 mb-4">

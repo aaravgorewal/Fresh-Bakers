@@ -21,6 +21,7 @@
   html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
   }
 
   body {
@@ -30,6 +31,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    /* Prevent iOS bounce scroll causing layout issues */
+    overscroll-behavior-x: none;
   }
 
   h1, h2, h3, h4, .font-serif-display {
@@ -212,6 +215,39 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #D97706;
 }
+/* Utility: hide scrollbar across all browsers */
+.scrollbar-none {
+  -ms-overflow-style: none;   /* IE / Edge */
+  scrollbar-width: none;      /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari / Opera */
+}
 
+/* Touch-momentum scroll for horizontal carousels */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
 
+/* Ensure product cards inside carousels never cause layout overflow */
+.carousel-track {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Minimum touch target size */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
 

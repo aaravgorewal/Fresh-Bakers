@@ -305,7 +305,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   };
 
   return (
-    <div className="w-full space-y-24 md:space-y-32 pb-28 relative bg-[#FFFBF7]">
+    <div className="w-full space-y-12 md:space-y-24 pb-16 md:pb-28 relative bg-[#FFFBF7]">
       {/* Toast Feedback */}
       <AnimatePresence>
         {addedItemName && (
@@ -313,7 +313,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-6 right-6 z-50 bg-[#1f1610] text-[#faf6f0] px-5 py-3.5 rounded-2xl shadow-2xl border border-[#c59b27]/40 flex items-center gap-3"
+            className="fixed bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-auto z-50 bg-[#1f1610] text-[#faf6f0] px-5 py-3.5 rounded-2xl shadow-2xl border border-[#c59b27]/40 flex items-center gap-3"
           >
             <div className="w-8 h-8 rounded-full bg-[#825425] text-white flex items-center justify-center">
               <Check className="w-4 h-4" />
@@ -328,7 +328,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       {/* 1. HERO BANNER */}
       <section className="relative px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto pt-4">
-        <div className="relative rounded-3xl overflow-hidden bg-[#16110d] text-[#faf6f0] shadow-2xl border border-[#c59b27]/30 min-h-[560px] md:min-h-[640px] flex items-center">
+        <div className="relative rounded-3xl overflow-hidden bg-[#16110d] text-[#faf6f0] shadow-2xl border border-[#c59b27]/30 min-h-[480px] sm:min-h-[560px] md:min-h-[640px] flex items-center">
           {/* Hero Background Image with Multi-layer Gradient */}
           <div className="absolute inset-0 z-0">
             <img
@@ -341,7 +341,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </div>
 
           {/* Hero Content */}
-          <div className="relative z-10 max-w-2xl px-6 sm:px-12 py-16 md:py-20 space-y-6">
+          <div className="relative z-10 max-w-2xl px-5 sm:px-12 py-10 sm:py-16 md:py-20 space-y-5 sm:space-y-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -356,7 +356,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-serif-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#faf6f0] leading-[1.15]"
+              className="font-serif-display text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#faf6f0] leading-[1.15]"
             >
               Artisan Bakes, <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d4a373] via-[#c59b27] to-[#e5d8c8] italic">
@@ -452,7 +452,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </h2>
         </div>
 
-        <div className="flex items-center justify-start lg:justify-between gap-6 sm:gap-8 overflow-x-auto scrollbar-none pb-4 pt-2 max-w-full">
+        <div className="flex items-center justify-start lg:justify-between gap-5 sm:gap-8 overflow-x-auto scrollbar-none pb-4 pt-2 max-w-full px-1">
           {categories && categories.length > 0 ? (
             categories.map((cat) => (
               <button
@@ -465,7 +465,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 }}
                 className="flex flex-col items-center gap-3 group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105"
               >
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-[#F4EBE1] border-2 border-[#E8DEC9] group-hover:border-[#C59B27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
+                <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full p-1 bg-[#F4EBE1] border-2 border-[#E8DEC9] group-hover:border-[#C59B27] shadow-sm group-hover:shadow-xl transition-all duration-300 relative overflow-hidden flex items-center justify-center">
                   <img
                     src={getOptimizedImageUrl(cat.bannerImage || cat.image, 300)}
                     alt={cat.name}
@@ -512,10 +512,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
         };
 
         return (
-          <section key={section.id} className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-8 relative">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <section key={section.id} className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-6 sm:space-y-8 relative">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
               <div>
-                <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
+                <h2 className="font-serif-display text-2xl sm:text-3xl md:text-4xl text-[#1f1610] font-bold">
                   {section.heading}
                 </h2>
               </div>
@@ -560,7 +560,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 {section.products.map((product) => (
                   <div
                     key={product.id}
-                    className="snap-start shrink-0 w-[80%] sm:w-[45%] lg:w-[calc(25%-18px)]"
+                    className="snap-start shrink-0 w-[78vw] sm:w-[45%] lg:w-[calc(25%-18px)] max-w-[320px]"
                   >
                     <ProductCard
                       product={product}
@@ -616,13 +616,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       {/* 4. MAKE EVERY OCCASION SPECIAL */}
       <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto">
-        <div className="relative rounded-3xl overflow-hidden bg-[#16110d] text-[#faf6f0] p-8 sm:p-14 border border-[#c59b27]/30 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="relative rounded-3xl overflow-hidden bg-[#16110d] text-[#faf6f0] p-6 sm:p-14 border border-[#c59b27]/30 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
           <div className="lg:col-span-7 space-y-6">
             <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#d4a373] uppercase tracking-widest bg-[#d4a373]/15 px-4 py-1 rounded-full border border-[#d4a373]/30">
               <Sparkle className="w-3.5 h-3.5 text-[#c59b27]" /> Bespoke Event Catering
             </span>
 
-            <h2 className="font-serif-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+            <h2 className="font-serif-display text-2xl sm:text-4xl md:text-5xl font-bold leading-tight">
               Make Every Occasion <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d4a373] via-[#c59b27] to-[#e5d8c8] italic">
                 Unforgettably Sweet

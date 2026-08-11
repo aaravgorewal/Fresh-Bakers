@@ -140,7 +140,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center pt-4 sm:pt-0 sm:p-6 overflow-y-auto overscroll-contain">
         {/* Backdrop Overlay */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -156,7 +156,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.94, y: 20 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="relative z-10 bg-[#faf6f0] w-full max-w-4xl border border-[#c59b27]/30 shadow-2xl rounded-3xl overflow-hidden flex flex-col max-h-[90vh] my-auto"
+          className="relative z-10 bg-[#faf6f0] w-full max-w-4xl border border-[#c59b27]/30 shadow-2xl rounded-3xl overflow-hidden flex flex-col max-h-[92vh] sm:max-h-[90vh] my-auto mx-3 sm:mx-auto"
         >
           {/* Header Bar */}
           <div className="flex items-center justify-between px-6 py-4 bg-[#24140A] text-[#FAF6F0] border-b border-[#D97706]/30">
@@ -193,7 +193,7 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
           )}
 
           {/* Main Content Area (Scrollable) */}
-          <div className="overflow-y-auto p-6 md:p-8 space-y-8">
+          <div className="overflow-y-auto overscroll-contain p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
               {/* LEFT COLUMN: LARGE PRODUCT IMAGE & GALLERY */}
               <div className="space-y-4">
