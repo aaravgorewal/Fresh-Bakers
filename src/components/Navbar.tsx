@@ -109,15 +109,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="sm:hidden">Order</span>
           </button>
 
-          {/* Admin Login Button */}
-          <button
-            onClick={onOpenAdminModal}
-            className="p-2.5 text-[#6C584C] hover:text-[#5C2E14] hover:bg-[#F4EBE1] rounded-full transition-colors cursor-pointer"
-            title="Admin Dashboard"
-          >
-            <Lock className="w-4 h-4" />
-          </button>
-
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -157,15 +148,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 );
               })}
               <div className="pt-3 border-t border-[#F0E5DA] flex flex-col gap-2">
-                <button
-                  onClick={() => {
-                    onOpenAdminModal();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="text-left text-xs py-2.5 px-4 text-[#5C2E14] font-semibold flex items-center gap-2 hover:bg-[#F4EBE1] rounded-lg cursor-pointer"
-                >
-                  <Lock className="w-4 h-4" /> Admin Portal & Firestore Manager
-                </button>
                 <div className="px-4 py-2 text-[11px] text-[#6C584C] flex justify-between items-center border-t border-[#F0E5DA]">
                   <span>Crafting Sweetness Since 1998</span>
                   <span>8am - 10pm Daily</span>

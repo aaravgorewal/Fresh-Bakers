@@ -128,14 +128,6 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal, 
       <div className="max-w-[1400px] mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-[#E5D7C9] gap-4 relative z-10">
         <p>© 2026 Fresh Bakers Co. Powered By <a href="https://www.linkedin.com/in/aaravgorewal/" target="_blank" rel="noopener noreferrer" className="hover:text-[#D97706] transition-colors font-semibold flex items-center gap-1 cursor-pointer" >AaravSaini</a></p>
         <div className="flex flex-wrap gap-6 items-center">
-          {onOpenAdminModal && (
-            <button
-              onClick={onOpenAdminModal}
-              className="hover:text-[#D97706] transition-colors font-semibold flex items-center gap-1 cursor-pointer"
-            >
-              <Lock className="w-3 h-3 text-[#D97706]" /> Admin Portal
-            </button>
-          )}
           <span className="hover:text-[#FAF6F0] cursor-pointer">Privacy Policy</span>
           <span className="hover:text-[#FAF6F0] cursor-pointer">Terms of Service</span>
           <a
