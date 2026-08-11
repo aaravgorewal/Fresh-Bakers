@@ -1,7 +1,7 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { getStorage, ref, deleteObject } from 'firebase/storage';
+
 import firebaseConfig from '../../firebase-applet-config.json';
 import { ProductItem, BakerySettings, CategoryInfo, HomepageSection } from '../types';
 import { PRODUCTS, CATEGORIES } from '../data/products';
@@ -11,7 +11,7 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const db = getFirestore(app);
 
 export const auth = getAuth(app);
-export const storage = getStorage(app);
+
 
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
 const CLOUDINARY_UNSIGNED_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UNSIGNED_UPLOAD_PRESET;
@@ -423,41 +423,10 @@ export const updateProductInFirestore = async (id: string, productData: Partial<
   }
 };
 
-const getStoragePathFromDownloadUrl = (downloadUrl: string): string | null => {
-  try {
-    const parsed = new URL(downloadUrl);
-    if (!parsed.hostname.includes('firebasestorage.googleapis.com')) {
-      return null;
-    }
-    const pathIndex = parsed.pathname.indexOf('/o/');
-    if (pathIndex === -1) {
-      return null;
-    }
-    const encodedPath = parsed.pathname.slice(pathIndex + 3);
-    return decodeURIComponent(encodedPath);
-  } catch {
-    return null;
-  }
-};
-
 export const deleteProductFromFirestore = async (id: string) => {
   try {
     const docRef = doc(db, PRODUCTS_COLLECTION, id);
-    const productSnapshot = await getDoc(docRef);
-    if (productSnapshot.exists()) {
-      const productData = productSnapshot.data();
-      const imageUrl = productData?.imageUrl || productData?.image;
-      if (typeof imageUrl === 'string') {
-        const storagePath = getStoragePathFromDownloadUrl(imageUrl);
-        if (storagePath) {
-          try {
-            await deleteObject(ref(storage, storagePath));
-          } catch (storageError) {
-            console.warn('Failed to delete associated storage object:', storageError);
-          }
-        }
-      }
-    }
+    // Images are hosted on Cloudinary; no Firebase Storage cleanup needed.
     await deleteDoc(docRef);
   } catch (error) {
     handleFirestoreError(error, OperationType.DELETE, `${PRODUCTS_COLLECTION}/${id}`);

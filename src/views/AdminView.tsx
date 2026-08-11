@@ -777,11 +777,6 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-slate-100 text-center">
-            <p className="text-[11px] text-[#825425] bg-[#fbf6f0] p-2.5 rounded border border-[#e8d2bd]">
-              💡 Default credentials are pre-filled. Click Sign In to open portal immediately.
-            </p>
-          </div>
         </div>
       </div>
     );
