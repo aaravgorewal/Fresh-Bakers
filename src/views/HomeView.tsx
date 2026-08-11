@@ -332,7 +332,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           {/* Hero Background Image with Multi-layer Gradient */}
           <div className="absolute inset-0 z-0">
             <img
-              src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1600"
+              src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=1600"
               alt="Freshly baked Indian cakes & celebration bakes"
               className="w-full h-full object-cover object-center opacity-40 scale-105 transition-transform duration-1000"
             />
