@@ -35,7 +35,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#FAF6F0]/90 backdrop-blur-md border-b border-[#F0E5DA] transition-all duration-300">
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-8 py-3.5 flex justify-between items-center">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-8 xl:px-0 py-3.5 flex justify-between items-center">
         {/* Brand Logo */}
         <button
           onClick={() => handleNavClick('home')}

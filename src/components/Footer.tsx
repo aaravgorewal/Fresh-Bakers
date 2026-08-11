@@ -14,7 +14,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal, 
       {/* Subtle Background Glow Accent */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#5C2E14]/30 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 relative z-10">
+      <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 relative z-10">
         {/* Col 1: Brand Info */}
         <div className="md:col-span-1">
           <div className="flex items-center gap-3 mb-4">
@@ -125,7 +125,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal, 
         </div>
       </div>
 
-      <div className="max-w-[1280px] mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-[#E5D7C9] gap-4 relative z-10">
+      <div className="max-w-[1400px] mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-[#E5D7C9] gap-4 relative z-10">
         <p>© 2026 Fresh Bakers Co. Powered By <a href="https://www.linkedin.com/in/aaravgorewal/" target="_blank" rel="noopener noreferrer" className="hover:text-[#D97706] transition-colors font-semibold flex items-center gap-1 cursor-pointer" >AaravSaini</a></p>
         <div className="flex flex-wrap gap-6 items-center">
           {onOpenAdminModal && (

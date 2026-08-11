@@ -366,7 +366,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </AnimatePresence>
 
       {/* 1. HERO BANNER */}
-      <section className="relative px-4 sm:px-8 pt-4 max-w-[1280px] mx-auto">
+      <section className="relative px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto pt-4">
         <div className="relative rounded-3xl overflow-hidden bg-[#16110d] text-[#faf6f0] shadow-2xl border border-[#c59b27]/30 min-h-[560px] md:min-h-[640px] flex items-center">
           {/* Hero Background Image with Multi-layer Gradient */}
           <div className="absolute inset-0 z-0">
@@ -481,7 +481,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* 2. CIRCULAR SHOP BY CATEGORY NAVIGATION */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
+      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto">
         <div className="mb-8 text-center">
           <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block mb-1 font-bold text-xs">
             Curated Collections
@@ -551,7 +551,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         };
 
         return (
-          <section key={section.id} className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8 relative">
+          <section key={section.id} className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-8 relative">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
               <div>
                 <h2 className="font-serif-display text-3xl md:text-4xl text-[#1f1610] font-bold">
@@ -617,7 +617,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       {/* Legacy fallback: Best Selling Cakes (shown only when no dynamic sections exist) */}
       {showLegacyFeatured && (
-        <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
+        <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-3.5 py-1 rounded-full border border-[#e8dec9] mb-2">
@@ -654,7 +654,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       )}
 
       {/* 4. MAKE EVERY OCCASION SPECIAL */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
+      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto">
         <div className="relative rounded-3xl overflow-hidden bg-[#16110d] text-[#faf6f0] p-8 sm:p-14 border border-[#c59b27]/30 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-7 space-y-6">
             <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#d4a373] uppercase tracking-widest bg-[#d4a373]/15 px-4 py-1 rounded-full border border-[#d4a373]/30">
@@ -708,7 +708,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* 5. GIFT PORTAL */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
+      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="inline-flex items-center gap-1.5 font-label-caps text-[#825425] tracking-[0.2em] uppercase font-bold text-xs bg-[#f4ebe1] px-4 py-1 rounded-full border border-[#e8dec9]">
             <Gift className="w-3.5 h-3.5 text-[#c59b27]" /> Curated Artisan Hampers
@@ -782,7 +782,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
 
       {/* 7. WHY CHOOSE US - TRUSTED INGREDIENT PARTNERS */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
+      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto">
         <div className="bg-[#1f1610] rounded-3xl p-8 sm:p-12 border border-[#c59b27]/30 text-[#faf6f0] space-y-8">
           <div className="text-center max-w-xl mx-auto">
             <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#c59b27]">
@@ -824,7 +824,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* 8. CUSTOMER TESTIMONIALS */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
+      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-8">
         <div className="text-center max-w-xl mx-auto space-y-2">
           <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block font-bold text-xs">
             Community Stories
@@ -910,7 +910,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* 9. INSTAGRAM / CRAFTSMANSHIP GALLERY */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto space-y-8">
+      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto space-y-8">
         <div className="text-center max-w-xl mx-auto space-y-2">
           <span className="font-label-caps text-[#825425] uppercase tracking-widest block font-bold text-xs">
             Visual Storytelling
@@ -964,7 +964,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       </section>
 
       {/* 10. CONTACT & LOCATION */}
-      <section className="px-4 sm:px-8 max-w-[1280px] mx-auto">
+      <section className="px-4 sm:px-8 xl:px-0 max-w-[1400px] mx-auto">
         <div className="luxury-card p-8 sm:p-12 space-y-8">
           <div className="text-center max-w-xl mx-auto space-y-2">
             <span className="font-label-caps text-[#825425] tracking-[0.2em] uppercase block font-bold text-xs">
