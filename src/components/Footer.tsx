@@ -5,10 +5,9 @@ import { Cake, Lock, MapPin, Clock, MessageSquare, Instagram } from 'lucide-reac
 interface FooterProps {
   setActiveTab: (tab: NavTab) => void;
   onOpenOrderModal: () => void;
-  onOpenAdminModal?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal, onOpenAdminModal }) => {
+export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal }) => {
   return (
     <footer className="bg-[#24140A] text-[#FAF6F0] pt-12 md:pt-20 pb-10 md:pb-12 px-5 md:px-16 border-t border-[#D97706]/30 relative overflow-hidden font-sans">
       {/* Subtle Background Glow Accent */}

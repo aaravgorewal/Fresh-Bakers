@@ -4,7 +4,6 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { WhatsAppModal } from './components/WhatsAppModal';
 import { QuickViewModal } from './components/QuickViewModal';
-import { AdminModal } from './components/AdminModal';
 import { HomeView } from './views/HomeView';
 import { subscribeToProducts, subscribeToSettings, subscribeToCategories, subscribeToHomepageSections, seedInitialProductsIfEmpty, seedInitialSettingsIfEmpty, seedInitialCategoriesIfEmpty, DEFAULT_SETTINGS } from './lib/firebase';
 
@@ -19,7 +18,6 @@ export default function App() {
   const [cart, setCart] = useState<OrderCartItem[]>([]);
   const [quickViewProduct, setQuickViewProduct] = useState<ProductItem | null>(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
   const [products, setProducts] = useState<ProductItem[]>([]);
   const [categories, setCategories] = useState<CategoryInfo[]>([]);
   const [bakerySettings, setBakerySettings] = useState<BakerySettings>(DEFAULT_SETTINGS);
@@ -236,7 +234,6 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={handleNavigate}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
-        onOpenAdminModal={() => handleNavigate('admin')}
         cartCount={totalCartCount}
       />
 
@@ -318,7 +315,6 @@ export default function App() {
       <Footer
         setActiveTab={handleNavigate}
         onOpenOrderModal={() => setIsOrderModalOpen(true)}
-        onOpenAdminModal={() => handleNavigate('admin')}
       />
 
       {/* WhatsApp Pre-Order Drawer/Modal */}
@@ -342,15 +338,6 @@ export default function App() {
         allProducts={products}
         onSelectProduct={(p) => setQuickViewProduct(p)}
         whatsappNumber={bakerySettings.whatsappNumber}
-      />
-
-      {/* Admin Login & Firestore CRUD Modal */}
-      <AdminModal
-        isOpen={isAdminModalOpen}
-        onClose={() => setIsAdminModalOpen(false)}
-        products={products}
-        categories={categories}
-        settings={bakerySettings}
       />
     </div>
   );

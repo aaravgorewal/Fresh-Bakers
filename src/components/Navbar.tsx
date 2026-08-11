@@ -7,7 +7,6 @@ interface NavbarProps {
   activeTab: NavTab;
   setActiveTab: (tab: NavTab) => void;
   onOpenOrderModal: () => void;
-  onOpenAdminModal: () => void;
   cartCount: number;
 }
 
@@ -15,7 +14,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   setActiveTab,
   onOpenOrderModal,
-  onOpenAdminModal,
   cartCount,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
