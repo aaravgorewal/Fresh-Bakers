@@ -103,12 +103,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* PRODUCT DETAILS BODY */}
         <div className="p-4 space-y-2">
-          {/* Weight Indicator */}
-          <div className="flex items-center justify-between text-[11px] text-[#825425] font-bold">
-            <span className="flex items-center gap-1">
-              <Scale className="w-3 h-3 text-[#825425]" /> {displayWeight}
-            </span>
-          </div>
+          {/* Weight Indicator (Only for Cake categories) */}
+          {product.category.toLowerCase().includes('cake') && (
+            <div className="flex items-center justify-between text-[11px] text-[#825425] font-bold">
+              <span className="flex items-center gap-1">
+                <Scale className="w-3 h-3 text-[#825425]" /> {displayWeight}
+              </span>
+            </div>
+          )}
 
           {/* Product Name */}
           <h3

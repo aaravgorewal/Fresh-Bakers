@@ -280,36 +280,38 @@ export const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   </p>
                 </div>
 
-                {/* WEIGHT / SIZE SELECTION */}
-                <div className="space-y-2 pt-4 border-t border-[#F0E5DA]">
-                  <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-[#24140A] uppercase tracking-wider flex items-center gap-1.5">
-                      <Tag className="w-3.5 h-3.5 text-[#5C2E14]" />
-                      {isCakeCategory ? 'Select Cake Weight:' : 'Select Portion / Size:'}
-                    </label>
-                    <span className="text-xs font-semibold text-[#5C2E14]">
-                      {weightOptions[selectedWeightIndex]?.label}
-                    </span>
-                  </div>
+                {/* WEIGHT / SIZE SELECTION (Only for cake categories) */}
+                {isCakeCategory && (
+                  <div className="space-y-2 pt-4 border-t border-[#F0E5DA]">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-[#24140A] uppercase tracking-wider flex items-center gap-1.5">
+                        <Tag className="w-3.5 h-3.5 text-[#5C2E14]" />
+                        {isCakeCategory ? 'Select Cake Weight:' : 'Select Portion / Size:'}
+                      </label>
+                      <span className="text-xs font-semibold text-[#5C2E14]">
+                        {weightOptions[selectedWeightIndex]?.label}
+                      </span>
+                    </div>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    {weightOptions.map((opt, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setSelectedWeightIndex(idx)}
-                        className={`p-2.5 text-xs font-bold rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer ${
-                          selectedWeightIndex === idx
-                            ? 'bg-[#5C2E14] text-white border-[#5C2E14] shadow-md'
-                            : 'bg-white text-[#6C584C] border-[#F0E5DA] hover:bg-[#F4EBE1]'
-                        }`}
-                      >
-                        <span>{opt.label}</span>
-                        {selectedWeightIndex === idx && <Check className="w-4 h-4 text-amber-300" />}
-                      </button>
-                    ))}
+                    <div className="grid grid-cols-2 gap-2">
+                      {weightOptions.map((opt, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setSelectedWeightIndex(idx)}
+                          className={`p-2.5 text-xs font-bold rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer ${
+                            selectedWeightIndex === idx
+                              ? 'bg-[#5C2E14] text-white border-[#5C2E14] shadow-md'
+                              : 'bg-white text-[#6C584C] border-[#F0E5DA] hover:bg-[#F4EBE1]'
+                          }`}
+                        >
+                          <span>{opt.label}</span>
+                          {selectedWeightIndex === idx && <Check className="w-4 h-4 text-amber-300" />}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
 
                 {/* INGREDIENTS LIST CHIPS */}
