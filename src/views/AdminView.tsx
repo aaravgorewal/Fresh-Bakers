@@ -1877,8 +1877,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                     }}
                     onDragEnd={() => { setDraggedSectionIndex(null); setDragOverSectionIndex(null); }}
                     className={`p-4 border rounded-xl bg-[#fbf6f0] flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${isDragOver && !isDragging
-                        ? 'border-[#825425] ring-2 ring-[#825425]/30 scale-[1.01]'
-                        : 'border-[#e8d8cb]'
+                      ? 'border-[#825425] ring-2 ring-[#825425]/30 scale-[1.01]'
+                      : 'border-[#e8d8cb]'
                       } ${isDragging ? 'opacity-40' : 'opacity-100'}`}
                   >
                     <div className="flex items-start gap-3">
@@ -2098,8 +2098,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                     }}
                     onDragEnd={() => { setDraggedCatIndex(null); setDragOverCatIndex(null); }}
                     className={`p-4 border rounded-lg bg-[#fbf6f0] transition-all duration-150 ${isDragOver && !isDragging
-                        ? 'border-[#825425] ring-2 ring-[#825425]/30 scale-[1.02]'
-                        : 'border-[#e8d8cb]'
+                      ? 'border-[#825425] ring-2 ring-[#825425]/30 scale-[1.02]'
+                      : 'border-[#e8d8cb]'
                       } ${isDragging ? 'opacity-40' : 'opacity-100'}`}
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -2410,7 +2410,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                   className="w-full px-3.5 py-2.5 border border-green-300 rounded-lg text-sm font-bold bg-white focus:outline-none focus:border-green-600"
                 />
                 <p className="text-[11px] text-green-800 mt-1">
-                  Include country code without '+' or spaces (e.g. 15550192824 or 919876543210).
+                  Include country code without '+' or spaces .
                 </p>
               </div>
 
@@ -2455,7 +2455,7 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                   type="text"
                   value={bakerySettings.address}
                   onChange={(e) => setBakerySettings({ ...bakerySettings, address: e.target.value })}
-                  placeholder="142 Artisan Boulevard, MG Road"
+                  placeholder="Almaspur, Muzaffarnagar"
                   className="w-full px-3.5 py-2.5 border border-[#d5c3b6] rounded-lg text-sm"
                 />
               </div>
