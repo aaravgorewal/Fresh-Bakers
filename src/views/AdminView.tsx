@@ -64,6 +64,8 @@ import {
   LayoutGrid
 } from 'lucide-react';
 
+const ADMIN_EMAIL = 'aaravgorewal1@gmail.com';
+
 interface AdminViewProps {
   products: ProductItem[];
   categories: CategoryInfo[];
@@ -224,14 +226,39 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
   const [newRating, setNewRating] = useState<number>(5);
   const [newAvatarUrl, setNewAvatarUrl] = useState('');
 
+  const getAuthErrorMessage = (error: any): string => {
+    const code = typeof error?.code === 'string' ? error.code : '';
+
+    switch (code) {
+      case 'auth/invalid-email':
+        return 'Please enter a valid email address.';
+      case 'auth/user-disabled':
+        return 'This admin account has been disabled.';
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        return 'Invalid email or password.';
+      case 'auth/operation-not-allowed':
+        return 'Email/password sign-in is not enabled for this Firebase project.';
+      case 'auth/too-many-requests':
+        return 'Too many login attempts. Please wait a moment and try again.';
+      default:
+        return 'Unable to sign in. Please try again.';
+    }
+  };
+
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       // Security: only grant dashboard access to the verified admin account.
       // Any other authenticated Firebase user is treated as unauthenticated.
-      if (currentUser && currentUser.email === 'admin@freshbakers.com') {
+      if (currentUser && currentUser.email === ADMIN_EMAIL) {
         setUser(currentUser);
+        setAuthError('');
         seedInitialProductsIfEmpty();
         seedInitialSettingsIfEmpty();
+      } else if (currentUser) {
+        setUser(null);
+        setAuthError('This account is not authorized for admin access.');
       } else {
         setUser(null);
       }
@@ -264,10 +291,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
     setAuthLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      triggerSuccess('Successfully logged in as Admin!');
+      triggerSuccess('Sign-in complete.');
     } catch (err: any) {
-      // Never auto-create accounts on login failure — display error only
-      setAuthError('Invalid email or password. Please check your admin credentials.');
+      // Never auto-create accounts on login failure — display a clear error only.
+      setAuthError(getAuthErrorMessage(err));
     } finally {
       setAuthLoading(false);
     }
@@ -834,8 +861,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('dashboard')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'dashboard'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <LayoutDashboard className="w-4 h-4" /> Overview & Charts
@@ -844,8 +871,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('products')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'products'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <Package className="w-4 h-4" /> Products ({totalProducts})
@@ -854,8 +881,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('curated')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'curated'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <Tag className="w-4 h-4" /> Featured & Trending
@@ -864,8 +891,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('homepageSections')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'homepageSections'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <LayoutGrid className="w-4 h-4" /> Homepage Sections ({homepageSections.length})
@@ -874,8 +901,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('categories')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'categories'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <FolderTree className="w-4 h-4" /> Categories ({totalCategories})
@@ -884,8 +911,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('gallery')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'gallery'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <ImageIcon className="w-4 h-4" /> Gallery ({galleryItems.length})
@@ -894,8 +921,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('testimonials')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'testimonials'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <MessageSquareQuote className="w-4 h-4" /> Testimonials ({testimonials.length})
@@ -904,8 +931,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('hero')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'hero'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <Sparkles className="w-4 h-4" /> Hero Highlights
@@ -914,8 +941,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('contact')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'contact'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <PhoneCall className="w-4 h-4" /> Contact & WhatsApp
@@ -924,8 +951,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
         <button
           onClick={() => setActiveTab('settings')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${activeTab === 'settings'
-              ? 'bg-[#825425] text-white shadow-sm'
-              : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
+            ? 'bg-[#825425] text-white shadow-sm'
+            : 'bg-white text-[#51443a] hover:bg-[#f8f1ea] border border-[#e8d8cb]'
             }`}
         >
           <SettingsIcon className="w-4 h-4" /> Store Settings
@@ -1455,8 +1482,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                         <button
                           onClick={() => handleToggleProductStatus(p, 'available')}
                           className={`px-2.5 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1 transition-colors ${p.available !== false
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
                             }`}
                         >
                           {p.available !== false ? 'In Stock' : 'Sold Out'}
@@ -1743,9 +1770,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                         return (
                           <label
                             key={p.id}
-                            className={`flex items-center gap-2 p-2 rounded text-xs cursor-pointer border transition-colors ${
-                              checked ? 'bg-[#f8f1ea] border-[#825425] font-bold' : 'border-transparent hover:bg-slate-50'
-                            }`}
+                            className={`flex items-center gap-2 p-2 rounded text-xs cursor-pointer border transition-colors ${checked ? 'bg-[#f8f1ea] border-[#825425] font-bold' : 'border-transparent hover:bg-slate-50'
+                              }`}
                           >
                             <input
                               type="checkbox"
@@ -1850,20 +1876,18 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                       }
                     }}
                     onDragEnd={() => { setDraggedSectionIndex(null); setDragOverSectionIndex(null); }}
-                    className={`p-4 border rounded-xl bg-[#fbf6f0] flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${
-                      isDragOver && !isDragging
+                    className={`p-4 border rounded-xl bg-[#fbf6f0] flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all ${isDragOver && !isDragging
                         ? 'border-[#825425] ring-2 ring-[#825425]/30 scale-[1.01]'
                         : 'border-[#e8d8cb]'
-                    } ${isDragging ? 'opacity-40' : 'opacity-100'}`}
+                      } ${isDragging ? 'opacity-40' : 'opacity-100'}`}
                   >
                     <div className="flex items-start gap-3">
                       <GripVertical className="w-5 h-5 text-[#c0a98f] mt-0.5 shrink-0 cursor-grab active:cursor-grabbing" />
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
                           <h4 className="font-bold text-sm text-[#1b1c1a]">{sec.heading}</h4>
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                            sec.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
-                          }`}>
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${sec.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'
+                            }`}>
                             {sec.isActive ? 'Active' : 'Disabled'}
                           </span>
                           <span className="bg-[#825425] text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
@@ -1883,9 +1907,8 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                             await updateHomepageSectionInFirestore(sec.id, { isActive: !sec.isActive });
                           }
                         }}
-                        className={`px-2.5 py-1 rounded text-xs font-bold ${
-                          sec.isActive ? 'bg-amber-100 text-amber-900 hover:bg-amber-200' : 'bg-emerald-100 text-emerald-900 hover:bg-emerald-200'
-                        }`}
+                        className={`px-2.5 py-1 rounded text-xs font-bold ${sec.isActive ? 'bg-amber-100 text-amber-900 hover:bg-amber-200' : 'bg-emerald-100 text-emerald-900 hover:bg-emerald-200'
+                          }`}
                       >
                         {sec.isActive ? 'Disable' : 'Enable'}
                       </button>
@@ -2074,11 +2097,10 @@ export const AdminView: React.FC<AdminViewProps> = ({ products, categories, sett
                       }
                     }}
                     onDragEnd={() => { setDraggedCatIndex(null); setDragOverCatIndex(null); }}
-                    className={`p-4 border rounded-lg bg-[#fbf6f0] transition-all duration-150 ${
-                      isDragOver && !isDragging
+                    className={`p-4 border rounded-lg bg-[#fbf6f0] transition-all duration-150 ${isDragOver && !isDragging
                         ? 'border-[#825425] ring-2 ring-[#825425]/30 scale-[1.02]'
                         : 'border-[#e8d8cb]'
-                    } ${isDragging ? 'opacity-40' : 'opacity-100'}`}
+                      } ${isDragging ? 'opacity-40' : 'opacity-100'}`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-start gap-2">
