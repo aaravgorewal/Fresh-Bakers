@@ -31,7 +31,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ setActiveTab, onOpenOrderM
         {/* Hero Image Banner */}
         <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#c59b27]/30 min-h-[420px] max-w-[1100px] mx-auto flex items-end p-8 text-left">
           <img
-            src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1600"
+            src="https://res.cloudinary.com/freshbakers/image/upload/v1786635049/meadow-marie-zH4u3uzcMdU-unsplash_pqamah.jpg"
             alt={`Master baker at ${bakeryName}`}
             className="absolute inset-0 w-full h-full object-cover"
           />
