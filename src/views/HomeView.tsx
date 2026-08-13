@@ -669,8 +669,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
           <div className="lg:col-span-5 relative aspect-square rounded-2xl overflow-hidden border border-[#c59b27]/30 shadow-2xl">
             <img
-              src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=800"
-              alt="Celebration Dessert Table"
+              src="https://res.cloudinary.com/freshbakers/image/upload/v1786629230/sitraka-gKWvWZVRwZQ-unsplash_xbgqnu.jpg"
+              alt=""
               className="w-full h-full object-cover"
             />
           </div>
