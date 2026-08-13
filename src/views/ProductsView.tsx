@@ -218,8 +218,8 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             <img
               src={
                 selectedCategory === 'All'
-                  ? 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200'
-                  : currentCategoryInfo?.bannerImage || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&q=80&w=1200'
+                  ? 'https://res.cloudinary.com/freshbakers/image/upload/v1786635052/noah-martinez-x4id_S8eBmY-unsplash_sxlodv.jpg'
+                  : currentCategoryInfo?.bannerImage || 'https://res.cloudinary.com/freshbakers/image/upload/v1786635052/noah-martinez-x4id_S8eBmY-unsplash_sxlodv.jpg'
               }
               alt={selectedCategory === 'All' ? 'Bakery Hero' : `${currentCategoryInfo?.name || 'Category'} Banner`}
               className="w-full h-full object-cover object-center"
