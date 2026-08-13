@@ -130,12 +130,12 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal }
           <span className="hover:text-[#FAF6F0] cursor-pointer">Privacy Policy</span>
           <span className="hover:text-[#FAF6F0] cursor-pointer">Terms of Service</span>
           <a
-            href="https://instagram.com"
+            href="https://instagram.com/freshbakers000"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-[#D97706] transition-colors flex items-center gap-1"
           >
-            <Instagram className="w-3.5 h-3.5" /> @freshbakers
+            <Instagram className="w-3.5 h-3.5" /> @freshbakers000
           </a>
         </div>
       </div>

@@ -14,7 +14,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
   const whatsappNumber = settings?.whatsappNumber || '+919876543210';
   const address = settings?.address || 'Almaspur, Muzaffarnagar District';
   const openingHours = settings?.openHours || 'Tue – Sun: 7am – 4pm';
-  const instagramUrl = settings?.instagram || 'https://instagram.com/freshbakers';
+  const instagramUrl = settings?.instagram || 'https://instagram.com/freshbakers000';
 
   const cleanNum = whatsappNumber.replace(/[\+\s]/g, '');
 
