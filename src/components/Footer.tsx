@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavTab } from '../types';
-import { Cake, Lock, MapPin, Clock, MessageSquare, Instagram, Phone } from 'lucide-react';
+import { Cake, Lock, MapPin, Clock, MessageSquare, Instagram, Phone, Linkedin } from 'lucide-react';
 
 interface FooterProps {
   setActiveTab: (tab: NavTab) => void;
@@ -133,7 +133,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal }
       </div>
 
       <div className="max-w-[1400px] mx-auto pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-[#E5D7C9] gap-4 relative z-10">
-        <p>© 2026 Fresh Bakers Co. Powered By <a href="https://www.linkedin.com/in/aaravgorewal/" target="_blank" rel="noopener noreferrer" className="hover:text-[#D97706] transition-colors font-semibold flex items-center gap-1 cursor-pointer" >AaravSaini</a></p>
+        <p>© 2026 Fresh Bakers Co. Powered By <a href="https://www.linkedin.com/in/aaravgorewal/" target="_blank" rel="noopener noreferrer" className="hover:text-[#D97706] transition-colors font-semibold flex items-center gap-1 cursor-pointer" ><Linkedin className="w-3 h-3" />AaravSaini</a></p>
         <div className="flex flex-wrap gap-6 items-center">
           <span className="hover:text-[#FAF6F0] cursor-pointer">Privacy Policy</span>
           <span className="hover:text-[#FAF6F0] cursor-pointer">Terms of Service</span>
