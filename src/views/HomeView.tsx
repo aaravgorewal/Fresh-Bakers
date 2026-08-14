@@ -424,7 +424,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
           {/* Rating Badge */}
           <div className="hidden lg:flex absolute bottom-8 right-8 z-10 glass-panel-dark px-5 py-3.5 rounded-2xl items-center gap-4 border border-[#c59b27]/30 shadow-2xl">
             <div className="flex -space-x-2">
-              <img className="w-9 h-9 rounded-full border-2 border-[#16110d] object-cover" src="https://res.cloudinary.com/freshbakers/image/upload/v1786636808/IMG_20260311_220529473_MP_vqfiif.jpg" alt="Customer avatar" />
+              <img className="w-9 h-9 rounded-full border-2 border-[#16110d] object-cover" src="https://res.cloudinary.com/freshbakers/image/upload/v1786636808/IMG_20260311_220529473_MP_vqfiif.jpg " alt="Customer avatar" />
               <img className="w-9 h-9 rounded-full border-2 border-[#16110d] object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" alt="Customer avatar" />
               <img className="w-9 h-9 rounded-full border-2 border-[#16110d] object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" alt="Customer avatar" />
             </div>
