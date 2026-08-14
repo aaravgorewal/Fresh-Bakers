@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavTab } from '../types';
-import { Cake, Lock, MapPin, Clock, MessageSquare, Instagram } from 'lucide-react';
+import { Cake, Lock, MapPin, Clock, MessageSquare, Instagram, Phone } from 'lucide-react';
 
 interface FooterProps {
   setActiveTab: (tab: NavTab) => void;
@@ -103,6 +103,14 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab, onOpenOrderModal }
             </p>
             <p className="font-body-md text-sm text-[#FAF6F0]">Mon – Sun: 8:00 AM – 10:00 PM</p>
             <p className="font-body-md text-xs text-[#E5D7C9] mt-0.5">Fresh bakes ready every morning</p>
+          </div>
+
+          <div className="pt-3 border-t border-white/10">
+            <p className="text-[11px] text-[#D97706] font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+              <Phone className="w-3 h-3" /> Contact Number
+            </p>
+            <p className="font-body-md text-sm text-[#FAF6F0]">+91 91935 25594</p>
+            <p className="font-body-md text-xs text-[#E5D7C9] mt-0.5">Call for Orders</p>
           </div>
         </div>
 
