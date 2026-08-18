@@ -129,7 +129,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
     </h3>
 
     <p className="font-serif-display text-base font-bold text-[#1f1610] truncate">
-      @{facebookUrl.replace(/^https?:\/\/(www\.)?facebook\.com\//, '').replace(/\/$/, '') || 'freshbakers'}
+      @{facebookUrl.replace(/^https?:\/\/(www\.)?facebook\.com\//, '').replace(/\/$/, '') || 'Fresh_Bakers'}
     </p>
   </div>
 
