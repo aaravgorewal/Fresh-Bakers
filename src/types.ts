@@ -45,6 +45,7 @@ export interface BakerySettings {
   email?: string;
   phone?: string;
   instagram: string;
+  facebookUrl?: string;
   openHours: string;
   currencySymbol?: string;
   heroTitle?: string;

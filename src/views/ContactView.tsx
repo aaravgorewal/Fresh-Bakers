@@ -15,6 +15,7 @@ export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
   const address = settings?.address || 'Almaspur, Muzaffarnagar District';
   const openingHours = settings?.openHours || 'Tue – Sun: 7am – 4pm';
   const instagramUrl = settings?.instagram || 'https://instagram.com/freshbakers000';
+  const facebookUrl = settings?.facebookUrl || 'https://www.facebook.com/people/Fresh-Bakers/61593341066406/';
 
   const cleanNum = whatsappNumber.replace(/[\+\s]/g, '');
 
@@ -109,6 +110,45 @@ export const ContactView: React.FC<ContactViewProps> = ({ settings }) => {
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
         </motion.div>
+
+
+{/* Facebook Card */}
+<motion.div
+  whileHover={{ y: -4 }}
+  className="luxury-card p-6 text-center flex flex-col justify-between space-y-4"
+>
+  <div>
+    <div className="w-12 h-12 rounded-2xl bg-[#825425] text-white flex items-center justify-center mx-auto mb-3 shadow-md">
+      <span className="material-symbols-outlined text-[24px]">
+        facebook
+      </span>
+    </div>
+
+    <h3 className="font-label-caps text-xs text-[#825425] uppercase tracking-widest mb-1 font-bold">
+      Facebook
+    </h3>
+
+    <p className="font-serif-display text-base font-bold text-[#1f1610] truncate">
+      @{facebookUrl.replace(/^https?:\/\/(www\.)?facebook\.com\//, '').replace(/\/$/, '') || 'freshbakers'}
+    </p>
+  </div>
+
+  <a
+    href={
+      facebookUrl
+        ? facebookUrl.startsWith('http')
+          ? facebookUrl
+          : `https://${facebookUrl}`
+        : 'https://www.facebook.com/people/Fresh-Bakers/61593341066406/'
+    }
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-xs text-[#825425] font-bold uppercase tracking-wider hover:underline flex items-center justify-center gap-1"
+  >
+    <span>Follow Our Bake Feed</span>
+    <ExternalLink className="w-3.5 h-3.5" />
+  </a>
+</motion.div>
 
         {/* WhatsApp Card */}
         <motion.div whileHover={{ y: -4 }} className="luxury-card p-6 text-center flex flex-col justify-between space-y-4">
